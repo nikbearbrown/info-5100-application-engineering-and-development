@@ -65,8 +65,7 @@ CRUD is not a checklist of features. It is a commitment to what the data lifecyc
 | Update (setter vs update file record safely | A concrete checkpoint for applying the chapter concept. | A concrete checkpoint for applying the chapter concept. |
 | Delete (dereference vs remove from storage) | student should see that persistence transforms each operation from trivial to consequential | A concrete checkpoint for applying the chapter concept. |
 
-![Data lifecycle flow with failure points for Module](images/08-digital-ecosystems-data-management-and-crud-fig-01.png)
-*Figure 8.1 — Data lifecycle flow with failure points for Module*
+<!-- → [SCOPE | Figure 8.1 | TABLE: CRUD operations compared — four rows (Create, Read, Update, Delete), three columns (operation, in-memory behavior, persistent behavior) plus a fourth column for the failure point each operation introduces when persistence is added | CONTENT: Create row (new Book() / write to file / disk full), Read row (getter / reconstruct from CSV / file missing or bad format), Update row (setter / rewrite file record / crash before save leaves stale record), Delete row (dereference / remove from file / crash before save brings it back) | EXCLUSIONS: Java code syntax, IOException class, specific file paths, save strategies, BufferedWriter API] -->
 
 ---
 
@@ -125,8 +124,7 @@ public void loadFromFile(String filename) throws IOException {
 
 These two methods are the full persistence layer for a simple catalog. They are also not enough on their own, and understanding why requires understanding what can go wrong.
 
-![Annotated code diagram ](images/08-digital-ecosystems-data-management-and-crud-fig-02.png)
-*Figure 8.2 — Annotated code diagram *
+<!-- → [SCOPE | Figure 8.2 | IMAGE: two-column annotated flow — left column is the write path (saveToFile: iterate array → format CSV line → writer.write()), right column is the read path (loadFromFile: readLine() → split(",") → new Book()); failure point markers at writer.write() on the left (disk full, permissions, process killed) and at readLine() and split() on the right (file missing, bad format, missing fields) | CONTENT: write path boxes with failure markers labeled "disk full / permissions / process killed", read path boxes with failure markers labeled "file missing / unreadable" and "bad format / missing fields" | EXCLUSIONS: exception handler code, save strategy comparison, BufferedReader API details, CSV file contents] -->
 
 ---
 
@@ -154,8 +152,6 @@ You cannot answer this question in code. You have to answer it before you write 
 **Save after every mutation:** Every `addBook`, every `checkout`, every `updateTitle` triggers a file write. Safe. Slow. May be fine for small catalogs. Gets expensive with large files.
 
 **Save to a temporary file, then rename:** Write the new state to `catalog.tmp`, then rename it to `catalog.csv`. On any OS that makes rename atomic, this means the file is either the old version or the new version, never a half-written state. The standard technique for crash-safe persistence in simple file-based systems.
-
-Three designs. Different trade-offs. None of them derivable from the requirement "persist the catalog" without an additional decision about failure tolerance.
 
 | strategy | when save runs | data loss window | performance cost | when it is appropriate |
 | --- | --- | --- | --- | --- |
@@ -256,8 +252,7 @@ The book is now back in memory. It can be displayed. The full lifecycle: object 
 
 Each transition is a potential failure point. The object-to-file transition fails if the write throws an exception, the disk is full, or the process is killed mid-write. The file-to-object transition fails if the file is missing, the format is wrong, or a field cannot be parsed. The in-memory state fails to match the file if a mutation happened between load and the next save.
 
-![Linear lifecycle diagram ](images/08-digital-ecosystems-data-management-and-crud-fig-03.png)
-*Figure 8.3 — Linear lifecycle diagram *
+<!-- → [SCOPE | Figure 8.3 | IMAGE: linear left-to-right lifecycle — user input → Book object in memory → catalog.csv on disk → Book object reconstructed → display; two failure-point callout boxes below the line, one at the object→file transition (disk full, killed mid-write, corrupt), one at the file→object transition (file missing, bad format, stale after crash); caption notes the data loss window between transitions | CONTENT: five nodes (user input, object in memory, csv on disk, object reconstructed, display), transition labels (addBook, save, load, display), two coral callout boxes with failure descriptions, data loss window annotation | EXCLUSIONS: exception handler code, CRUD table, save strategy comparison, BufferedWriter internals] -->
 
 You cannot prevent all failures. You can design for them — decide which ones are fatal, which ones should be logged and skipped, and which ones should trigger a warning to the user. That design is the persistence layer. The file I/O code is the implementation of the design.
 
@@ -285,8 +280,7 @@ The simplest approach that is correct: save the whole file after every mutation.
 
 The Delete operation has the same structure. Deleting a book from the in-memory array is easy. The record still exists in the file until the next full save. If the program crashes before the save, the "deleted" book reappears on restart. Whether this is acceptable depends on the same policy question as before: how much data loss is acceptable?
 
-![Timeline diagram for Update and Delete showing the](images/08-digital-ecosystems-data-management-and-crud-fig-04.png)
-*Figure 8.4 — Timeline diagram for Update and Delete showing the*
+<!-- → [SCOPE | Figure 8.4 | IMAGE: horizontal timeline showing memory state and file state as two parallel tracks — after a setAge(35) call, memory shows the new value immediately while the file track still shows the old value; a shaded data loss window spans the gap between the mutation and the next saveToFile call; three strategy pills below the timeline label the three ways to close the window (save on exit, save per mutation, atomic rename) | CONTENT: memory track with old value → mutation event → new value, file track with old value until save event → new value, shaded data loss window with crash annotation, three strategy comparison pills | EXCLUSIONS: Java code syntax, exception handling, read path, CSV format details] -->
 
 ---
 
@@ -351,8 +345,7 @@ Write those answers. They do not need to be long. One sentence each is enough. T
 
 What you get back is an implementation of your design. Your job is to verify that the implementation matches your decisions, not that it looks like reasonable persistence code in the abstract.
 
-![Three-question decision form the student fills before the](images/08-digital-ecosystems-data-management-and-crud-fig-05.png)
-*Figure 8.5 — Three-question decision form the student fills before the*
+<!-- → [SCOPE | Figure 8.5 | IMAGE: three-column decision form — Q1 (what if the write fails? options: log and continue, retry, restore previous file, crash with message, prompt user), Q2 (what if the file is missing? options: start empty, refuse to run, restore from backup, prompt for path), Q3 (how much data loss is acceptable? options: zero—save per mutation, one session—save on exit, manual save only); red warning band below: "answer these before AI writes a line of persistence code — evaluate what it generates against your answers" | CONTENT: three question columns with labeled option rows, warning band | EXCLUSIONS: Java syntax, flowchart arrows, stage numbering, CRUD table, lifecycle diagram] -->
 
 ---
 
