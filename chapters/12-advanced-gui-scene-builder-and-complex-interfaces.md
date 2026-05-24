@@ -1,184 +1,277 @@
-# Module 12: Advanced GUI: Scene Builder and Complex Interfaces
+# Module 12 — Advanced GUI: Scene Builder and Complex Interfaces
+*The visual editor changes the screen. The controller still has to connect to the model. That connection is yours to maintain.*
 
-**One-line:** Students learn to use Scene Builder to design complex interfaces while maintaining a clean boundary between the visual design and the application logic.
+The checkout screen from Module 3 worked. You designed it by hand — panels, buttons, labels, a table — and you wrote the controller code that wired the UI events to the model objects. It ran. The `Book` reference traveled from the result panel to the checkout panel. The `Loan` was created. The confirmation showed the right data.
 
-## Module Overview
+Now you open Scene Builder, drag in a new layout, rearrange the button placement, add a sidebar, improve the spacing. The screen looks significantly better. You run the application. The checkout button does nothing. The book table is empty. The confirmation screen shows null.
 
-By the end of this module, you will add one concrete capability to the semester project: the chapter keeps visual design and controller logic connected but separate. The library example is the main path through the text. Inventory and healthcare scheduling follow the same design shape in the exercises.
+The visual editor did not break the logic. You broke the connection between the view and the controller when you rearranged the layout — silently, without a compile error, because the connection between an FXML file and a Java controller is not enforced at compile time. It is enforced at runtime, when JavaFX tries to inject the named components into the controller fields and finds that the names no longer match.
 
-## Prerequisites
+That is the failure this module is designed to prevent. Understanding why it happens is the same as understanding what Scene Builder actually does — and what it does not.
 
-Module 11 event handling and MVC discipline.
+---
 
-## Learning Objectives
+## What FXML Is
 
-- (Apply) Design a multi-screen interface using Scene Builder.
-- (Analyze) Explain how FXML relates to JavaFX code.
-- (Apply) Connect FXML to a controller using `@FXML`.
-- (Evaluate) Assess a Scene Builder design against the Module 3 user flow.
+JavaFX applications have two representations of the same thing. The first is the object graph in memory: a `TableView` that contains `TableColumn` objects, inside a `BorderPane`, next to a `VBox` with a `Button`. These are Java objects. You can create them in code: `new TableView<>()`, `new Button("Checkout")`.
 
-## Opening Case
+The second representation is FXML: an XML file that describes the same object graph in a declarative format. Instead of `new Button("Checkout")`, you write `<Button text="Checkout" fx:id="checkoutButton" onAction="#handleCheckout"/>`. When JavaFX loads the FXML file, it constructs the object graph from the description.
 
-The screen flow from Module 3 returns. It worked on paper, then in hand-written JavaFX. Now a visual editor can rearrange the interface. The question is whether the controller still connects to the same model decisions.
+Scene Builder is an editor for FXML files. When you drag a button onto the canvas, Scene Builder writes the FXML tag for that button. When you move a component, resize a panel, or change a color, Scene Builder edits the FXML. The visual canvas and the FXML source are two views of the same file.
 
-Do not define the concept too early. First, look at the failure. The point of the opening is to make the need for the concept visible before the word for it arrives.
+This is what FXML is: a serialized description of a JavaFX object graph. It is not the behavior of the application. It is not the model. It is not the controller. It is the structure of the view, expressed in a format that a visual editor can read and write.
 
-## Core Content
+<!-- → [INFOGRAPHIC: three-panel diagram — left panel shows Scene Builder's visual canvas with a checkout screen; center panel shows the FXML source with fx:id and onAction attributes highlighted; right panel shows the Java controller class with @FXML-annotated fields and handler methods — connecting lines from each fx:id in FXML to the corresponding @FXML field in the controller, making the injection relationship visible before the text explains it] -->
 
-### The Idea In Plain Language
+The important thing to understand is that FXML changes the *authoring* of the view, not the *ownership* of the behavior. In hand-written JavaFX, you wrote `Button checkoutButton = new Button("Checkout")` in Java. With FXML, the button is declared in XML and injected into the controller at load time. The button exists in the same place in the object hierarchy. The controller still handles its events. The model still owns the data. Nothing about the MVC structure changes. The view is just authored differently.
 
-FXML is a representation of a JavaFX object graph. Scene Builder changes how the view is authored, not who owns the behavior. The controller remains the boundary where visual components become application actions.
+---
 
-### The Java Move
+## The Connection Mechanism: fx:id and @FXML
 
-In Java, this idea becomes a concrete design move in source code. The student should be able to point to the class, method, field, collection, handler, test, or configuration line that carries the concept. If the concept cannot be found in code, it is still only a slogan.
+The connection between an FXML file and a Java controller runs through two things: an identifier in the FXML and an annotation in the controller. When they match, JavaFX makes the connection. When they do not match, JavaFX either throws a runtime exception or leaves the controller field as null — and null fields produce exactly the silent failures in the opening scenario.
 
-### The AI Boundary
+In the FXML file, every component that the controller needs to reference has an `fx:id` attribute:
 
-AI may generate controller stubs from provided FXML. It may not invent FXML for an unspecified workflow or implement handlers.
+```xml
+<TableView fx:id="bookTable" />
+<Button fx:id="checkoutButton" onAction="#handleCheckout" />
+<Label fx:id="statusLabel" />
+```
 
-The boundary matters because the book's thesis is not anti-AI. It is anti-unverified delegation. The student may use AI when the task is appropriate and when the verification responsibility is still held by the engineer.
+The `fx:id` value is the name the controller will use to reference this component. The `onAction="#handleCheckout"` attribute names the method in the controller that handles the button click.
 
-<!-- → [FIGURE: FXML to controller mapping table for Module 12, showing the core concept, the Java artifact that carries it, the AI assistance boundary, and the human verification step.] -->
+In the controller class, each referenced component has a field annotated with `@FXML`, and the field name must exactly match the `fx:id` in the FXML:
 
-## Worked Example
+```java
+public class CheckoutController {
+    @FXML private TableView<Book> bookTable;
+    @FXML private Button checkoutButton;
+    @FXML private Label statusLabel;
 
-**Situation.** The checkout screen is redesigned in Scene Builder. The FXML declares `checkoutButton` and `bookTable`. The controller has matching `@FXML` fields and handler stubs. Every `fx:id` must be traceable.
+    @FXML
+    private void handleCheckout() {
+        // handler code
+    }
+}
+```
 
-**Analysis.** Work from observable behavior back to design intent. Name the object, method, handler, collection, file, or test involved. Then name what would count as evidence that the implementation is correct.
+When JavaFX loads the FXML file, it constructs the object graph and then performs *injection*: it finds each `fx:id` in the FXML, locates the matching `@FXML` field in the controller, and sets the field to point to the constructed component. After injection, `bookTable` in the controller is the same `TableView` object that is displayed in the window. Any change you make to `bookTable` in the controller is immediately reflected in the UI.
 
-**Dead end.** The usual dead end is accepting code because it runs once, compiles cleanly, or matches an AI explanation. That is not enough. The student's job is to connect behavior to a requirement and then to a verifiable Java artifact.
+The `@FXML` annotation tells JavaFX that this field is injection-managed. Without it, the field is not injected and stays null. The field's access modifier does not matter for injection — `private` works just as well as `public` — but the name must match exactly, including case. `bookTable` and `BookTable` are different names. JavaFX does not correct for this.
 
-**Resolution.** The implementation is accepted only when the student can trace the behavior, explain the design choice, and identify what AI did and did not decide.
+<!-- → [IMAGE: annotated code pairing — left side: the FXML file with fx:id="bookTable" and onAction="#handleCheckout" highlighted in color; right side: the controller class with @FXML private TableView<Book> bookTable and @FXML private void handleCheckout() highlighted in matching colors — with arrows connecting each FXML attribute to its corresponding controller element, and a note indicating that a name mismatch produces a null field or runtime exception, not a compile error] -->
+
+---
+
+## The FXML-Controller Mapping Table
+
+Because the connection between FXML and controller is not compiler-enforced, the verification discipline this module introduces is a mapping table: a written record of every `fx:id` declared in the FXML and its corresponding controller field.
+
+The table has four columns: the `fx:id` value from the FXML, the type of the component it refers to, the `@FXML` field name in the controller (which must match), and the handler method if any. One row per connected component.
+
+For the checkout screen:
+
+| fx:id | Component type | Controller field | Handler |
+|-------|---------------|-----------------|---------|
+| `bookTable` | `TableView<Book>` | `bookTable` | — |
+| `checkoutButton` | `Button` | `checkoutButton` | `handleCheckout` |
+| `statusLabel` | `Label` | `statusLabel` | — |
+| `cancelButton` | `Button` | `cancelButton` | `handleCancel` |
+
+The table is the spec. When you build or modify the FXML in Scene Builder, you update the table to reflect what you added. When you write the controller, you implement every row in the table. When you run the application, you verify that every component in the table behaves as expected.
+
+The mapping table catches the failure from the opening scenario before it manifests. When you rearranged the layout in Scene Builder, if you had deleted `checkoutButton` and recreated it as `checkout_button` — a common Scene Builder behavior when you drag-and-drop components — the table would show the mismatch: FXML declares `checkout_button`, controller declares `checkoutButton`, the names differ. You fix it before running.
 
 <!-- → [TABLE: Module 12 verification table with columns: concept, Java artifact, what AI may do, what the student must verify, evidence before submission; rows should include the library example plus inventory and scheduling variants.] -->
 
-**The lesson:** the engineer owns the explanation, not just the output.
+---
 
-**The limit:** this module gives a disciplined slice of practice; it does not make every downstream design decision automatic.
+## The initialize Method
 
-## Mid-Module Checkpoint
+After injection, the controller has one more step before the UI is ready for user interaction. Any setup that requires the injected components to exist — populating the table columns, setting default text in labels, configuring event listeners that are not declared in FXML — belongs in a method called `initialize`.
 
-Before starting the lab, answer three questions in writing:
+JavaFX calls `initialize` automatically after injection completes, before the UI is shown to the user. The contract is: by the time `initialize` returns, the UI is fully configured and ready.
 
-1. What is the specific project behavior this module adds?
-2. Which Java artifact carries that behavior?
-3. What evidence would convince you the behavior works for your requirements?
+```java
+@FXML
+private void initialize() {
+    titleColumn.setCellValueFactory(
+        new PropertyValueFactory<>("title")
+    );
+    authorColumn.setCellValueFactory(
+        new PropertyValueFactory<>("author")
+    );
+    statusLabel.setText("Select a book to check out.");
+}
+```
 
-If any answer is vague, return to the worked example and make the artifact concrete.
+The `initialize` method is where the controller connects the injected components to the model. The table columns are configured to read from `Book` object fields. The status label gets its initial text. If the controller needs a reference to a service object — a `LoginManager`, a `BookCatalog` — the `initialize` method is where it retrieves or receives that reference.
 
-## Lab Assignment
+The common mistake is putting setup code in the controller's constructor. At construction time, injection has not happened yet. `@FXML` fields are null in the constructor. Code that reads from them will throw a `NullPointerException`. The constructor is for the controller object's own initialization. `initialize` is for UI configuration.
 
-Redesign one project screen in Scene Builder and submit an FXML-controller mapping table.
+This is the same setter-before-show ordering discipline from Module 3, expressed in a new context. State must exist before display operations run. The mechanism is different — `initialize` instead of a setter method — but the principle is the same.
 
-The lab must include running evidence, a short explanation of the design choice, and the AI Use Disclosure described below.
+<!-- → [INFOGRAPHIC: JavaFX controller lifecycle — horizontal timeline showing three phases: (1) Constructor called (injection not yet done, @FXML fields are null — code here will NullPointerException); (2) Injection performed (FXMLLoader sets each @FXML field to the constructed component); (3) initialize() called (all @FXML fields are non-null, safe to configure columns, set default text, wire listeners) — annotated with "what you can do here" and "what you cannot do here" for each phase] -->
 
-## How To Use AI
+---
 
-**What AI does well here:** AI may generate controller stubs from provided FXML. It may not invent FXML for an unspecified workflow or implement handlers.
+## What Scene Builder Changes and What It Does Not
 
-**Concrete prompt that works:**
+Scene Builder changes the authoring experience for the view. It does not change anything about the controller, the model, or the boundary between them.
+
+Before Scene Builder, you wrote layout code in Java:
+
+```java
+BorderPane root = new BorderPane();
+TableView<Book> bookTable = new TableView<>();
+Button checkoutButton = new Button("Checkout");
+VBox sidebar = new VBox(10, checkoutButton, statusLabel);
+root.setCenter(bookTable);
+root.setRight(sidebar);
+```
+
+With Scene Builder, you drag and drop to produce the same structure, which gets serialized into FXML. The FXML is loaded at runtime and produces the same object graph. The controller code is identical either way.
+
+What this means practically: the skills from every previous module still apply, unchanged. The `Book` object that travels through the flow in Module 3 still travels the same way. The `LoginManager` from Module 6 is still called the same way. The collection sorted in Module 9 is still sorted the same way. Scene Builder is a better tool for editing the view. It does not change what the view does.
+
+<!-- → [TABLE: FXML-controller mapping table template — columns: fx:id, JavaFX component type, @FXML controller field, event handler method, verified (yes/no); rows blank for student to fill in for their redesigned screen — this is the deliverable the lab requires before any code is written] -->
+
+The risk Scene Builder introduces is cosmetic: it is possible to rearrange, rename, or accidentally delete components without the Java code signaling an error. The mapping table prevents this from becoming invisible damage. Every `fx:id` is tracked. Every controller field is traced. Every handler is named.
+
+---
+
+## Reconnecting the Module 3 Flow
+
+The assignment for this module is to take the two-screen flow from Module 3 — search panel and checkout panel, or their equivalents in your domain — and redesign at least one of those screens in Scene Builder. The redesign may improve the layout, add components, rearrange the visual hierarchy. What must not change is the connection to the model.
+
+Concretely: the `Book` object that was passed to the checkout panel via a setter method in Module 3 must still be passed the same way. The `@FXML`-injected `bookTable` field is a different component than the `JPanel` table from the Swing-era flow, but its role is the same: it displays the `Book` objects the model contains. The handler that responds to a selection in the table is a different method signature from the Module 3 `ActionListener`, but it performs the same action: retrieve the selected `Book` and pass it to the next screen.
+
+The verification question for this module is an extension of the Module 3 flow table. You have an FXML component. That component has an `fx:id`. That `fx:id` is injected into a controller field. That field is used in a handler. That handler calls a method on a model object. The chain must be traceable, end to end, for every interactive component in the redesigned screen.
+
+<!-- → [FIGURE: FXML to controller mapping table for Module 12, showing the core concept, the Java artifact that carries it, the AI assistance boundary, and the human verification step.] -->
+
+If you cannot trace a component from `fx:id` to model call, you have a handler that acts on the view without acting on the model. That handler is display code masquerading as behavior. It will pass a visual test — the button responds, the label changes — and fail a behavior test: the `Book` was not actually selected, the `Loan` was not created, the state the confirmation screen expects does not exist.
+
+---
+
+## What AI Can and Cannot Do Here
+
+The legitimate use of AI in this module is narrow and specific: AI can generate controller stubs from a provided FXML file. You paste the FXML, AI reads the `fx:id` attributes and `onAction` references, and produces a controller class with the corresponding `@FXML` fields and empty handler method signatures. This is mechanical work that AI does well.
+
+What AI cannot do is design the FXML. The FXML should describe the interface your Module 3 flow requires: the screens the user needs, the components those screens need, the `fx:id` attributes that will allow the controller to reach each component. That design is yours. It derives from the flow table you built in Module 3, the model objects you built in earlier modules, and the specific interactions your domain requires. AI does not have that context.
+
+The phase gate follows: you provide the FXML, AI provides the controller stubs. Not the other way around.
+
+If you give AI a description of your interface and ask it to generate the FXML, you will get a plausible FXML for a plausible interface that bears some resemblance to what you described. The `fx:id` values will be generic. The handlers will be named for common operations. Nothing will be traced to your actual model objects, your actual flow requirements, or the specific field names your domain uses. You will spend more time fixing the generated FXML than you would have spent writing it.
+
+Here is the prompt that keeps the boundary where it belongs:
 
 ```text
 I am working on Module 12: Advanced GUI: Scene Builder and Complex Interfaces in INFO 5100.
 My domain is [library / inventory / scheduling].
-My current specification is: [paste your written specification].
-Help only within this boundary: AI may generate controller stubs from provided FXML. It may not invent FXML for an unspecified workflow or implement handlers.
-Do not produce work that violates the phase gate: For every `@FXML` field and handler, trace the FXML element, run the app, and verify the connection.
+Here is the FXML I designed in Scene Builder: [paste FXML].
+Generate a controller stub: @FXML fields for every fx:id, and empty
+handler method signatures for every onAction reference.
+Do not implement the handlers. Do not add new fx:id attributes.
+Do not change the FXML structure.
 ```
 
-**What AI cannot do here:** AI cannot know your business requirement, your instructor's acceptance standard, or whether the generated code fits the whole project. It can help with language, scaffolding, explanation, or candidate implementations only after you have stated what must be true.
-
-**Phase gate:** For every `@FXML` field and handler, trace the FXML element, run the app, and verify the connection.
-
-**Module CLAUDE.md constraint:**
-
-```text
-You are assisting a graduate Java student in Module 12: Advanced GUI: Scene Builder and Complex Interfaces.
-Follow the module phase gate exactly.
-Explain before generating. Mark every design decision.
-If a requirement is missing, ask for it instead of guessing.
-Never let plausible Java substitute for verified Java.
-```
-
-## AI Use Disclosure Form
-
-Complete this paragraph for the lab:
-
-> I used AI for [specific task]. My prompt was [summary or pasted prompt]. I verified [specific Java artifact or behavior] by [running, tracing, debugging, testing, or inspection]. The AI output was wrong or incomplete in this way: [specific issue]. The part I did not delegate was [design or verification judgment].
-
-## Common Misconceptions
-
-**If it compiles, it works.** Compilation checks whether Java accepts the form. It does not prove the behavior matches the requirement.
-
-**If AI explains it, I understand it.** Understanding means you can predict, trace, change, and defend the code without repeating the AI's phrasing.
-
-**The lab is the code.** The lab is the code plus the explanation, verification evidence, and AI disclosure. The artifact is proof that a process happened.
-
-## Exercises
-
-1. **Apply:** Add the module capability to the library version of the project.
-2. **Apply:** Translate the same capability to either inventory or scheduling.
-3. **Analyze:** Identify one failure mode that would pass a superficial run but violate the requirement.
-4. **Evaluate:** Ask AI for help within the allowed boundary, then reject or revise at least one part of the output and explain why.
-
-## What Would Change My Mind
-
-I would revise this module's central claim if classroom evidence showed that students who used unrestricted AI generation could explain, debug, adapt, and defend their project code as well as students who passed through the module's phase gate. The evidence would need to include transfer to a new feature, not only successful completion of the same lab.
-
-## Still Puzzling
-
-- How much tool assistance improves confidence without reducing ownership?
-- Which errors in this module are productive learning moments, and which are avoidable friction?
-- How should the instructor distinguish weak Java syntax from weak design reasoning?
-- What project evidence should become part of the instructor manual after the next course run?
-
-## Module Summary
-
-You can now the chapter keeps visual design and controller logic connected but separate. You also have one more AI boundary: not a ban, but a rule for keeping verification in the student's hands.
-
-## Key Terms
-
-- **Scene Builder:** define this term in the context of the semester project before using it in lab work.
-- **FXML:** define this term in the context of the semester project before using it in lab work.
-- **fx:id:** define this term in the context of the semester project before using it in lab work.
-- **@FXML:** define this term in the context of the semester project before using it in lab work.
-- **controller:** define this term in the context of the semester project before using it in lab work.
-- **injection:** define this term in the context of the semester project before using it in lab work.
-- **layout:** define this term in the context of the semester project before using it in lab work.
-
-## Bridge Question
-
-The interface is connected. How do you prove the behavior still works after changes?
-
-## Further Reading
-
-- Java Language Specification and Java SE API documentation: use for language and library facts.
-- Robins, Rountree, and Rountree, "Learning and Teaching Programming": use for common novice difficulties.
-- OpenJFX documentation: use for JavaFX, FXML, and event-handling details.
-
-## CLI Quick Reference
-
-```bash
-java --version
-javac --version
-# Run from your project directory when checking environment and compiled output.
-```
-
-## Sources and Drafting Notes
-
-Research base: Java Language Specification and Java SE API; OpenJFX and NetBeans documentation where relevant; Robins, Rountree, and Rountree on programming education; Sweller on cognitive load; Collins, Brown, and Newman on cognitive apprenticeship; Peng et al., Vaithilingam et al., and Pearce et al. on AI coding assistance and verification risk.
-
-Current tool instructions, version-specific setup, and AI platform behavior require pre-offering verification. [verify]
+After receiving the stub, verify it against your mapping table: every row in the table should correspond to a field or method in the stub, and the names should match exactly.
 
 ---
 
-## Prompts
+## The Inventory and Scheduling Shape
 
-Use these prompts with Claude to generate interactive D3 v7 versions of the
-figures in this chapter. Each produces a standalone HTML file you can open
-in a browser and modify freely.
+The FXML-controller pattern applies identically across all three domains. Only the component types and handler semantics differ.
 
-**Prerequisites:** Load `brutalist/CLAUDE.md` and `brutalist/DESIGN.md` into
-your Claude project context before using these prompts. They define the stack,
-naming conventions, color system, and typography the figures use.
+In an inventory system, the redesigned screen might be the stock adjustment form: a `TextField` for quantity, a `ComboBox` for adjustment type (restock, sale, write-off), a `Button` to submit. The FXML declares each component with an `fx:id`. The controller injects them, validates the input in `initialize` or in the handler, and calls the appropriate method on the `Inventory` model. The model updates the stock record. The view reflects the new state.
+
+In a healthcare scheduling application, the redesigned screen might be the appointment booking form: a `DatePicker`, a `ComboBox` of available providers, a `ListView` of available time slots, a `Button` to confirm. The FXML structure is different. The `fx:id` values are different. The controller logic calls methods on the `Schedule` model. The discipline is the same: every component is in the mapping table, every `@FXML` field is traced to a model call, every handler is verified against the expected state transition.
+
+The mapping table works as a checklist in all three cases. Complete the table before writing the controller. Trace every row when the application runs.
+
+---
+
+## The Disconnect Failure, Named
+
+Let me name the failure this module is designed to prevent with enough precision that you will recognize it.
+
+You redesign the checkout screen in Scene Builder. The redesign adds a `TextField` for a patron search, changes the checkout button from `checkoutButton` to `checkout_btn` to fit a new naming convention you found in an online example, and removes the status label because the new layout does not need it. You save the FXML. You run the application.
+
+The application runs. The new layout appears. You select a book and click the checkout button. Nothing happens. No exception in the log. No error message. The button just does not respond.
+
+What happened: `checkoutButton` in the controller is now null. The `@FXML` annotation looked for an `fx:id` named `checkoutButton` in the FXML. It found `checkout_btn` instead. JavaFX did not throw an error — the field simply stayed null. The click handler is registered on the `Button` object that `checkoutButton` should point to. But `checkoutButton` is null. There is no object to register the handler on. The click has no effect.
+
+The fix is one rename. But finding it without a mapping table requires reading the FXML and controller simultaneously, comparing every `fx:id` to every `@FXML` field name. With a mapping table, the mismatch is visible in the table before you run the application. The `fx:id` column says `checkout_btn`. The controller field column says `checkoutButton`. The names differ. You fix it.
+
+<!-- → [TABLE: null-injection failure table — columns: scenario, what changed in FXML, what stayed the same in controller, runtime result (exception or null field), what the mapping table would have shown; rows: fx:id renamed, component deleted and recreated, onAction handler renamed, component type changed from Button to MenuItem — this is the reference for diagnosing silent connection failures] -->
+
+---
+
+## What This Module Does Not Settle
+
+We have moved the view into FXML, connected FXML to controllers via injection, established the mapping table as the verification discipline, and reconnected the Module 3 flow in the new authoring context. We have not addressed testing: how do you prove the behavior still works after changes to the view?
+
+The bridge question is: the interface is connected. How do you prove the behavior still works after changes?
+
+The next module addresses this. Testing a JavaFX controller requires separating the behavior from the view more completely than this module has required — extracting the model logic into classes that can be exercised without constructing a UI, and testing those classes directly. The discipline of keeping the controller thin and the model complete is what makes that extraction possible. Modules that allow business logic to migrate into handlers produce controllers that cannot be tested without rendering the full UI. This module's mapping table is the start of the answer: every handler should be traceable to a single model call.
+
+---
+
+## Lab: Scene Builder Redesign
+
+Redesign at least one screen from your Module 3 flow using Scene Builder. Before opening Scene Builder, update your Module 3 flow table to reflect any changes the redesign requires. Before writing any controller code, complete the FXML-controller mapping table for the redesigned screen: `fx:id`, component type, controller field, handler method, one row per injected component.
+
+The implementation must demonstrate that every `@FXML` field is injected successfully, that `initialize` runs without null-pointer errors, and that at least one handler performs a traceable model call — not just a UI update. The evidence is the mapping table, the running application, and a one-sentence trace for the primary handler: "Button X fires handler Y which calls method Z on object W."
+
+If you used AI to generate the controller stub from your FXML, include the FXML you provided and verify the stub against your mapping table before adding any implementation.
+
+---
+
+## Exercises
+
+**Warm-up**
+
+1. Open your Module 3 checkout screen's FXML (or reconstruct a minimal version from memory) and complete the FXML-controller mapping table for it: `fx:id`, component type, controller field, handler method. Then identify any component you interact with in the UI that does not appear in the table, and explain what that omission means — is it wired differently, or is it untraceable? *(Tests: mapping table construction; identification of all injected components.)*
+
+2. Write the `initialize` method for a controller that manages a book checkout screen with a `TableView<Book>` named `bookTable`, a `Label` named `statusLabel`, and a `Button` named `checkoutButton`. The `initialize` method should set up the table's title column, set the status label's initial text, and disable the checkout button until a row is selected. Do not put any of this in the constructor. *(Tests: initialize contract; injection lifecycle ordering; the constructor-vs-initialize distinction.)*
+
+**Application**
+
+3. A classmate redesigns their search screen in Scene Builder and renames the results table from `resultTable` to `results_table` to match a naming convention they found online. The controller still declares `@FXML private TableView<Book> resultTable`. Describe exactly what happens at runtime: which object is null, when it becomes null, what symptom the user sees, and what the mapping table would have shown if it had been updated at the time of the rename. *(Tests: null-injection failure mode; fx:id-to-field name matching; mapping table as pre-run verification.)*
+
+4. A handler method in the checkout controller updates the `statusLabel` text and returns. The user sees the label change. The lab is submitted. At the review, the instructor asks: "Which model object did this handler call?" The student cannot answer. Using this module's traceability requirement, explain what is wrong with the handler, what a correct handler looks like, and how the one-sentence trace format ("Button X fires handler Y which calls method Z on object W") would have revealed the problem before submission. *(Tests: handler-to-model-call traceability; display code vs. behavior; lab evidence standard.)*
+
+5. You ask AI to generate a controller stub from your FXML and receive a class with `@FXML private Button confirmBtn` — but your FXML declares `fx:id="confirmButton"`. Apply the AI boundary rule: is this a scaffolding error you should fix, or a design decision the AI made that you should evaluate? Name the exact consequence if you use the stub unchanged, and write the one-character-level fix. *(Tests: AI stub verification against mapping table; fx:id exact-match rule; AI boundary applied to generated code.)*
+
+**Synthesis**
+
+6. Translate the checkout screen's FXML-controller mapping table into your own domain (inventory stock adjustment form or healthcare appointment booking form). Name every interactive component, assign an `fx:id`, identify the controller field, and name the handler. Then write the `initialize` method that configures any component that requires setup before the user interacts with it. *(Tests: domain transfer; complete mapping table; initialize construction in a new domain.)*
+
+7. The mapping table for your redesigned screen has a row for `cancelButton` with handler `handleCancel`. The `handleCancel` method currently calls `stage.close()` — it closes the window. Using the Module 3 flow table and this module's traceability requirement, argue whether this handler is acceptable. What model call, if any, should `handleCancel` make before closing? If the flow table says the user can return to the search screen from checkout, what additional steps does `handleCancel` require? *(Tests: handler-to-model traceability; backward navigation state management from Module 3; the flow table as the spec that handlers must satisfy.)*
+
+**Challenge**
+
+8. The `initialize` method is called once, when the FXML is loaded. In a single-window application where the checkout screen is shown and hidden repeatedly (using `setVisible` rather than loading a new FXML), `initialize` does not re-run between sessions. Describe the problem this creates: what state from a previous session might be visible to the next user, which `@FXML`-injected component is most likely to carry stale state, and how you would design a `reset()` method — separate from `initialize` — that clears the screen for a new session. Identify where in the navigation flow `reset()` should be called and by whom. *(Open-ended; anticipates session management and multi-user state isolation patterns introduced in the testing and hardening modules.)*
+
+---
+
+- **Scene Builder** — a visual editor for JavaFX interfaces that writes FXML files. It changes how the view is authored. It does not change the controller, the model, or the connection rules between them.
+- **FXML** — an XML format for describing a JavaFX object graph declaratively. Loaded at runtime by `FXMLLoader`, which constructs the described objects and performs injection into the controller.
+- **fx:id** — the attribute in an FXML element that names the component for injection. Must exactly match the `@FXML` field name in the controller. A mismatch produces a null field or runtime exception, not a compile error.
+- **@FXML** — the annotation that marks a controller field or method as injection-managed. After FXML loading, fields annotated with `@FXML` point to the constructed components named by their matching `fx:id` attributes.
+- **controller** — the Java class that receives injected UI components and implements the handlers that connect user actions to model calls. Declared in the FXML's root element as `fx:controller`.
+- **injection** — the process by which `FXMLLoader` sets the `@FXML` fields in the controller to point to the constructed components. Happens after the object graph is built, before `initialize` is called.
+- **layout** — the visual structure of a screen, described in FXML as a hierarchy of container and component nodes. Scene Builder edits the layout. The controller is independent of layout decisions.
+
+---
+
+## Further Reading
+
+- OpenJFX documentation: authoritative source for FXML syntax, `FXMLLoader`, `@FXML` injection mechanics, and Scene Builder integration.
+- *Java Language Specification* and the Java SE API documentation: for JavaFX component types and their event models.
+- Robins, Rountree, and Rountree, "Learning and Teaching Programming": research on the connection-tracing difficulties this module's mapping table addresses.
+- Peng et al. and Vaithilingam et al.: empirical work on AI coding assistance; the FXML-first phase gate is grounded in their findings on the cost of unverified structural delegation.
+
+*Current tool instructions, version-specific setup, and AI platform behavior require pre-offering verification.* [verify]
