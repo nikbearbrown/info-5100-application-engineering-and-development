@@ -63,8 +63,7 @@ Java does know. When `t.process()` executes, Java looks at the actual object `t`
 
 This is the mechanism. The processor that handles transactions does not need to know which kind it has. It calls `process()`. The transaction handles itself.
 
-![Dynamic dispatch trace for Module 7, showing the](images/07-order-processing-and-polymorphism-fig-01.png)
-*Figure 7.1 — Dynamic dispatch trace for Module 7, showing the*
+<!-- → [SCOPE | Figure 7.1 | IMAGE: dynamic dispatch — one call site (transaction.process(), declared type: Transaction) receives two possible actual-type objects (CheckoutTransaction, ReserveTransaction); JVM selects the matching override; each subtype's process() runs independently | CONTENT: call site box (declared type label), two incoming actual-type boxes, two dispatch paths leading to subclass process() boxes, note "the call site does not change — the object decides" | EXCLUSIONS: inheritance hierarchy structure, is-a sentences, if-else chain, specific method body code, RenewTransaction (keep to two subtypes for clarity)] -->
 
 ---
 
@@ -82,8 +81,7 @@ Contrast this with the polymorphic design. When a new transaction type arrives, 
 
 This is what "adding a type without changing existing code" actually means in practice. It is not an aesthetic preference. It is a structural property of the design that makes the system cheaper to extend as requirements accumulate.
 
-![Two-line chart showing cost of adding the Nth](images/07-order-processing-and-polymorphism-fig-02.png)
-*Figure 7.2 — Two-line chart showing cost of adding the Nth*
+<!-- → [SCOPE | Figure 7.2 | CHART: two-line chart — x-axis: number of transaction types in the system (1 through 8); y-axis: places to change when adding type N (starts at zero); Line 1 (if-else design, solid): rises linearly from 1 to 8; Line 2 (polymorphic design, dashed): stays flat at 1 across all N | CONTENT: x-axis labeled "transaction types in the system (N)", y-axis labeled "places to change when adding type N", two labeled series, y-axis from zero | EXCLUSIONS: dollar cost, time estimates, specific processor names, third design variants] -->
 
 ---
 
@@ -182,8 +180,7 @@ If the third condition fails — if adding a new type requires touching the proc
 
 When you can do this for the library transaction hierarchy, you can do it for inventory and scheduling. The objects get different names. The transaction types are different. The hierarchy must be justified by different is-a sentences. But the structural move — supertype reference, overridden method, dispatch without interrogation — is identical.
 
-![Showing the if-else processor (three branches, arrows to](images/07-order-processing-and-polymorphism-fig-03.png)
-*Figure 7.3 — Showing the if-else processor (three branches, arrows to*
+<!-- → [SCOPE | Figure 7.3 | IMAGE: before/after comparison — left panel: if-else TransactionProcessor containing three type-check branches (if "checkout", else if "reserve", else if "renew"), labeled "knows every type," captioned "new type → N files to edit"; right panel: polymorphic TransactionProcessor with single transaction.process() call, three subclass boxes below (CheckoutTransaction, ReserveTransaction, RenewTransaction each with .process()), labeled "knows nothing else," captioned "new type → 1 file to write" | CONTENT: two side-by-side panels separated by a transition arrow, left panel shows three if-else branches inside the processor box, right panel shows thin processor + three subclass boxes below it | EXCLUSIONS: is-a sentences, LSP definition, inheritance vs composition distinction, specific method bodies, fourth transaction type] -->
 
 ---
 
