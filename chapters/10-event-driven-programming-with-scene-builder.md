@@ -50,8 +50,7 @@ The controller is the bridge. It listens for user input — a button click, a se
 
 Three layers. Three responsibilities. The discipline is keeping each one from absorbing the other's work.
 
-![MVC mapping diagram for Module 10, showing the](images/10-introduction-to-gui-programming-with-javafx-fig-01.png)
-*Figure 10.1 — MVC mapping diagram for Module 10, showing the*
+<!-- → [SCOPE | Figure 10.1 | IMAGE: MVC responsibility map — three side-by-side columns (Model, Controller, View); Model contains: Book/Patron objects, checkout()/search() methods, borrowing rules, no GUI knowledge; Controller contains: receives user events, calls model methods, updates view, only layer that knows both; View contains: TableView/BorderPane, column layout/colors, scene graph nodes, no business decisions; asymmetric arrows between columns showing state and method-call flow in both directions | CONTENT: three labeled columns, inner responsibility lists, four directional arrows with labels (state, calls, update, events), summary note below | EXCLUSIONS: code syntax, specific method signatures, JavaFX API names in Model column, cell value factory detail (that belongs in Figure 10.3)] -->
 
 ---
 
@@ -67,8 +66,7 @@ This matters for the model-view separation because it defines the contract betwe
 
 The scene graph does not enforce this contract. JavaFX does not know or care whether your business logic is inside a controller, inside an event handler, or embedded directly in the construction of the scene. The discipline is yours to maintain.
 
-![Scene graph tree ](images/10-introduction-to-gui-programming-with-javafx-fig-02.png)
-*Figure 10.2 — Scene graph tree *
+<!-- → [SCOPE | Figure 10.2 | IMAGE: scene graph tree for the library catalog view — root Stage → Scene → BorderPane; BorderPane has three children: TextField (search, top), TableView<Book> (center, live model data), VBox (detail panel, right); TableView has two children: TableColumn Title, TableColumn Availability; VBox has two children: Label (title), Label (author) | CONTENT: tree hierarchy with Stage, Scene, BorderPane, TextField, TableView, two TableColumns, VBox, two Labels; connector lines showing parent-child relationships; node type labels | EXCLUSIONS: cell value factory internals, arrow semantics between layers, controller code, event handling — this diagram is structure only, not data flow] -->
 
 ---
 
@@ -177,8 +175,7 @@ The verification requirement is specific. You should be able to point to any val
 
 When you can do this for the library catalog, you can do it for the inventory table and the scheduling grid. The domain objects have different fields. The columns show different information. The layout serves different user tasks. But the structural move — view displays model state, controller mediates, model owns no display logic — is identical.
 
-![Three-layer stack ](images/10-introduction-to-gui-programming-with-javafx-fig-03.png)
-*Figure 10.3 — Three-layer stack *
+<!-- → [SCOPE | Figure 10.3 | IMAGE: three-layer MVC stack as built in the semester project — three horizontal stacked bands; top band (View): BorderPane, TableView<Book>, TextField, detail Labels, cell value factories; middle band (Controller, dashed border): event handler, cell value factory labeled as "the seam — view reaches into model here and nowhere else"; bottom band (Model): Book (title/author/available), Patron (name/borrowedBooks), checkout()/search() methods, no GUI knowledge; vertical annotation on right reading "every displayed value traceable to a model field" with downward arrow spanning all three; summary note below | CONTENT: three stacked labeled bands with responsibility lists, cell value factory called out in Controller band, vertical traceability annotation | EXCLUSIONS: node tree hierarchy (that's Figure 10.2), three-column side-by-side layout (that's Figure 10.1) — this is the stacked operational summary using semester project artifact names] -->
 
 ---
 
