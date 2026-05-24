@@ -120,11 +120,7 @@ The lambda is syntactic shorthand for the anonymous inner class. It works becaus
 
 All three forms produce the same result. The lambda form is clearest for simple handlers. The named inner class is clearest when the handler is complex enough to deserve its own class, its own name, and its own tests.
 
-![Three-part event structure diagram ](images/11-event-driven-programming-making-the-application-respond-fig-01.png)
-*Figure 11.1 — Three-part event structure diagram *
-
-![Event trace responsibility diagram for Module 11, showing](images/11-event-driven-programming-making-the-application-respond-fig-02.png)
-*Figure 11.2 — Event trace responsibility diagram for Module 11, showing*
+<!-- → [SCOPE | Figure 11.1 | IMAGE: three-part event structure diagram — source (Button/ListView/TextField), event object (ActionEvent/KeyEvent), handler (registered in advance); below the three-part row, a second row shows three equivalent registration forms: anonymous inner class (explicit/verbose), named inner class (reusable/testable), lambda (shortest/one-method interface); caption notes all three produce the same result and gives the rule for when to use each | CONTENT: source box, event box, handler box with arrow flow; three registration form boxes below a divider line | EXCLUSIONS: code syntax inside boxes, JavaFX API details, UI layout, specific lambda body content] -->
 
 ---
 
@@ -157,8 +153,9 @@ This is not decoration. It is what makes the behavior traceable. When a bug is r
 
 The handler is the translator between the event and the system. Its job is to call the right methods in the right order. The methods it calls do the actual work.
 
-![Code comparison ](images/11-event-driven-programming-making-the-application-respond-fig-03.png)
-*Figure 11.3 — Code comparison *
+<!-- → [SCOPE | Figure 11.2 | IMAGE: handler responsibility diagram — handler box at top labeled "sequence only," three arrows down to: getSelectedIsbn() (knows: view only / does not know: model state), controller.performCheckout() (knows: model only / does not know: any view control), refreshView(result) (knows: view only / does not know: checkout logic); each method has a "knows" row and a "does not know" row | CONTENT: handler coordinator box, three method boxes with knows/does-not-know rows, caption on single-reason-to-change rule | EXCLUSIONS: code syntax, inner class forms, lambda syntax, JavaFX API, registration call] -->
+
+<!-- → [SCOPE | Figure 11.3 | IMAGE: two-column code comparison — left column shows the closet handler with seven responsibility annotations (view read, validation+view, model query, model update, view update x2, persistence); right column shows the clean 4-line handler with each line labeled (view read, guard only, model delegate, view write); caption: left has 7 reasons to change, right has 1 | CONTENT: seven annotated rows on left with responsibility labels, four clean rows on right with single-responsibility labels, captions below each column | EXCLUSIONS: full method body code, inner class syntax, due date logic, checkout limit logic] -->
 
 ---
 
@@ -182,8 +179,7 @@ The event is fully processed. The model has changed. The view reflects the model
 
 Each step is a specific Java artifact: the `ActionEvent`, the lambda, `getSelectedIsbn()`, `controller.performCheckout()`, `refreshView()`. If the view does not update, the bug is in `refreshView()`. If the model does not update, the bug is in `controller.performCheckout()`. If the wrong book is selected, the bug is in `getSelectedIsbn()`. The trace makes bugs locatable.
 
-![Linear click-to-view chain diagram ](images/11-event-driven-programming-making-the-application-respond-fig-04.png)
-*Figure 11.4 — Linear click-to-view chain diagram *
+<!-- → [SCOPE | Figure 11.4 | IMAGE: linear left-to-right click-to-view chain — seven nodes: Click (user), ActionEvent (JavaFX creates), Lambda (framework calls), getSelectedIsbn(), controller.performCheckout(), refreshView(result), Updated UI; three bug-location callout boxes below the chain, one under getSelectedIsbn ("wrong book selected? bug is here"), one under performCheckout ("model not updated? bug is here"), one under refreshView ("view not updated? bug is here") | CONTENT: seven chain nodes, three coral callout boxes, caption: "the trace makes bugs locatable — a 40-line handler collapses all three bug locations into one block" | EXCLUSIONS: registration syntax, inner class forms, persistence layer, CSV file] -->
 
 ---
 
@@ -336,8 +332,7 @@ checkoutButton.setOnAction(event -> {
 
 The discipline holds whether or not you are on a deadline. The handler on a deadline is exactly the same size as the handler without deadline pressure. The complexity was moved into `controller.performCheckout()` and `refreshView()`, where it belongs.
 
-![Before/after refactoring diagram ](images/11-event-driven-programming-making-the-application-respond-fig-05.png)
-*Figure 11.5 — Before/after refactoring diagram *
+<!-- → [SCOPE | Figure 11.5 | IMAGE: two-column before/after deadline refactor — left column shows the bloated handler with due-date and checkout-limit rows highlighted as "added" (amber), right column shows the same clean 4-line handler plus two extracted boxes below: controller.performCheckout() (due date, availability, save — all in here) and refreshView(result) (warning label, lists, status — all in here); caption: handler body stays 4 lines regardless of how many features are added | CONTENT: left column with 9+ rows and two amber "added" highlights, right column with 4-line handler and two extracted responsibility boxes, caption comparing sizes | EXCLUSIONS: full code syntax inside boxes, lambda registration syntax, CSV file details, JavaFX API names] -->
 
 ---
 
@@ -401,8 +396,7 @@ That sequence is the specification. Give it to AI and ask for a handler structur
 
 The skeleton AI generates is a scaffold. Your job is to fill the business logic bodies, verify that the sequence matches your specification, and confirm that the handler does not contain logic that belongs in the model or view.
 
-![Two-column split ](images/11-event-driven-programming-making-the-application-respond-fig-06.png)
-*Figure 11.6 — Two-column split *
+<!-- → [SCOPE | Figure 11.6 | IMAGE: two-column split with a specification step above both — left column shows what AI generates (registration call, lambda skeleton, method stubs with empty bodies); right column shows what the student fills (performCheckout() body with "your model API, your validation rules", refreshView() body with "your view controls, your layout", getSelectedIsbn() body with "your ListView, your selection model"); caption: AI scaffold is syntactic and generic; the method bodies are domain-specific and yours | CONTENT: specification step banner, left column with gray stub boxes, right column with teal "you fill" boxes, caption | EXCLUSIONS: full code syntax inside boxes, CRUD comparison, lifecycle diagram, CSV details] -->
 
 ---
 
