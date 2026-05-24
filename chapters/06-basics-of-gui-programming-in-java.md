@@ -53,8 +53,9 @@ When you mix them — when the `Patron` class has a `passwordHash` field, or whe
 
 The design move this module introduces is keeping them separate: a `Person` (or `Patron`, or `Employee`, or `Patient`) for the domain participant, and a `UserAccount` for the credential. A `LoginManager` that takes a username and password, checks the credential against the stored hash, and returns whether access is granted. The `LoginManager` does not become the `Person` record. It does not return the `Person` object. It answers one question: are these credentials valid?
 
-![Two-column diagram contrasting the conflated design (a single](images/06-designing-the-person-into-the-application-fig-01.png)
-*Figure 6.1 — Two-column diagram contrasting the conflated design (a single*
+<!-- → [SCOPE | Figure 1 | IMAGE: conflated design vs. separated design — two-panel structural contrast; left panel shows a single Patron class box with domain fields AND a passwordHash field mixed together (conflated); right panel shows two separate boxes (Patron with domain fields only, UserAccount with credential fields only) connected by a thin ID-link arrow, with a distinct LoginManager box below UserAccount | CONTENT: left panel: one class box containing patronId, name, borrowedBooks, passwordHash fields — passwordHash visually marked as the problem element (distinct border or fill); right panel: Patron box with patronId, name, borrowedBooks; UserAccount box with username, passwordHash, patronId (as key); thin arrow from UserAccount.patronId to Patron.patronId labeled "links by ID"; LoginManager box below UserAccount with a single boolean return indicator | EXCLUSIONS: Java syntax inside boxes, access modifier symbols, getter/setter method signatures, inheritance arrows, UML multiplicity notation, Loan object, Library object, database icons, network elements, constructor syntax] -->
+
+*Figure 6.1 — Conflated design (left) vs. separated design (right): mixing credentials into the domain object creates a security surface problem*
 
 ---
 
@@ -87,8 +88,9 @@ public static String hash(String password) throws Exception {
 
 The method takes a password string, computes its SHA-256 hash, and returns the hash as a hexadecimal string. You call it once when creating a `UserAccount` to store the hash. You call it again at login, hash the supplied password, and compare the result to the stored hash.
 
-![Code walkthrough of the hash() method ](images/06-designing-the-person-into-the-application-fig-02.png)
-*Figure 6.2 — Code walkthrough of the hash() method *
+<!-- → [SCOPE | Figure 2 | IMAGE: one-way hash function mechanism — a conceptual pipeline diagram showing password input on the left flowing through a transformation box (the hash function) to a fixed-length hash output on the right; a distinct "cannot reverse" blocked arrow pointing leftward from the output back toward the input, visually severed or blocked; below the pipeline, a two-step verification flow showing: (1) "store" path — password at account creation → hash function → stored hash; (2) "verify" path — supplied password at login → hash function → compare to stored hash → match/no-match result | CONTENT: input shape (password string, arbitrary length); central transformation box (hash function); output shape (hash string, fixed length, visually uniform/fixed width regardless of input); blocked reverse arrow; two sub-flows (store and verify) below; match/no-match indicator at end of verify path | EXCLUSIONS: Java syntax of any kind, MessageDigest class name, method names, byte array notation, hex conversion code, SHA-256 label inside diagram, salt or bcrypt references, specific hash output strings, numeric bit lengths] -->
+
+*Figure 6.2 — The hash function: any password in, fixed-length output, no path back*
 
 There is one caveat worth naming even at this level: SHA-256 without salting is vulnerable to precomputed lookup tables (rainbow tables) for common passwords. For production systems, you would use a purpose-built password hashing function like bcrypt or Argon2, which incorporate a random salt and are deliberately slow to compute. This module uses SHA-256 because the point is the design habit — separate the credential from the person, hash the password, ask the threat-model question — not the production-hardening details. The further reading section points to where those details live.
 
@@ -255,11 +257,13 @@ Notice what is not in this trace. The `Patron` object is never retrieved during 
 
 That separation is the design. It is also the verification target. After implementing the login flow, trace it manually and confirm: does authentication touch the `Patron` object? It should not. Does the hash comparison use the same algorithm in both directions? It must. Does a failed login give the caller any information about why it failed — username not found vs. wrong password? It probably should not, because that distinction helps an attacker enumerate valid usernames.
 
-![Sequence diagram of a complete login attempt ](images/06-designing-the-person-into-the-application-fig-03.png)
-*Figure 6.3 — Sequence diagram of a complete login attempt *
+<!-- → [SCOPE | Figure 3 | IMAGE: login flow sequence diagram — five vertical swimlane columns representing: Login panel, submit handler, LoginManager, UserAccount, boolean result; horizontal arrows showing the sequence of calls from left to right and results returning right to left; (1) user input arrives at login panel; (2) submit handler calls loginManager.login(); (3) LoginManager calls accounts.get(username); (4) if found, LoginManager calls account.checkPassword(); (5) checkPassword hashes supplied password and compares; (6) boolean result returns back through the chain to the submit handler; (7) submit handler navigates forward (true) or shows error (false); Patron object visually absent from all swimlanes | CONTENT: five swimlane columns (Login panel, submit handler, LoginManager, UserAccount, boolean result); seven numbered horizontal arrows showing call sequence; Patron object shown as a separate grayed-out shape to the side with a "not touched" indicator; true/false result at the rightmost column | EXCLUSIONS: Java syntax inside the diagram, HashMap internals, byte array operations, hex conversion details, specific hash values, field names inside class boxes, salt operations, session management, authorization logic, role labels] -->
 
-![Authentication responsibility sequence for Module 6, showing the](images/06-designing-the-person-into-the-application-fig-04.png)
-*Figure 6.4 — Authentication responsibility sequence for Module 6, showing the*
+*Figure 6.3 — Login flow sequence: five components, one boolean result, Patron never touched*
+
+<!-- → [SCOPE | Figure 4 | IMAGE: plaintext vs. hashed credential file — two side-by-side panels representing what an attacker reads from the credential file under each design; left panel (plaintext) shows three credential rows with passwords directly readable, and a large downward "attacker gains" arrow pointing to a list of three consequences (all passwords readable, credential reuse, immediate access); right panel (hashed) shows the same three rows with hash strings instead of passwords, and a smaller "attacker gains" arrow pointing to a shorter, bounded consequence list (dictionary attack required, strong passwords safe); a visual "damage boundary" shape around the right panel's consequence list that is noticeably smaller than the left panel's | CONTENT: left panel: three file rows (alice: plaintext, bob: plaintext, carol: plaintext); large consequence zone below with three items; right panel: three file rows (alice: hash, bob: hash, carol: hash); smaller consequence zone below with two items; visual size contrast between the two consequence zones encodes the damage reduction | EXCLUSIONS: specific password strings, specific hash strings, Java code, MessageDigest class, file I/O code, bcrypt or Argon2 labels, network diagrams, server architecture, attacker figure illustrations, rainbow table labels, cryptographic notation] -->
+
+*Figure 6.4 — What the attacker reads: plaintext (left) exposes everything immediately; hashed (right) bounds the damage to dictionary-attackable passwords*
 
 ---
 
@@ -346,3 +350,132 @@ If you used AI to scaffold the `HashMap` directory or explain `MessageDigest`, i
 - Peng et al. and Vaithilingam et al.: empirical work on verification risk in AI-generated security code; the threat-model phase gate in this module is grounded in their findings.
 
 *Current tool instructions, version-specific setup, and AI platform behavior require pre-offering verification.* [verify]
+
+---
+
+---
+# CAJAL SCOPE OUTPUTS
+*Inline comments are placement briefs. Run /scope on any figure description for full Illustrae-ready output.*
+
+---
+## Reconception note — Figure 6.2 and Figure 6.4
+
+**Figure 6.2 replaced.** The original caption described a code walkthrough of the hash() method. The method is already displayed in full as a code block immediately above that figure location. A second rendering of the same code as a figure is redundant and adds no explanatory value. Replaced with a conceptual diagram of the one-way hash mechanism — what the function does, not how it is written.
+
+**Figure 6.4 replaced.** The original caption was nearly identical to Figure 6.3 ("Authentication responsibility sequence" vs. "Sequence diagram of a complete login attempt"). Both described the same login sequence. The login flow is fully covered by Figure 6.3. Figure 6.4's slot is better used for the plaintext vs. hashed credential file comparison — the chapter's central threat-model argument, which appears only as a prose table and has no visual treatment. This is the figure the chapter most needs.
+
+---
+
+## Figure 1 — Conflated vs. separated design [CRITICAL]
+
+**ILLUSTRAE PASTE BLOCK**
+
+Single-column figure, 89mm width, flat vector, white background. Two side-by-side panels divided by a vertical rule. Left panel: one class box containing domain fields and a credential field together, with the credential field marked by a distinct fill or border to indicate it is the problem element. Right panel: two class boxes — a domain participant box containing only domain fields, and a UserAccount box containing only credential fields — connected by a thin arrow labeled with a key-link indicator. A third smaller box (LoginManager) sits below UserAccount with a single output indicator. Okabe-Ito palette: domain boxes in Sky Blue #56B4E9 fill, credential/UserAccount box in Orange #E69F00 fill, problem-field highlight in Vermillion #D55E00, LoginManager box in light gray. Arrows in Bluish Green #009E73. All strokes 0.5pt. Unannotated vector output.
+
+**FULL SCOPE PROMPT**
+
+[S - SPECIFICATION]
+Single-column, 89mm width, vector output, white background, flat illustration style. No text labels in generated image — unannotated for manual annotation.
+
+[C - CONTENT]
+Left panel: one class box with four field-slot regions; the bottom field slot has a distinct fill (Vermillion #D55E00) marking it as the problem element; three field slots above it in normal fill. Right panel: domain participant box with three field slots (normal Sky Blue fill); UserAccount box with three field slots (Orange fill); thin arrow from one field slot in UserAccount pointing to one field slot in domain participant box, indicating the ID link; LoginManager box below UserAccount, smaller, gray fill, single output indicator shape (boolean/checkmark).
+
+[O - ORGANIZATION]
+Horizontal two-panel layout, equal width, 1pt vertical rule at center. Left panel: single tall box centered. Right panel: two boxes stacked vertically (domain participant above, UserAccount below) with ID-link arrow between them; LoginManager below UserAccount with small gap.
+
+[P - PRESENTATION]
+Okabe-Ito palette. Left panel box: Sky Blue #56B4E9 fill, Blue #0072B2 stroke 0.5pt. Problem field slot: Vermillion #D55E00 fill. Right panel domain box: Sky Blue #56B4E9 fill, Blue #0072B2 stroke 0.5pt. UserAccount box: Orange #E69F00 fill, Orange stroke 0.5pt. ID-link arrow: Bluish Green #009E73, single-headed, 0.5pt. LoginManager box: light gray fill, gray stroke 0.5pt. Boolean output indicator: Bluish Green #009E73. White background. No gradients, no drop shadows.
+
+[E - EXCLUSIONS]
+Java syntax, access modifier symbols (public/private), getter/setter method signatures, constructor notation, inheritance arrows, UML multiplicity notation, Loan object, Library object, Book object, database icons, network elements, code text of any kind, field name text labels baked into image.
+
+**NEGATIVE PROMPT**
+
+text labels, words, gibberish letters, titles, captions, decorative borders, realistic 3D textures, plastic wrap effects, drop shadows, gradient backgrounds, photographic elements, non-standard arrows, dual-headed arrows, skeletal chemical structures, hand-drawn styles, sketch lines, human figures, colorful cell backgrounds, visual clutter, overlapping unaligned paths, fuzzy borders, watermarks, red-green color combinations, rainbow color scales, 3D perspective distortion, UML notation, database cylinder icons, code text, constructor brackets, access modifier symbols
+
+---
+
+## Figure 2 — One-way hash function mechanism [CRITICAL]
+
+**ILLUSTRAE PASTE BLOCK**
+
+Single-column figure, 89mm width, flat vector, white background. Horizontal pipeline diagram with three zones. Left zone: input shape (irregular width, indicating variable-length input). Center zone: transformation box (the hash function, distinct fill). Right zone: output shape (fixed uniform width, indicating fixed-length output regardless of input). A solid rightward arrow connects input to the function box and function box to output — the forward direction. A blocked/severed leftward arrow sits below or between the output and input zones, indicating the reverse direction is impossible. Below the pipeline, two sub-flows stacked vertically: (1) a "store" path showing input shape → function box → stored output shape; (2) a "verify" path showing a second input shape → function box → compare indicator → match/no-match result shape. Okabe-Ito palette: input shapes in light gray, function box in Blue #0072B2, output shapes in Sky Blue #56B4E9, blocked reverse arrow in Vermillion #D55E00 with a distinct severed or X indicator, match result in Bluish Green #009E73, no-match in Vermillion #D55E00. All strokes 0.5pt. Unannotated vector output.
+
+**FULL SCOPE PROMPT**
+
+[S - SPECIFICATION]
+Single-column, 89mm width, vector output, white background, flat illustration style. No text labels in generated image — unannotated for manual annotation.
+
+[C - CONTENT]
+Top section: horizontal pipeline — left input shape (irregular/variable width), center transformation box, right output shape (fixed uniform width). Forward arrow (left to right). Blocked reverse arrow (right to left, severed or X indicator in Vermillion). Bottom section: two sub-flows — "store" sub-flow: input → function → stored output; "verify" sub-flow: input → function → compare operator shape → match/no-match result shapes. A thin horizontal rule separating the top pipeline from the two sub-flows.
+
+[O - ORGANIZATION]
+Top pipeline centered horizontally, full width. Two sub-flows stacked below the separator rule, left-aligned, equal spacing. Each sub-flow reads left to right. Compare operator shape in the verify sub-flow sits between the hashed output and the stored output from the store sub-flow, connected by a short vertical leader line.
+
+[P - PRESENTATION]
+Okabe-Ito palette. Input shapes: light gray fill, gray stroke 0.5pt. Function/transformation box: Blue #0072B2 fill at 15% opacity, Blue stroke 0.5pt. Output shapes: Sky Blue #56B4E9 fill at 15% opacity, Sky Blue stroke 0.5pt. Forward arrows: Bluish Green #009E73, single-headed, 0.5pt. Blocked reverse arrow: Vermillion #D55E00, with severed/break indicator mid-arrow. Match result: Bluish Green #009E73 shape. No-match result: Vermillion #D55E00 shape. White background. No gradients, no drop shadows.
+
+[E - EXCLUSIONS]
+Java syntax, MessageDigest class name, method names, byte array notation, hex string values, SHA-256 label, bcrypt or Argon2 references, specific hash output strings, numeric bit lengths, salt notation, cryptographic symbols, code text of any kind, algorithm names baked into image.
+
+**NEGATIVE PROMPT**
+
+text labels, words, gibberish letters, titles, captions, decorative borders, realistic 3D textures, plastic wrap effects, drop shadows, gradient backgrounds, photographic elements, non-standard arrows, skeletal chemical structures, hand-drawn styles, sketch lines, human figures, visual clutter, overlapping unaligned paths, fuzzy borders, watermarks, red-green color combinations, rainbow color scales, 3D perspective distortion, code text, cryptographic notation symbols, algorithm name labels
+
+---
+
+## Figure 3 — Login flow sequence [IMPORTANT]
+
+**ILLUSTRAE PASTE BLOCK**
+
+Single-column figure, 89mm width, flat vector, white background. Five vertical swimlane columns of equal width representing: login panel, submit handler, LoginManager, UserAccount, and a result column. Horizontal arrows with labels (blank for manual annotation) showing the call sequence left to right and return values right to left. Seven numbered steps: (1) user input arrives at login panel; (2) login panel triggers submit handler; (3) submit handler calls LoginManager; (4) LoginManager performs lookup; (5) LoginManager calls UserAccount; (6) UserAccount returns boolean; (7) boolean returns to submit handler, which shows success or error. A grayed-out Patron shape sits outside and to the right of the swimlanes, visually disconnected, with a blocked/absent indicator showing it is not touched during authentication. Okabe-Ito palette: swimlane headers in Sky Blue #56B4E9, call arrows in Bluish Green #009E73, return arrows in Orange #E69F00, Patron shape in light gray with Vermillion #D55E00 absent indicator. Unannotated vector output.
+
+**FULL SCOPE PROMPT**
+
+[S - SPECIFICATION]
+Single-column, 89mm width, vector output, white background, flat illustration style. No text labels in generated image — unannotated for manual annotation.
+
+[C - CONTENT]
+Five vertical swimlane columns (login panel, submit handler, LoginManager, UserAccount, result). Seven horizontal arrows showing call sequence and returns. Numbered step indicators (1–7) beside each arrow. Grayed-out Patron shape outside and to the right of the five-column layout, with a blocked/absent indicator (X or disconnected line). Boolean result shape in the result column: two outcomes (true path → navigate forward indicator; false path → error indicator).
+
+[O - ORGANIZATION]
+Five equal-width swimlane columns spanning full figure width. Swimlane header bands at top. Arrows positioned at vertical intervals to show sequence order, top to bottom. Patron shape positioned outside the rightmost column with 20px clearance and a visual disconnect marker.
+
+[P - PRESENTATION]
+Okabe-Ito palette. Swimlane header bands: Sky Blue #56B4E9 at 15% opacity. Swimlane dividers: light gray, 0.5pt. Call arrows (left to right): Bluish Green #009E73, single-headed. Return arrows (right to left): Orange #E69F00, single-headed. Step number indicators: Black #000000 small circles. True result indicator: Bluish Green #009E73. False result indicator: Vermillion #D55E00. Patron shape: light gray fill, gray stroke 0.5pt. Absent/blocked indicator on Patron: Vermillion #D55E00. White background. No gradients, no drop shadows.
+
+[E - EXCLUSIONS]
+Java syntax, HashMap internals, byte array operations, hex conversion details, specific hash values, field names inside swimlane boxes, salt operations, session tokens, authorization logic, role labels, database swimlane, network swimlane, constructor notation, method signatures.
+
+**NEGATIVE PROMPT**
+
+text labels, words, gibberish letters, titles, captions, decorative borders, realistic 3D textures, plastic wrap effects, drop shadows, gradient backgrounds, photographic elements, non-standard arrows, dual-headed arrows, skeletal chemical structures, hand-drawn styles, sketch lines, human figures, colorful cell backgrounds, visual clutter, overlapping unaligned paths, fuzzy borders, watermarks, red-green color combinations, rainbow color scales, 3D perspective distortion, code text, database icons, network diagrams, method signature labels
+
+---
+
+## Figure 4 — Plaintext vs. hashed credential file exposure [CRITICAL]
+
+**ILLUSTRAE PASTE BLOCK**
+
+Single-column figure, 89mm width, flat vector, white background. Two side-by-side panels representing what an attacker reads from the credential file under each storage design. Left panel (plaintext): a file/table shape containing three credential rows where the password field is open/readable (distinct fill indicating plaintext visibility); below it, a large consequence zone shape containing three item indicators; a large downward arrow from the file to the consequence zone indicating attacker gain is immediate and large. Right panel (hashed): the same file/table shape with three credential rows where the password field is obscured/uniform (indicating hash strings, not readable content); below it, a noticeably smaller consequence zone shape containing two item indicators; a smaller downward arrow indicating attacker gain is bounded and requires effort. The visual size contrast between the two consequence zones is the primary meaning-carrier. A thin vertical rule separates the panels. Okabe-Ito palette: plaintext file in Vermillion #D55E00 tint, consequence zone in Vermillion #D55E00; hashed file in Sky Blue #56B4E9 tint, consequence zone in Sky Blue #56B4E9 at reduced size; arrows in Black #000000 with size encoding the damage magnitude. Unannotated vector output.
+
+**FULL SCOPE PROMPT**
+
+[S - SPECIFICATION]
+Single-column, 89mm width, vector output, white background, flat illustration style. No text labels in generated image — unannotated for manual annotation.
+
+[C - CONTENT]
+Left panel: file/table shape with three row-slot regions; password field column has open/light fill indicating readable content; large downward arrow below the file; large consequence zone rectangle below the arrow containing three item-slot indicators. Right panel: identical file/table shape with three row-slot regions; password field column has a uniform dense/obscured fill indicating non-readable hash content; smaller downward arrow below the file; smaller consequence zone rectangle containing two item-slot indicators. Vertical rule dividing the two panels.
+
+[O - ORGANIZATION]
+Horizontal two-panel layout, equal width panels, 1pt vertical rule at center. Each panel: file/table shape at top, downward arrow, consequence zone below. Consequence zones bottom-aligned across both panels to make the size contrast visible. Left consequence zone approximately 2× the height of the right consequence zone.
+
+[P - PRESENTATION]
+Okabe-Ito palette. Left file shape: Vermillion #D55E00 at 10% fill, Vermillion stroke 0.5pt. Left password column fill: Vermillion #D55E00 at 20% fill. Left downward arrow: Black #000000, thick (3pt stroke). Left consequence zone: Vermillion #D55E00 at 15% fill, Vermillion stroke 0.5pt, large. Right file shape: Sky Blue #56B4E9 at 10% fill, Sky Blue stroke 0.5pt. Right password column fill: Sky Blue #56B4E9 at 30% fill (denser, uniform). Right downward arrow: Black #000000, thin (1pt stroke). Right consequence zone: Sky Blue #56B4E9 at 15% fill, Sky Blue stroke 0.5pt, small. Item indicators inside consequence zones: small filled circles. White background. No gradients, no drop shadows.
+
+[E - EXCLUSIONS]
+Specific password strings, specific hash strings, Java code, MessageDigest class name, file I/O code, bcrypt or Argon2 labels, network diagrams, server architecture, attacker figure illustrations, human silhouettes, rainbow table labels, cryptographic notation, dictionary attack label baked into image, specific algorithm names, numeric hash lengths.
+
+**NEGATIVE PROMPT**
+
+text labels, words, gibberish letters, titles, captions, decorative borders, realistic 3D textures, plastic wrap effects, drop shadows, gradient backgrounds, photographic elements, non-standard arrows, dual-headed arrows, skeletal chemical structures, hand-drawn styles, sketch lines, human figures, silhouettes, colorful cell backgrounds, visual clutter, overlapping unaligned paths, fuzzy borders, watermarks, red-green color combinations, rainbow color scales, 3D perspective distortion, code text, network diagrams, server icons, database cylinder icons, algorithm name labels
