@@ -57,8 +57,9 @@ An object is that idea made executable. A Java class is the template — the des
 
 This is why the procedure approach breaks down. Procedures operate on data that lives somewhere else. Objects carry their own data and provide the only legitimate door through which that data can be touched. You do not update a patron's borrowed-books list directly. You ask the patron to borrow a book, and the patron's own behavior handles the update. This boundary is not aesthetic preference. It is the mechanism by which a rule like "no more than three books" can live in exactly one place: inside the patron.
 
-![Procedural vs object model comparison for Module 1,](images/01-introduction-socio-technical-engineering-and-the-object-model-fig-01.png)
-*Figure 1.1 — Procedural vs object model comparison for Module 1,*
+<!-- → [SCOPE | Figure 1 | IMAGE: procedural model vs. object model — two panels showing where behavior lives; left panel shows free-floating procedures acting on external data stores, right panel shows objects encapsulating their own state and behavior | CONTENT: left panel: three labeled procedure boxes (checkOut, returnBook, getBorrowedCount) pointing to a separate patron data store; right panel: single Patron object containing name field, borrowedBooks list, and borrow/return/count methods | EXCLUSIONS: compiler internals, memory allocation, UML class diagram syntax, inheritance, interfaces, access modifiers, garbage collector, JVM details] -->
+
+*Figure 1.1 — Procedural vs. object model: where behavior lives*
 
 ---
 
@@ -92,8 +93,9 @@ But there is a third kind of wrong that is more dangerous than either: the progr
 
 The discipline this course is teaching — reading code against a requirement, tracing behavior back to design intent, verifying that what runs is what was specified — exists entirely because this third kind of wrong is possible. If Java could detect all errors, verification would be automated. It cannot. The engineer's judgment is the only tool that works here.
 
-![Horizontal spectrum or decision tree showing the three](images/01-introduction-socio-technical-engineering-and-the-object-model-fig-02.png)
-*Figure 1.2 — Horizontal spectrum or decision tree showing the three*
+<!-- → [SCOPE | Figure 2 | IMAGE: three-zone horizontal spectrum showing compilation error → runtime error → silent wrong behavior, ordered left to right by increasing danger and decreasing detectability; each zone names who or what catches it | CONTENT: zone 1 (compilation error): labeled Java compiler catches, example — missing semicolon; zone 2 (runtime error): labeled JVM catches at execution, example — NullPointerException; zone 3 (silent wrong behavior): labeled only engineer catches, example — wrong patron attached to wrong book | EXCLUSIONS: specific Java exception hierarchy, stack traces, debugger tools, IDE error panels, test frameworks, assert statements, logging] -->
+
+*Figure 1.2 — Three kinds of wrong: detectability decreases left to right, danger increases*
 
 ---
 
@@ -133,8 +135,9 @@ This is not a natural skill. It requires practice. The practice begins here, wit
 
 That gap — between prediction and outcome — is where learning lives. AI cannot close it for you. AI can only make the gap invisible, which is not the same thing.
 
-![Diagram ](images/01-introduction-socio-technical-engineering-and-the-object-model-fig-03.png)
-*Figure 1.3 — Diagram *
+<!-- → [SCOPE | Figure 3 | IMAGE: three-question verification loop — triangular cycle connecting business behavior, Java artifact, and evidence of correctness; arrows show the direction of the verification process | CONTENT: node 1 — "What does this program do?" (business behavior); node 2 — "Which Java artifact is responsible?" (class/method/field); node 3 — "What would prove it's correct?" (evidence/test); directed arrows connecting all three in a cycle | EXCLUSIONS: specific test framework syntax, JUnit, assertion libraries, CI/CD pipeline, code coverage tools, UML, formal verification methods] -->
+
+*Figure 1.3 — The verification loop: three questions, applied to every piece of running code*
 
 ---
 
@@ -251,3 +254,96 @@ java --version
 javac --version
 # Run from your project directory when checking environment and compiled output.
 ```
+
+---
+
+---
+# CAJAL SCOPE OUTPUTS
+*Run /scope on any of these to regenerate or refine. These are working briefs, not finished Illustrae-ready prompts — paste each figure description into /scope for the full three-block output.*
+
+---
+
+## Figure 1 — Procedural vs. object model [CRITICAL]
+
+**ILLUSTRAE PASTE BLOCK**
+
+Single-column figure, 89mm width, flat vector, white background. Two side-by-side panels separated by a vertical dividing line. Left panel labeled "Procedural model": three rectangular procedure boxes (checkOut, returnBook, getBorrowedCount) arranged vertically, each with an arrow pointing rightward to a single shared data rectangle labeled "Patron data." Arrows are standard single-headed activation arrows in Bluish Green #009E73. Right panel labeled "Object model": one large rounded rectangle representing a Patron object containing three internal regions — a name field, a borrowedBooks list, and a row of three method labels (borrow, return, count). No arrows exit the object boundary. Structural containers in Sky Blue #56B4E9 for the Patron object boundary; internal regions in light gray. Procedure boxes in Vermillion #D55E00. Dividing line in Black #000000 at 0.5pt. All strokes 1pt. Unannotated vector output — no text labels baked in.
+
+**FULL SCOPE PROMPT**
+
+[S - SPECIFICATION]
+Single-column, 89mm width, vector output, white background, flat illustration style. No text labels in generated image — request unannotated output for manual annotation in Illustrae or Illustrator.
+
+[C - CONTENT]
+Left panel (procedural model): three procedure boxes (checkOut, returnBook, getBorrowedCount) arranged vertically, each with a rightward arrow to one shared patron data rectangle. Right panel (object model): one Patron object boundary enclosing name field, borrowedBooks list region, and three method labels. Vertical divider separating panels.
+
+[O - ORGANIZATION]
+Horizontal two-panel layout, panels equal width, separated by a 1pt vertical rule at center. Left panel flows top-to-bottom (procedures → data store). Right panel shows spatial containment (methods and state inside object boundary). No arrows cross the panel boundary.
+
+[P - PRESENTATION]
+Okabe-Ito palette. Procedure boxes: Vermillion #D55E00. Shared data store: light gray. Object boundary (Patron): Sky Blue #56B4E9. Internal regions within object: light gray. Activation arrows: Bluish Green #009E73, single-headed, 1pt stroke. Divider: Black #000000, 0.5pt. White background. No gradients, no drop shadows.
+
+[E - EXCLUSIONS]
+Compiler internals, memory allocation diagrams, UML class diagram notation, inheritance arrows, interface declarations, access modifiers (public/private), garbage collector, JVM internals, constructor syntax, any downstream classes (Book, Library), multiple patron instances, array notation.
+
+**NEGATIVE PROMPT**
+
+text labels, words, gibberish letters, titles, captions, decorative borders, realistic 3D textures, plastic wrap effects, drop shadows, gradient backgrounds, photographic elements, non-standard arrows, dual-headed arrows, skeletal chemical structures, hand-drawn styles, sketch lines, human figures, colorful cell backgrounds, non-cellular debris, visual clutter, overlapping unaligned paths, fuzzy borders, watermarks, red-green color combinations, rainbow color scales, 3D perspective distortion, UML notation, inheritance arrows, dashed access modifier lines, constructor brackets, array syntax, multiple instances, memory address labels
+
+---
+
+## Figure 2 — Three kinds of wrong [CRITICAL]
+
+**ILLUSTRAE PASTE BLOCK**
+
+Single-column figure, 89mm width, flat vector, white background. Horizontal three-zone spectrum, left to right: zone 1 (compilation error), zone 2 (runtime error), zone 3 (silent wrong behavior). Zones separated by vertical dividers. An upward-pointing danger arrow runs along the bottom of all three zones, increasing in stroke weight left to right to indicate increasing danger. A downward-pointing detectability arrow runs along the top, decreasing in stroke weight left to right to indicate decreasing detectability. Each zone contains one icon region: zone 1 a compiler-symbol shape in Sky Blue #56B4E9, zone 2 a crash/halt shape in Orange #E69F00, zone 3 a question-mark shape in Vermillion #D55E00. Small label region below each icon for manual annotation. White background, 1pt strokes, no gradients.
+
+**FULL SCOPE PROMPT**
+
+[S - SPECIFICATION]
+Single-column, 89mm width, vector output, white background, flat illustration style. No text labels in generated image — unannotated for manual annotation.
+
+[C - CONTENT]
+Three equal-width horizontal zones separated by vertical 1pt dividers. Bottom: a single horizontal arrow spanning all three zones, increasing in visual weight left to right (thin at left, thick at right) — danger gradient. Top: a single horizontal arrow spanning all three zones, decreasing in visual weight left to right — detectability gradient. Zone 1 icon: compiler/halt symbol shape. Zone 2 icon: runtime crash/exception shape. Zone 3 icon: silent/question-mark shape indicating no visible signal. Each zone has a blank label region below its icon.
+
+[O - ORGANIZATION]
+Strict left-to-right horizontal layout. Zones equal width. Danger arrow below all zones, pointing right. Detectability arrow above all zones, pointing left (or showing decrease rightward). Icons vertically centered in each zone. Label regions at bottom of each zone.
+
+[P - PRESENTATION]
+Zone 1 icon: Sky Blue #56B4E9. Zone 2 icon: Orange #E69F00. Zone 3 icon: Vermillion #D55E00. Zone backgrounds: progressively darker light gray left to right (lightest in zone 1, medium in zone 2, slightly darker in zone 3). Danger arrow: Black #000000. Detectability arrow: Blue #0072B2. All strokes 1pt. White background. No gradients, no drop shadows.
+
+[E - EXCLUSIONS]
+Specific exception class names (NullPointerException etc.), stack trace formatting, IDE error panels, debugger UI, test framework syntax, assert statements, logging frameworks, code snippets, Java syntax of any kind, specific library checkout example code, patron/book variable names.
+
+**NEGATIVE PROMPT**
+
+text labels, words, gibberish letters, titles, captions, decorative borders, realistic 3D textures, plastic wrap effects, drop shadows, gradient backgrounds, photographic elements, non-standard arrows, dual-headed arrows, skeletal chemical structures, hand-drawn styles, sketch lines, human figures, colorful cell backgrounds, visual clutter, overlapping unaligned paths, fuzzy borders, watermarks, red-green color combinations, rainbow color scales, 3D perspective distortion, code text, IDE interface elements, terminal windows, stack traces
+
+---
+
+## Figure 3 — The verification loop [IMPORTANT]
+
+**ILLUSTRAE PASTE BLOCK**
+
+Single-column figure, 89mm width, flat vector, white background. Three rounded rectangular nodes arranged in a triangle (top center, bottom left, bottom right). Directed arrows connecting all three nodes in a clockwise cycle. Top node represents business behavior question. Bottom-left node represents Java artifact identification. Bottom-right node represents evidence of correctness. Each node has a distinct icon region above a blank label area for manual annotation. Arrows in Bluish Green #009E73, 1pt stroke, single-headed. Node fills: top node in Orange #E69F00 (lightest shade), bottom-left in Sky Blue #56B4E9 (lightest shade), bottom-right in Bluish Green #009E73 (lightest shade). White background, no gradients, no drop shadows.
+
+**FULL SCOPE PROMPT**
+
+[S - SPECIFICATION]
+Single-column, 89mm width, vector output, white background, flat illustration style. No text labels in generated image — unannotated for manual annotation.
+
+[C - CONTENT]
+Three rounded rectangular nodes in triangular arrangement: top-center (business behavior), bottom-left (Java artifact), bottom-right (evidence/correctness). Three directed arrows forming a closed clockwise cycle: top → bottom-right → bottom-left → top. Each node has a blank label region. Small icon region within each node: top node — document/requirement icon shape; bottom-left — code bracket icon shape; bottom-right — checkmark/verification icon shape.
+
+[O - ORGANIZATION]
+Equilateral triangle layout, top node centered horizontally, bottom two nodes symmetrically placed. Arrows hug the outside of the triangle (not crossing center). Clockwise direction. Equal spacing between nodes. Generous internal padding within each node.
+
+[P - PRESENTATION]
+Top node fill: Orange #E69F00 at 15% opacity. Bottom-left node fill: Sky Blue #56B4E9 at 15% opacity. Bottom-right node fill: Bluish Green #009E73 at 15% opacity. Node strokes: matching color at full opacity, 1pt. Arrows: Bluish Green #009E73, 1pt, single-headed. White background. No gradients, no drop shadows.
+
+[E - EXCLUSIONS]
+Specific test framework syntax, JUnit annotations, assertion library names, CI/CD pipeline elements, code coverage percentages, UML notation, formal verification symbols, specific library checkout variable names, patron/book class names, any Java syntax, multiple verification loops, sub-questions within nodes.
+
+**NEGATIVE PROMPT**
+
+text labels, words, gibberish letters, titles, captions, decorative borders, realistic 3D textures, plastic wrap effects, drop shadows, gradient backgrounds, photographic elements, non-standard arrows, dual-headed arrows, skeletal chemical structures, hand-drawn styles, sketch lines, human figures, colorful cell backgrounds, visual clutter, overlapping unaligned paths, fuzzy borders, watermarks, red-green color combinations, rainbow color scales, 3D perspective distortion, code syntax, terminal output, test runner UI, UML class notation
