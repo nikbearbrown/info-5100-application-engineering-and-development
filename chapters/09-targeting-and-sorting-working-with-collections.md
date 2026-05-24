@@ -1,185 +1,301 @@
-# Module 9: Targeting and Sorting: Working with Collections
+# Module 9 — Targeting and Sorting: Working with Collections
+*A collection is not a container. It is a decision about how you will access what is inside.*
 
-**One-line:** Students learn to sort, filter, and search collections of objects - and to choose the right collection type for each task.
+Five hundred books. Sort them by title.
 
-## Module Overview
+The first solution works. You write a loop, compare strings, swap elements. The books come out alphabetical. You move on.
 
-By the end of this module, you will add one concrete capability to the semester project: the chapter connects collection type to access-pattern reasoning and performance consequences. The library example is the main path through the text. Inventory and healthcare scheduling follow the same design shape in the exercises.
+Three weeks later, the requirement changes: sort by author last name, then by title within each author. You go back to the sorting code. It is a tangle of string comparisons with no names attached to anything. You cannot tell which comparison is the title sort and which is something else. You rewrite it. You probably introduce a bug. The new sort works in the demo. You are not confident it handles edge cases — authors with no last name, titles that start with "The," books with multiple authors — because the logic is buried in comparisons rather than expressed as rules.
 
-## Prerequisites
+The second solution, the one this module teaches, names the ordering rule before implementing it. The rule is an object. The object has a method. The method says: given two books, which comes first? When the requirement changes, you change the rule object. You do not excavate a comparison tangle. You replace a named thing with another named thing.
 
-Module 8 persistent collections and CRUD operations.
+That is the difference between code that sorts and code that sorts *for a reason*.
 
-## Learning Objectives
+---
 
-- (Apply) Implement sorting using Comparator and Comparable.
-- (Analyze) Choose between List, Map, and Set for collection tasks.
-- (Apply) Implement search and filter operations.
-- (Evaluate) Assess AI-generated sorting for correctness and performance.
+## What Collections Are Actually Doing
 
-## Opening Case
+Most beginners think of a collection as a place to put things. A `List` is a box. You put books in it. You get books out. You sort them when you need to.
 
-Five hundred books need to be sorted by title, then author, then year. The first solution sort-of works. The second solution names the ordering rule. That difference matters when the rule changes.
+That framing is not wrong, but it is incomplete in a way that creates real problems.
 
-Do not define the concept too early. First, look at the failure. The point of the opening is to make the need for the concept visible before the word for it arrives.
+Collections do not just store things. They encode assumptions about how you will access what is inside. Those assumptions affect what operations are fast, what operations are slow, and what operations are even possible. When you choose a collection, you are making a performance and capability contract with the rest of the code.
 
-## Core Content
+`List` is the right choice when order matters and you will iterate: display the books in the order the librarian specified, show results in the order they were returned by a search. `List` gives you indexed access and a defined iteration order. The cost is that lookup by a key — find the book with ISBN 978-0-7432-7356-5 — requires scanning the whole list in the worst case.
 
-### The Idea In Plain Language
+`Map` is the right choice when you need to look up by key: find the book with this ISBN, find the account for this username, find the appointment for this patient ID. `Map` gives you O(1) average-case lookup. The cost is that you have no defined iteration order over the entries, and you cannot express "give me the second book."
 
-Collections are design choices. `List`, `Map`, and `Set` do not just store things. They express access patterns: ordered display, keyed lookup, uniqueness, iteration, and membership.
+`Set` is the right choice when membership matters and duplicates do not: which ISBNs are currently checked out, which patron IDs have overdue fines. `Set` gives you fast membership testing and automatic duplicate elimination. The cost is that elements have no order (unless you use `TreeSet`) and no index.
 
-### The Java Move
+The mistake most beginners make is using `List` for everything. `List` is flexible and familiar. It compiles. It runs. The performance problem only shows up when the collection grows: a `List`-based lookup that scans five hundred books is imperceptibly fast; the same scan over fifty thousand books is not.
 
-In Java, this idea becomes a concrete design move in source code. The student should be able to point to the class, method, field, collection, handler, test, or configuration line that carries the concept. If the concept cannot be found in code, it is still only a slogan.
+<!-- → [TABLE: collection choice decision table — columns: operation, best collection type, why, what you give up; rows: ordered display/iteration (List), keyed lookup by ID (Map), membership test/deduplication (Set), sorted traversal (List with sort or TreeSet), multiple sort orders (List with Comparator) — this is the reference table students consult when choosing a collection for a new feature] -->
 
-### The AI Boundary
+The phase gate for this module asks you to name three things before writing collection code: the three most common operations your application will perform on this collection, and the expected size. Those answers determine the right collection type. When you have stated them, you have a spec. AI can then scaffold the implementation of that spec.
 
-AI may write a comparator from a precise ordering rule. It may not choose the collection type before the student names common operations.
+---
 
-The boundary matters because the book's thesis is not anti-AI. It is anti-unverified delegation. The student may use AI when the task is appropriate and when the verification responsibility is still held by the engineer.
+## Comparator: The Ordering Rule as an Object
 
-<!-- → [FIGURE: collection choice matrix for Module 9, showing the core concept, the Java artifact that carries it, the AI assistance boundary, and the human verification step.] -->
+Sorting in Java is built around a single idea: the comparison rule should be separable from the objects being compared.
 
-## Worked Example
+There are two mechanisms for expressing that rule. `Comparable` is for natural ordering — the ordering that makes sense for the object itself, in most contexts. A `Book` that implements `Comparable<Book>` is saying: if you ask me to compare myself to another book without any other instructions, I will use my title. `Comparable` is baked into the class.
 
-**Situation.** The library uses `List<Book>` for display order and `Map<String, Book>` for ISBN lookup. A comparator sorts by title and author. A filter returns only available books.
+`Comparator` is for external ordering — an ordering rule that exists independently of the objects being sorted. A `Comparator<Book>` that sorts by author is a separate object. You can have as many `Comparator` objects as you have ordering requirements. You pass the one you want to `Collections.sort` or `List.sort` at the time you need the sort.
 
-**Analysis.** Work from observable behavior back to design intent. Name the object, method, handler, collection, file, or test involved. Then name what would count as evidence that the implementation is correct.
+The practical difference: `Comparable` handles the default case. `Comparator` handles everything else.
 
-**Dead end.** The usual dead end is accepting code because it runs once, compiles cleanly, or matches an AI explanation. That is not enough. The student's job is to connect behavior to a requirement and then to a verifiable Java artifact.
+Here is a `Comparator` that sorts books by title:
 
-**Resolution.** The implementation is accepted only when the student can trace the behavior, explain the design choice, and identify what AI did and did not decide.
+```java
+Comparator<Book> byTitle = Comparator.comparing(Book::getTitle);
+```
+
+Here is one that sorts by author last name, then by title within each author:
+
+```java
+Comparator<Book> byAuthorThenTitle = Comparator
+    .comparing(Book::getAuthorLastName)
+    .thenComparing(Book::getTitle);
+```
+
+Here is one that sorts by year, most recent first:
+
+```java
+Comparator<Book> byYearDescending = Comparator
+    .comparingInt(Book::getPublicationYear)
+    .reversed();
+```
+
+Notice what each of these is: a named rule. `byAuthorThenTitle` is not a tangle of string comparisons. It is an object with a name that describes its purpose. When the requirement changes — sort by author last name, then by title, then by edition — you modify this object. You add `.thenComparingInt(Book::getEdition)`. The sort call does not change. The collection does not change. The rule changes.
+
+<!-- → [IMAGE: annotated side-by-side code comparison — left: a hand-written sort using nested if/else string comparisons with no named rule, right: the equivalent Comparator.comparing().thenComparing() chain with the rule named as a variable — annotations pointing to (1) where the rule lives in each version, (2) where you would change it if the requirement changed, (3) which version is testable in isolation] -->
+
+To sort the library's book list by author then title:
+
+```java
+List<Book> books = catalog.getAllBooks();
+books.sort(byAuthorThenTitle);
+```
+
+That is the complete operation. `books.sort` takes the list and the comparator. The comparator defines the order. The list is reordered in place.
+
+---
+
+## Comparable: The Natural Order
+
+When an ordering is genuinely intrinsic to the object — when you would always sort books by title in the absence of other instructions — implementing `Comparable` in the class makes that order the default.
+
+```java
+public class Book implements Comparable<Book> {
+    private String title;
+    private String author;
+
+    @Override
+    public int compareTo(Book other) {
+        return this.title.compareTo(other.title);
+    }
+}
+```
+
+The `compareTo` method returns a negative number if `this` should come before `other`, zero if they are equal, and a positive number if `this` should come after. `String.compareTo` already does this for alphabetical order, so for a title-based natural ordering, delegating to `String.compareTo` is correct.
+
+Once `Book` implements `Comparable`, you can sort a `List<Book>` without a `Comparator`:
+
+```java
+Collections.sort(books); // uses Book's natural order: by title
+```
+
+The design decision: use `Comparable` for the ordering you would choose if you had to pick only one. Use `Comparator` for everything else.
+
+<!-- → [TABLE: Comparable vs. Comparator decision table — columns: mechanism, where the rule lives, how many orderings, when to use it, how to apply it; rows: Comparable (inside the class, one natural order, use for the default sort, Collections.sort(list)), Comparator (outside the class, as many as needed, use for alternate orderings, list.sort(comparator)) — the purpose is to make the design decision mechanical, not mysterious] -->
+
+---
+
+## Filtering: A Different Kind of Selection
+
+Sorting reorders a collection. Filtering reduces it: return only the elements that satisfy a condition.
+
+The Java stream API makes filtering readable. A stream is a pipeline: you take a collection, pass it through a sequence of operations, and collect the result. The operations do not modify the original collection. They produce a new one.
+
+Here is a filter that returns only available books:
+
+```java
+List<Book> available = books.stream()
+    .filter(book -> book.isAvailable())
+    .collect(Collectors.toList());
+```
+
+Here is a filter combined with a sort: available books, sorted by title:
+
+```java
+List<Book> availableByTitle = books.stream()
+    .filter(Book::isAvailable)
+    .sorted(byTitle)
+    .collect(Collectors.toList());
+```
+
+The pipeline reads like a description of what you want: take all books, keep the available ones, sort them by title, collect the result. Each step is named. Each step does one thing.
+
+Filtering by author name:
+
+```java
+String authorQuery = "Ursula K. Le Guin";
+List<Book> byAuthor = books.stream()
+    .filter(book -> book.getAuthor().equals(authorQuery))
+    .collect(Collectors.toList());
+```
+
+The `filter` method takes a predicate — a function from an element to a boolean — and keeps only the elements for which the predicate returns `true`. Any condition expressible as a boolean can be a filter predicate.
+
+<!-- → [IMAGE: annotated stream pipeline diagram — horizontal pipeline with stages: books collection → .stream() → .filter(predicate) → .sorted(comparator) → .collect() → result list; each stage annotated with what it does and what it passes forward; the original books collection shown as unchanged alongside the pipeline to emphasize immutability] -->
+
+There is one thing to watch for. Stream operations produce a new collection; they do not modify the original. If you call `books.stream().filter(...)` and do not assign the result, nothing changes. This is the most common beginner error with streams, and it is invisible: the code compiles, the operation runs, the result is discarded.
+
+---
+
+## The Library in Practice: Three Collections Doing Three Jobs
+
+In the library semester project, collections appear in at least three distinct roles, each requiring a different type.
+
+The catalog — all books in the library — is a `List<Book>`. Order matters for display. The librarian sees books in a specified sequence. Iteration is the primary operation: show me all books, filtered and sorted. ISBN-based lookup is secondary and infrequent enough that scanning the list is acceptable.
+
+The checkout index — a lookup from patron ID to their current loans — is a `Map<String, List<Loan>>`. The primary operation is "given this patron, what do they have checked out?" That is a keyed lookup. A `Map` gives O(1) average-case access. The value is a `List<Loan>` because a patron may have multiple loans and their order may matter for display.
+
+The overdue set — patron IDs with at least one overdue item — is a `Set<String>`. The primary operation is "is this patron overdue?" That is a membership test. `Set.contains` gives O(1) average-case performance. Duplicate patron IDs are meaningless — either a patron is overdue or not — and `Set` enforces that automatically.
+
+Three collections. Three different types. Each type chosen because it matches the operation pattern of its role.
 
 <!-- → [TABLE: Module 9 verification table with columns: concept, Java artifact, what AI may do, what the student must verify, evidence before submission; rows should include the library example plus inventory and scheduling variants.] -->
 
-**The lesson:** the engineer owns the explanation, not just the output.
+When students use `List` for all three, the catalog display is fine, the patron lookup is slower than necessary, and the overdue check requires iterating the full overdue list for every lookup instead of a single `contains` call. The application still works. In a demo with ten patrons and fifty books, the performance difference is invisible. With ten thousand patrons and one hundred thousand books, it is not.
 
-**The limit:** this module gives a disciplined slice of practice; it does not make every downstream design decision automatic.
+The habit this module builds is choosing collection type by operation, not by familiarity.
 
-## Mid-Module Checkpoint
+---
 
-Before starting the lab, answer three questions in writing:
+## What AI Can and Cannot Do Here
 
-1. What is the specific project behavior this module adds?
-2. Which Java artifact carries that behavior?
-3. What evidence would convince you the behavior works for your requirements?
+AI can write a `Comparator` quickly and correctly. Given a precise ordering rule — sort by author last name ascending, then by title ascending, then by publication year descending — AI will produce a correct `Comparator` chain. This is a legitimate use of AI assistance: the rule is yours, the Java expression of the rule is mechanical, AI handles the mechanical part.
 
-If any answer is vague, return to the worked example and make the artifact concrete.
+What AI cannot do is choose the collection type for you. The choice depends on which operations matter, how frequently they occur, and how large the collection will grow. Those facts live in your domain knowledge and your project requirements. AI does not have them. A plausible AI choice — `ArrayList` for everything, because it is the most common Java collection — will be correct for some roles and wrong for others, and the wrongness will not appear until the collection is large enough to expose the performance difference.
 
-## Lab Assignment
+The phase gate follows from this. Before asking AI for collection code, write the operation profile: what are the three most common operations on this collection, and what is the expected size? When that exists, AI can scaffold the implementation. Without it, AI is guessing at your access patterns.
 
-Implement three sort orders and one search/filter feature. Identify one collection choice in the project and justify it by expected operations.
-
-The lab must include running evidence, a short explanation of the design choice, and the AI Use Disclosure described below.
-
-## How To Use AI
-
-**What AI does well here:** AI may write a comparator from a precise ordering rule. It may not choose the collection type before the student names common operations.
-
-**Concrete prompt that works:**
+Here is the prompt:
 
 ```text
 I am working on Module 9: Targeting and Sorting: Working with Collections in INFO 5100.
 My domain is [library / inventory / scheduling].
-My current specification is: [paste your written specification].
-Help only within this boundary: AI may write a comparator from a precise ordering rule. It may not choose the collection type before the student names common operations.
-Do not produce work that violates the phase gate: List the three most common operations and expected size before AI generates collection code.
+My collection: [name and element type].
+My three most common operations: [list them].
+My expected size: [approximate number of elements].
+Help only within this boundary: AI may write a comparator from a precise
+ordering rule. It may not choose the collection type before I have named
+the common operations.
+My ordering rule is: [describe the sort order precisely].
 ```
 
-**What AI cannot do here:** AI cannot know your business requirement, your instructor's acceptance standard, or whether the generated code fits the whole project. It can help with language, scaffolding, explanation, or candidate implementations only after you have stated what must be true.
-
-**Phase gate:** List the three most common operations and expected size before AI generates collection code.
-
-**Module CLAUDE.md constraint:**
-
-```text
-You are assisting a graduate Java student in Module 9: Targeting and Sorting: Working with Collections.
-Follow the module phase gate exactly.
-Explain before generating. Mark every design decision.
-If a requirement is missing, ask for it instead of guessing.
-Never let plausible Java substitute for verified Java.
-```
-
-## AI Use Disclosure Form
-
-Complete this paragraph for the lab:
-
-> I used AI for [specific task]. My prompt was [summary or pasted prompt]. I verified [specific Java artifact or behavior] by [running, tracing, debugging, testing, or inspection]. The AI output was wrong or incomplete in this way: [specific issue]. The part I did not delegate was [design or verification judgment].
-
-## Common Misconceptions
-
-**If it compiles, it works.** Compilation checks whether Java accepts the form. It does not prove the behavior matches the requirement.
-
-**If AI explains it, I understand it.** Understanding means you can predict, trace, change, and defend the code without repeating the AI's phrasing.
-
-**The lab is the code.** The lab is the code plus the explanation, verification evidence, and AI disclosure. The artifact is proof that a process happened.
-
-## Exercises
-
-1. **Apply:** Add the module capability to the library version of the project.
-2. **Apply:** Translate the same capability to either inventory or scheduling.
-3. **Analyze:** Identify one failure mode that would pass a superficial run but violate the requirement.
-4. **Evaluate:** Ask AI for help within the allowed boundary, then reject or revise at least one part of the output and explain why.
-
-## What Would Change My Mind
-
-I would revise this module's central claim if classroom evidence showed that students who used unrestricted AI generation could explain, debug, adapt, and defend their project code as well as students who passed through the module's phase gate. The evidence would need to include transfer to a new feature, not only successful completion of the same lab.
-
-## Still Puzzling
-
-- How much tool assistance improves confidence without reducing ownership?
-- Which errors in this module are productive learning moments, and which are avoidable friction?
-- How should the instructor distinguish weak Java syntax from weak design reasoning?
-- What project evidence should become part of the instructor manual after the next course run?
-
-## Module Summary
-
-You can now the chapter connects collection type to access-pattern reasoning and performance consequences. You also have one more AI boundary: not a ban, but a rule for keeping verification in the student's hands.
-
-## Key Terms
-
-- **List:** define this term in the context of the semester project before using it in lab work.
-- **Map:** define this term in the context of the semester project before using it in lab work.
-- **Set:** define this term in the context of the semester project before using it in lab work.
-- **Comparator:** define this term in the context of the semester project before using it in lab work.
-- **Comparable:** define this term in the context of the semester project before using it in lab work.
-- **filter:** define this term in the context of the semester project before using it in lab work.
-- **stream:** define this term in the context of the semester project before using it in lab work.
-- **complexity:** define this term in the context of the semester project before using it in lab work.
-
-## Bridge Question
-
-The data is organized. How does it appear in a GUI?
-
-## Further Reading
-
-- Java Language Specification and Java SE API documentation: use for language and library facts.
-- Robins, Rountree, and Rountree, "Learning and Teaching Programming": use for common novice difficulties.
-- Peng et al. and Vaithilingam et al.: use for cautious claims about AI coding assistance and verification.
-
-## CLI Quick Reference
-
-```bash
-java --version
-javac --version
-# Run from your project directory when checking environment and compiled output.
-```
-
-## Sources and Drafting Notes
-
-Research base: Java Language Specification and Java SE API; OpenJFX and NetBeans documentation where relevant; Robins, Rountree, and Rountree on programming education; Sweller on cognitive load; Collins, Brown, and Newman on cognitive apprenticeship; Peng et al., Vaithilingam et al., and Pearce et al. on AI coding assistance and verification risk.
-
-Current tool instructions, version-specific setup, and AI platform behavior require pre-offering verification. [verify]
+The prompt works because the collection type decision is already made before AI is involved. AI receives the ordering rule and writes the `Comparator`. You verify that the comparator sorts a known set of elements in the expected order.
 
 ---
 
-## Prompts
+## The Inventory and Scheduling Shape
 
-Use these prompts with Claude to generate interactive D3 v7 versions of the
-figures in this chapter. Each produces a standalone HTML file you can open
-in a browser and modify freely.
+The same three-collection pattern appears in every domain.
 
-**Prerequisites:** Load `brutalist/CLAUDE.md` and `brutalist/DESIGN.md` into
-your Claude project context before using these prompts. They define the stack,
-naming conventions, color system, and typography the figures use.
+In an inventory system, the product catalog is a `List<Product>` for display and filtered browsing. The SKU index is a `Map<String, Product>` for lookup by stock-keeping unit. The low-stock set is a `Set<String>` of product IDs below the reorder threshold. The `Comparator` sorts products by category, then by name within category. The filter returns only in-stock items.
+
+In a healthcare scheduling system, the appointment list for a provider's day is a `List<Appointment>` sorted by start time. The patient index is a `Map<String, Patient>` for lookup by patient ID. The booked slot set is a `Set<TimeSlot>` for availability checking — given a requested time, is it already taken? The `Comparator` sorts appointments by time. The filter returns only appointments of a specific type.
+
+In both domains, the design question is the same: what operation do I perform most often, and which collection type makes that operation fast? The answer determines the type. The type determines the performance contract.
+
+<!-- → [TABLE: cross-domain collection choice table — columns: domain, collection role, collection type, primary operation, why this type; rows: library catalog (List, iteration/display), library checkout index (Map, keyed lookup), library overdue set (Set, membership test), inventory catalog (List), inventory SKU index (Map), inventory low-stock set (Set), scheduling appointment list (List), scheduling patient index (Map), scheduling booked slots (Set) — this makes the pattern visible across all three domains simultaneously] -->
+
+---
+
+## Verifying a Sort
+
+A `Comparator` that compiles is not necessarily a `Comparator` that sorts correctly. The verification step is to construct a small, known set of elements, sort them, and check the result against what you expect.
+
+For the `byAuthorThenTitle` comparator, construct at least these cases:
+
+- Two books with different authors: the earlier author alphabetically should come first.
+- Two books with the same author and different titles: the earlier title alphabetically should come first.
+- Two books with the same author and the same title: the comparator should return zero or a stable order.
+- A book with a null author or null title, if null values are possible in your data: the comparator should handle this without throwing a `NullPointerException`.
+
+That last case is the one most AI-generated comparators miss. `Comparator.comparing(Book::getTitle)` will throw a `NullPointerException` if any book's title is null, because `String.compareTo` does not accept null. If null titles are possible — a book scanned into the system before its metadata was complete, for example — the comparator needs to handle them explicitly.
+
+The verification is not sophisticated. It is four test cases. But four specific test cases against a known expected output are how you know the comparator is correct, not just plausible.
+
+<!-- → [TABLE: comparator verification matrix — columns: test case description, input (book A fields), input (book B fields), expected compareTo result (negative/zero/positive), expected sort order; rows: different authors, same author different titles, same author same title, null title present — students fill in the "expected" columns before running the sort, then compare to actual output; the null-title row should show what Comparator.comparing() does vs. what Comparator.comparing(key, nullsFirst/nullsLast) does] -->
+
+---
+
+## What This Module Does Not Settle
+
+We have connected collection type to access-pattern reasoning, implemented named ordering rules as `Comparator` and `Comparable`, and built filter pipelines using streams. We have not connected the sorted, filtered collection to a GUI component.
+
+The bridge question is: the data is organized. How does it appear in a GUI?
+
+A `List<Book>` sorted by title is not visible to the user until it is bound to a display component — a table, a list, a set of labeled rows in a panel. That binding is the subject of the next module, where the collection becomes the model and the display component becomes the view. The design question there is the same as the design question here: what operations does the display need, and how do you expose them from the collection without letting the view modify the underlying data?
+
+---
+
+## Lab: Three Sort Orders and One Filter
+
+Implement three sort orders for your semester project's primary collection: one that uses `Comparable` (the natural order), two that use named `Comparator` objects. Implement one filter using the stream API.
+
+Before writing any code, submit the operation profile for at least one collection in your project: collection name, element type, three most common operations, expected size. The operation profile is the justification for the collection type. The collection type is the design decision. The comparators and filters implement the spec that the design decision implies.
+
+If you used AI to write a `Comparator`, include the ordering rule you provided — precisely, as you stated it to AI — and your verification: the test cases you ran, the expected output, and the actual output. State whether the AI-generated comparator handled null values correctly.
+
+---
+
+## Exercises
+
+**Warm-up**
+
+1. For each of the three collections in the library project — the catalog `List<Book>`, the checkout index `Map<String, List<Loan>>`, and the overdue `Set<String>` — write the operation profile: three most common operations and expected size. Then confirm that the collection type assigned in the module matches the profile. If you would choose differently for any of them, explain why. *(Tests: collection-type-to-operation reasoning; operation profile as a design spec.)*
+
+2. Write a `Comparator<Book>` named `byYearThenTitle` that sorts books by publication year ascending, then by title alphabetically within each year. Write it using the `Comparator.comparingInt().thenComparing()` chain. Then write the single line that applies it to a `List<Book>` named `books`. *(Tests: Comparator chain construction; list.sort() call.)*
+
+**Application**
+
+3. The `byAuthorThenTitle` comparator works correctly for books where both fields are non-null. A book is added to the catalog before its author metadata is entered, leaving `getAuthorLastName()` returning `null`. Describe exactly what happens when the comparator encounters this book, name the exception if one is thrown, and write the corrected comparator using `Comparator.nullsLast()` or `Comparator.nullsFirst()` as appropriate for your domain. *(Tests: null-handling in comparators; Comparator.nullsFirst/nullsLast; verification test case design.)*
+
+4. A classmate implements a search feature by iterating a `List<Book>` and comparing each book's ISBN to the query. It works in the demo with fifty books. Apply the complexity definition from this module: what is the O-notation for this operation, what collection type would reduce it to O(1), and what change to the project's data structure would be required to support that lookup? *(Tests: O(n) vs. O(1) reasoning; List-to-Map migration; operation-profile thinking.)*
+
+5. You ask AI for a filter that returns appointments scheduled for a specific provider on a specific date. AI returns: `appointments.stream().filter(a -> a.getProvider().equals(provider) && a.getDate().equals(date)).collect(Collectors.toList())`. Apply the AI boundary test: is this AI-appropriate scaffolding or a design decision you should have made first? What would you verify before accepting this output, and what edge case does the filter not handle that you should check? *(Tests: stream filter syntax; AI boundary applied to stream operations; verification of filter correctness.)*
+
+**Synthesis**
+
+6. Translate the library's three-collection pattern to your own domain (inventory or scheduling). Name the three collections, assign a type to each, and write the operation profile for each. For one of the three, write the `Comparator` that implements the primary sort order for that collection. *(Tests: domain transfer; collection-type assignment by operation; Comparator construction in a new domain.)*
+
+7. The library catalog currently uses a `List<Book>`. A new requirement adds: "given an ISBN, return the book immediately, without scanning the list." Two design options: (a) keep the `List` and add a `Map<String, Book>` as a parallel index; (b) replace the `List` with the `Map` as the primary store and derive sorted display order by collecting and sorting. For each option, describe what it gives up, name the operation that becomes slower or more expensive, and recommend which is better for the library's access patterns — then state what evidence would change your recommendation. *(Tests: List-Map tradeoff; parallel index pattern; design reasoning from operation profiles.)*
+
+**Challenge**
+
+8. The stream pipeline `books.stream().filter(Book::isAvailable).sorted(byAuthorThenTitle).collect(Collectors.toList())` is called every time the library's main display panel refreshes — which happens on every user interaction. The catalog contains eighty thousand books. Describe the performance implications: how many elements does `filter` examine, how many does `sorted` sort, and what is the combined cost in O-notation? Then propose a caching strategy — without changing the collection type — that would reduce the cost of repeated identical queries, and identify what invariant the cache must maintain to stay correct when books are checked out or returned. *(Open-ended; anticipates caching, invalidation, and the model-view update patterns introduced in the next module.)*
+
+---
+
+- **List** — a Java collection that preserves insertion order and supports indexed access. The right choice when order matters and iteration is the primary operation. Lookup by value requires scanning.
+- **Map** — a Java collection that stores key-value pairs and supports O(1) average-case lookup by key. The right choice when the primary operation is "given this key, give me the value." No defined iteration order over entries.
+- **Set** — a Java collection that stores unique elements and supports O(1) average-case membership testing. The right choice when the primary question is "is this element present?" Duplicates are automatically eliminated.
+- **Comparator** — an object that defines an ordering rule for elements of a given type. Separate from the elements being sorted; can be named, composed, reversed, and reused. The right choice for all orderings except the natural order.
+- **Comparable** — an interface that a class implements to define its natural ordering. The ordering that applies when no `Comparator` is specified. Only one natural order is possible per class.
+- **filter** — a stream operation that returns a new collection containing only the elements for which a predicate returns `true`. Does not modify the original collection.
+- **stream** — a pipeline over a collection that supports filter, sort, map, and collect operations without modifying the source. Each operation returns a new stream; `collect` materializes the result.
+- **complexity** — a characterization of how an operation's cost grows with collection size. O(1) means constant cost regardless of size. O(n) means cost grows linearly with size. Choosing the wrong collection type converts O(1) operations into O(n) operations.
+
+---
+
+## Further Reading
+
+- *Java Language Specification* and the Java SE API documentation: authoritative sources on `Comparator`, `Comparable`, `Collections`, `List`, `Map`, `Set`, and the stream API.
+- Robins, Rountree, and Rountree, "Learning and Teaching Programming": research on the abstraction difficulties that collection-choice reasoning requires.
+- Peng et al. and Vaithilingam et al.: empirical work on AI coding assistance; the operation-profile phase gate is grounded in their findings on verification risk when collection-type decisions are delegated.
+
+*Current tool instructions, version-specific setup, and AI platform behavior require pre-offering verification.* [verify]
