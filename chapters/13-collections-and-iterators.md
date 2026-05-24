@@ -51,8 +51,7 @@ One of these fails. The null input test fails because the search implementation 
 
 This is what tests do. They do not generate correctness. They surface assumptions.
 
-![Test coverage matrix for Module 13, showing the](images/13-advanced-data-collections-unit-testing-and-lambda-fig-01.png)
-*Figure 13.1 — Test coverage matrix for Module 13, showing the*
+<!-- → [SCOPE | Figure 13.1 | TABLE: five-case test coverage matrix — rows: Normal (happy path), Empty (edge case), No match (edge case), Boundary (transition), Invalid input (assumption trap); columns: Case type, What it tests, Search method example, What failure reveals; each row populated with concrete search-method content: Normal→search("Design") returns 2; Empty→empty catalog returns empty list not null; No match→search("Quantum") returns empty list not null; Boundary→exactly-one-match returns list of 1; Invalid input→search(null) does not throw NPE (the module's failing test) | CONTENT: 5×4 matrix with case-name badges, plain-English descriptions, code examples, failure explanations | EXCLUSIONS: JUnit syntax inside cells, @Test annotation, assertEquals calls, stream/lambda content — this is a requirements taxonomy, not a code reference] -->
 
 ---
 
@@ -135,8 +134,7 @@ This is the value of tests over time — not just when you write them, but every
 
 The student who writes tests as they build each module has, by Module 13, a safety net for the entire project. The student who writes tests only at Module 13 has a safety net for Module 13 and no knowledge of what is already broken.
 
-![Horizontal timeline from Module 1 to Module 13](images/13-advanced-data-collections-unit-testing-and-lambda-fig-02.png)
-*Figure 13.2 — Horizontal timeline from Module 1 to Module 13*
+<!-- → [SCOPE | Figure 13.2 | IMAGE: horizontal timeline from Module 1 to Module 13 — two test lines begin at Module 1 (checkout test) and Module 4 (search test) and run forward; at Module 7, a regression is introduced; the checkout test line breaks at Module 7 with a red failure marker and annotation "caught here, not at the demo"; the search test line continues passing through Module 7; a dashed note below reads "without tests: regression is invisible until the demo; with tests: it fails the moment it is introduced" | CONTENT: module timeline axis (1–13), two colored test lines, regression break marker at M7 with annotation, summary note | EXCLUSIONS: specific method names beyond checkout/search, JUnit syntax, assertion code, the five case types — this is the temporal/regression argument only] -->
 
 ---
 
@@ -190,8 +188,7 @@ By the end of this module, you should be able to look at any method in the semes
 
 When you can answer them for the library search method, you can answer them for the inventory quantity check and the scheduling conflict detector. The domain changes. The specific cases differ. But the structure — requirement stated as assertion, boundary cases named, failure as information — is identical.
 
-![Test anatomy diagram ](images/13-advanced-data-collections-unit-testing-and-lambda-fig-03.png)
-*Figure 13.3 — Test anatomy diagram *
+<!-- → [SCOPE | Figure 13.3 | IMAGE: test anatomy diagram — the searchReturnsAllMatchingBooks test from the chapter shown as three labeled sections: Section 1 (Setup, purple): Library created, three books added; Section 2 (Execution, teal): library.search("Design") called, result assigned; Section 3 (Assertion, amber): assertEquals(2, results.size()); right-side callout annotations for each section explaining what it does and what a failure there means; summary note below: "before writing this test, answer two questions: what are the exact inputs? what does the requirement say the output must be?" | CONTENT: three color-coded sections with code text, three right-side annotations, two-question summary note | EXCLUSIONS: the five case types (Figure 13.1), timeline/regression content (Figure 13.2), lambda/stream syntax — this is test anatomy only] -->
 
 ---
 
