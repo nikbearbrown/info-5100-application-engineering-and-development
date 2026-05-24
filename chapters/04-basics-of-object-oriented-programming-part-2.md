@@ -53,8 +53,7 @@ A root cause is the design decision, state error, or logic flaw that made the pr
 
 The debugging workflow this module teaches — hypothesize, isolate, test — is an engine for moving from symptom to root cause without getting stuck at proximate cause. Each step narrows the search. Each step requires committing to a claim before checking whether the claim is true. That commitment is the thing that distinguishes diagnosis from tinkering.
 
-![Vertical stack showing symptom → proximate cause →](images/04-finding-bugs-the-debugging-workflow-fig-01.png)
-*Figure 4.1 — Vertical stack showing symptom → proximate cause →*
+<!-- → [SCOPE | Figure 4.1 | IMAGE: three-level diagnostic hierarchy — symptom at top, proximate cause in middle, root cause at bottom, connected by downward arrows labeled "diagnose upstream" | CONTENT: three vertically stacked boxes (Symptom, Proximate cause, Root cause), two downward arrows with "diagnose upstream" label, left rail dashed line labeled "upstream" | EXCLUSIONS: specific Java code, class names, method names, debugger UI elements, NetBeans interface] -->
 
 ---
 
@@ -70,8 +69,7 @@ This sounds demanding. It is. The alternative is worse. If you do not form a hyp
 
 Here is the practical question: how do you form a hypothesis before you have confirmed anything? You read the code forward from where the correct behavior was last verified and backward from where the wrong output was first observed. Somewhere in that interval, the state went wrong. Your hypothesis is your best current guess about where.
 
-![Debugging workflow loop for Module 4, showing the](images/04-finding-bugs-the-debugging-workflow-fig-02.png)
-*Figure 4.2 — Debugging workflow loop for Module 4, showing the*
+<!-- → [SCOPE | Figure 4.2 | IMAGE: three-phase debugging workflow loop — Hypothesize, Isolate, Test as three sequential boxes with forward arrows and a dashed return arrow from Test back to Hypothesize for refuted hypotheses | CONTENT: three boxes (Hypothesize: name object/field/moment; Isolate: set breakpoint/inspect state; Test: compare prediction vs. reality), forward arrows between phases, curved dashed return arrow labeled "refuted — revise and repeat", terminal label "root cause found" | EXCLUSIONS: specific Java syntax, NetBeans UI screenshots, code listings, stack traces, patron/book domain specifics] -->
 
 ---
 
@@ -171,8 +169,7 @@ By the end of this module, you should be able to take a program with hidden wron
 
 When you can do that for the library checkout bug, you can do it for the inventory discrepancy and the scheduling conflict, because the workflow is the same. The domain changes. The objects get new names. The causal structure is different. But hypothesize, isolate, test follows the same logic in every Java program that has ever existed.
 
-![Three-phase loop ](images/04-finding-bugs-the-debugging-workflow-fig-03.png)
-*Figure 4.3 — Three-phase loop *
+<!-- → [SCOPE | Figure 4.3 | IMAGE: three-phase debugging loop summary — Hypothesize, Isolate, Test as three boxes in a horizontal row with forward arrows and a curved dashed return arrow beneath labeled "refuted — revise and repeat," plus a terminal label "root cause found" after Test | CONTENT: three horizontal boxes (Hypothesize, Isolate, Test), two forward arrows, one curved dashed return arrow, terminal text "root cause found" | EXCLUSIONS: phase detail, good/bad hypothesis examples, step-over/step-into distinction, domain-specific variable names — this is the summary version; detail belongs in Figure 4.2] -->
 
 ---
 
