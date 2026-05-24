@@ -45,8 +45,9 @@ A user flow is not a sequence of screens. It is a path through the state space o
 
 The engineer's job is to decide which objects travel through the flow and what each step is permitted to change.
 
-![Diagram contrasting the screen-centric mental model (boxes labeled](images/03-user-interaction-design-fig-01.png)
-*Figure 3.1 — Diagram contrasting the screen-centric mental model (boxes labeled*
+<!-- → [SCOPE | Figure 1 | IMAGE: screen-centric vs. state-centric mental model — two-panel contrast; left panel shows the engineer's mistaken model (four labeled screen boxes connected by navigation arrows); right panel shows the correct model (the same four screens as thin labels above a horizontal state path, with a Book object traveling through all four as a persistent node) | CONTENT: left panel: four screen boxes (Search, Result, Checkout, Confirmation) connected by right-pointing arrows, no objects visible; right panel: four screen labels above a horizontal line, single Book object shown as a distinct shape moving along the line from left to right, visible at each screen position | EXCLUSIONS: Java syntax, CardLayout code, field names, getter/setter notation, UML class diagram elements, database icons, network diagrams, multiple object types, Loan object, inheritance hierarchy] -->
+
+*Figure 3.1 — Screen-centric vs. state-centric: what the engineer thinks about changes, but the object is what actually matters*
 
 This is the shift in perspective that makes user interaction design teachable. Once you see the flow as a state path, the questions become concrete: what does this screen read? What does it write? What must already be true when the user arrives here? What must be true when they leave?
 
@@ -83,8 +84,9 @@ layout.show(container, "checkout");
 
 That is the mechanical part. What `CardLayout` does not do — what it cannot do, because it has no knowledge of your domain — is move the `Book` object from one panel to the next. That is your responsibility.
 
-![Code diagram showing a CardLayout container with four](images/03-user-interaction-design-fig-02.png)
-*Figure 3.2 — Code diagram showing a CardLayout container with four*
+<!-- → [SCOPE | Figure 2 | IMAGE: CardLayout container structure — a single outer container rectangle holding four named child panel rectangles side by side; one panel (checkout) highlighted as currently visible; the other three shown as present but visually recessed/dormant; string names ("search", "result", "checkout", "confirmation") shown as labels above each child panel | CONTENT: outer container rect labeled "JPanel container + CardLayout"; four inner panel rects of equal width labeled search, result, checkout, confirmation; checkout panel highlighted (distinct fill); remaining three panels in recessed fill; a small "visible" indicator on checkout only | EXCLUSIONS: Java syntax inside the diagram, object references, Book objects, setter methods, button handlers, ActionListener, field values, layout manager internals, arrow connectors between panels] -->
+
+*Figure 3.2 — CardLayout container: four panels present in memory, one visible at a time*
 
 The standard pattern is to give each panel a setter method that accepts the object it needs before it becomes visible:
 
@@ -184,8 +186,9 @@ When concerns are mixed — when a panel directly modifies the object that anoth
 
 The `CardLayout` pattern enforces some of this separation structurally: the layout manager cannot modify your objects because it does not know they exist. But the separation between panels and objects is enforced only by the engineer's discipline. Java will not stop you from writing business logic inside a button handler. The module's design constraint — the flow table before the code — is a tool for maintaining that discipline before the application is complex enough to make violations painful.
 
-![Three-layer responsibility diagram ](images/03-user-interaction-design-fig-03.png)
-*Figure 3.3 — Three-layer responsibility diagram *
+<!-- → [SCOPE | Figure 3 | IMAGE: three-layer responsibility diagram — three horizontal stacked layers labeled from top to bottom: visibility (CardLayout), display (panels), state (domain objects); each layer is a distinct band; downward arrows on the left side show that upper layers may read from lower ones but not the reverse; brief role label inside each band | CONTENT: top band: "Visibility — CardLayout"; middle band: "Display — JPanel"; bottom band: "State — domain objects (Book, Loan)"; left-side arrows showing permitted read direction (top reads from middle, middle reads from bottom); a distinct "no" indicator showing that bottom layer has no knowledge of layers above | EXCLUSIONS: Java syntax, specific method names, getter/setter notation, UML, class diagrams, database layer, network layer, multiple application examples, constructor internals, access modifier symbols] -->
+
+*Figure 3.3 — Three-layer responsibility model: each layer knows the layer below, not the layer above*
 
 ---
 
@@ -305,3 +308,96 @@ If you used AI to generate the CardLayout skeleton, include the AI Use Disclosur
 - Peng et al. and Vaithilingam et al.: empirical work on AI coding assistance; the phase gate structure in this module is grounded in their findings on verification risk.
 
 *Current tool instructions, version-specific setup, and AI platform behavior require pre-offering verification.* [verify]
+
+---
+
+---
+# CAJAL SCOPE OUTPUTS
+*Inline comments are placement briefs. Run /scope on any figure description for full Illustrae-ready output.*
+
+---
+
+## Figure 1 — Screen-centric vs. state-centric mental model [CRITICAL]
+
+**ILLUSTRAE PASTE BLOCK**
+
+Single-column figure, 89mm width, flat vector, white background. Two side-by-side panels divided by a vertical rule. Left panel labeled "Screen model": four rounded rectangles arranged left to right (Search, Result, Checkout, Confirmation) connected by single-headed horizontal arrows. No objects visible anywhere in the panel. Right panel labeled "State model": the same four screen names rendered as thin horizontal labels above a single horizontal baseline; a single distinct Book object shape (filled rounded rectangle) appears at each screen position along the baseline, connected by a continuous line, visually emphasizing that the same object persists across all positions. Arrows in Bluish Green #009E73. Screen boxes in light gray. Book object shapes in Sky Blue #56B4E9. Vertical divider in Black #000000, 0.5pt. All strokes 1pt. Unannotated vector — no text labels baked in.
+
+**FULL SCOPE PROMPT**
+
+[S - SPECIFICATION]
+Single-column, 89mm width, vector output, white background, flat illustration style. No text labels in generated image — unannotated for manual annotation in Illustrae or Illustrator.
+
+[C - CONTENT]
+Left panel: four equal-width rounded rectangles in a horizontal row connected by rightward arrows — screen boxes only, no object shapes anywhere. Right panel: four short horizontal labels above a baseline; at each label position, a small distinct filled rounded rectangle (the Book object) sitting on the baseline; a continuous horizontal line connecting all four object shapes; object shapes visually identical at every position to show it is the same object.
+
+[O - ORGANIZATION]
+Horizontal two-panel layout, equal width panels, 1pt vertical rule at center. Left panel: left-to-right sequence of four boxes with arrows. Right panel: horizontal baseline with four object shapes evenly spaced, screen label floating above each shape, continuous line threading all four shapes.
+
+[P - PRESENTATION]
+Okabe-Ito palette. Left panel screen boxes: light gray fill, Black #000000 stroke 0.5pt. Arrows: Bluish Green #009E73, single-headed, 1pt. Right panel screen labels: light gray. Book object shapes: Sky Blue #56B4E9 fill, Blue #0072B2 stroke 0.5pt. Baseline and connecting line: Black #000000, 0.5pt. Vertical divider: Black #000000, 0.5pt. White background. No gradients, no drop shadows.
+
+[E - EXCLUSIONS]
+Java code of any kind, CardLayout label, setter method notation, UML class diagram notation, field names (title, author, available), Loan object, Library object, Patron object, multiple object types, database icons, network diagrams, constructor brackets, access modifier symbols, error states, navigation backward arrows.
+
+**NEGATIVE PROMPT**
+
+text labels, words, gibberish letters, titles, captions, decorative borders, realistic 3D textures, plastic wrap effects, drop shadows, gradient backgrounds, photographic elements, non-standard arrows, dual-headed arrows, skeletal chemical structures, hand-drawn styles, sketch lines, human figures, colorful cell backgrounds, visual clutter, overlapping unaligned paths, fuzzy borders, watermarks, red-green color combinations, rainbow color scales, 3D perspective distortion, UML notation, database cylinder icons, network diagrams, code snippets
+
+---
+
+## Figure 2 — CardLayout container structure [IMPORTANT]
+
+**ILLUSTRAE PASTE BLOCK**
+
+Single-column figure, 89mm width, flat vector, white background. One large outer rounded rectangle representing the container panel with CardLayout. Inside it, four equal-width child panel rectangles arranged side by side. The third panel (checkout) is filled with a distinct highlighted color to indicate it is currently visible. The other three panels are filled with a lighter recessed fill to indicate they are dormant but present. A small "visible" marker shape appears only above or within the checkout panel. No objects, no Java code, no field names inside any panel. All strokes 1pt. Outer container in Blue #0072B2 stroke, light fill. Visible panel in Sky Blue #56B4E9 fill. Recessed panels in light gray fill. Unannotated vector output.
+
+**FULL SCOPE PROMPT**
+
+[S - SPECIFICATION]
+Single-column, 89mm width, vector output, white background, flat illustration style. No text labels in generated image — unannotated for manual annotation.
+
+[C - CONTENT]
+One large outer rounded rectangle (the container). Inside it, four equal-width inner rounded rectangles side by side (the panels). Third panel from left filled with Sky Blue #56B4E9 (visible state). Remaining three panels filled with light gray (dormant state). Small distinct marker shape (filled circle or checkmark shape) positioned above or within the third panel to indicate active/visible status. Outer container has a slightly heavier stroke than inner panels.
+
+[O - ORGANIZATION]
+Outer container centered horizontally with generous padding. Four inner panels arranged in a single horizontal row with small equal gaps between them. Third panel highlighted. Marker shape centered above or within the third panel. Inner panels are equal width and equal height.
+
+[P - PRESENTATION]
+Outer container: Blue #0072B2 stroke 1pt, lightest Blue fill (#E6F1FB). Inner panels — visible (third): Sky Blue #56B4E9 fill, Blue #0072B2 stroke 0.5pt. Inner panels — dormant (first, second, fourth): light gray fill, gray stroke 0.5pt. Visible marker: Bluish Green #009E73 fill. White background. No gradients, no drop shadows.
+
+[E - EXCLUSIONS]
+Java syntax, string name labels ("search", "result", "checkout", "confirmation"), Book objects, Loan objects, setter methods, ActionListener, button shapes, field names, any content inside the panels, arrow connectors between panels, show() method call notation, constructor notation, access modifier symbols.
+
+**NEGATIVE PROMPT**
+
+text labels, words, gibberish letters, titles, captions, decorative borders, realistic 3D textures, plastic wrap effects, drop shadows, gradient backgrounds, photographic elements, non-standard arrows, dual-headed arrows, skeletal chemical structures, hand-drawn styles, sketch lines, human figures, visual clutter, overlapping unaligned paths, fuzzy borders, watermarks, red-green color combinations, rainbow color scales, 3D perspective distortion, code text, object shapes inside panels, arrow connectors between panels
+
+---
+
+## Figure 3 — Three-layer responsibility model [CRITICAL]
+
+**ILLUSTRAE PASTE BLOCK**
+
+Single-column figure, 89mm width, flat vector, white background. Three horizontal stacked band rectangles of equal height, separated by thin rules. Top band represents the visibility layer. Middle band represents the display layer. Bottom band represents the state layer. On the left margin, a single downward-pointing arrow spans from the top band edge to the bottom band edge, indicating the permitted direction of knowledge (upper layers may read from lower layers). On the right margin, a distinct "no" or blocked indicator positioned beside the bottom band, indicating that the state layer has no knowledge of layers above. Each band has a small blank label region for manual annotation. No Java syntax, no class names, no field names inside the bands. All strokes 1pt. Bands in distinct but related fills. Unannotated vector output.
+
+**FULL SCOPE PROMPT**
+
+[S - SPECIFICATION]
+Single-column, 89mm width, vector output, white background, flat illustration style. No text labels in generated image — unannotated for manual annotation.
+
+[C - CONTENT]
+Three horizontal band rectangles stacked top to bottom, equal height, separated by 1pt horizontal rules. Top band: visibility layer. Middle band: display layer. Bottom band: state layer. Left-side: a single downward arrow spanning the full height of all three bands — permitted read direction (layers read from those below). Right-side: a blocked/no indicator shape adjacent to the bottom band — state layer has no upward knowledge. Blank label region centered in each band.
+
+[O - ORGANIZATION]
+Three bands fill the full width (89mm). Equal height per band. Left margin arrow runs alongside all three bands, pointing downward. Right margin blocked indicator positioned at bottom-band level only. Bands separated by thin rules, not gaps.
+
+[P - PRESENTATION]
+Okabe-Ito palette. Top band (visibility): Blue #0072B2 at 10% opacity fill, Blue stroke 0.5pt. Middle band (display): Sky Blue #56B4E9 at 10% opacity fill, Sky Blue stroke 0.5pt. Bottom band (state): Bluish Green #009E73 at 10% opacity fill, Bluish Green stroke 0.5pt. Permitted-direction arrow: Black #000000, 1pt, single-headed downward. Blocked indicator: Vermillion #D55E00, simple X or stop shape. Band separator rules: Black #000000, 0.5pt. White background. No gradients, no drop shadows.
+
+[E - EXCLUSIONS]
+Java syntax, class names (CardLayout, JPanel, Book, Loan), method names, field names, getter/setter notation, UML symbols, database layer, network layer, additional application examples, constructor internals, access modifier symbols, multiple arrows, bidirectional arrows, any code text.
+
+**NEGATIVE PROMPT**
+
+text labels, words, gibberish letters, titles, captions, decorative borders, realistic 3D textures, plastic wrap effects, drop shadows, gradient backgrounds, photographic elements, non-standard arrows, dual-headed arrows, skeletal chemical structures, hand-drawn styles, sketch lines, human figures, colorful cell backgrounds, visual clutter, overlapping unaligned paths, fuzzy borders, watermarks, red-green color combinations, rainbow color scales, 3D perspective distortion, UML notation, code text, database icons, network diagrams, class diagram syntax
