@@ -100,8 +100,9 @@ Comparator<Book> byYearDescending = Comparator
 
 Notice what each of these is: a named rule. `byAuthorThenTitle` is not a tangle of string comparisons. It is an object with a name that describes its purpose. When the requirement changes — sort by author last name, then by title, then by edition — you modify this object. You add `.thenComparingInt(Book::getEdition)`. The sort call does not change. The collection does not change. The rule changes.
 
-![Side-by-side code comparison ](images/09-targeting-and-sorting-working-with-collections-fig-01.png)
-*Figure 9.1 — Side-by-side code comparison *
+<!-- → [SCOPE | Figure 1 | IMAGE: unnamed inline comparison tangle vs. named Comparator object — two-panel architectural contrast; left panel shows a sorting block with multiple unlabeled comparison branches converging on a result, visually tangled (crossed lines, no names on comparisons); right panel shows a single named Comparator box (the rule as an object) with a clean single arrow to the sort call, plus a second named Comparator box below it showing that an alternate rule can be swapped in by replacing the named object | CONTENT: left panel: sorting block with 4–5 unlabeled comparison lines crossing each other converging on a result node; right panel: two named rule boxes (byAuthorThenTitle, byYearDescending) as distinct labeled objects; clean single-headed arrow from the active rule box to a sort-call box; a visual "swap" indicator showing the inactive rule can replace the active one | EXCLUSIONS: Java syntax inside diagram shapes, method call notation, lambda symbols, specific field names baked in, Collection class labels, UML class diagram notation, memory allocation diagrams, inheritance arrows, access modifier symbols] -->
+
+*Figure 9.1 — Inline comparison tangle (left) vs. named Comparator objects (right): when the requirement changes, you replace a named thing, not excavate a tangle*
 
 To sort the library's book list by author then title:
 
@@ -183,8 +184,9 @@ List<Book> byAuthor = books.stream()
 
 The `filter` method takes a predicate — a function from an element to a boolean — and keeps only the elements for which the predicate returns `true`. Any condition expressible as a boolean can be a filter predicate.
 
-![Stream pipeline diagram ](images/09-targeting-and-sorting-working-with-collections-fig-02.png)
-*Figure 9.2 — Stream pipeline diagram *
+<!-- → [SCOPE | Figure 2 | IMAGE: stream pipeline — a horizontal left-to-right pipeline diagram showing a source collection entering from the left, passing through three labeled stage boxes (filter, sorted, collect), and producing a smaller result collection on the right; the original source collection shown persisting unchanged below the pipeline with a visual "untouched" indicator; element shapes (representing books) visible at the source, some eliminated at the filter stage, all sorted at the sorted stage, and collected into the result | CONTENT: source collection box (left, larger, containing 6–8 element shapes); filter stage box (center-left, labeled); sorted stage box (center, labeled); collect stage box (center-right, labeled); result collection box (right, smaller, containing 3–4 element shapes in sorted order); original source collection shown below the pipeline unchanged (same 6–8 elements, same order) with a visual disconnect from the pipeline indicating it is not modified; eliminated elements shown as faded/absent after the filter stage | EXCLUSIONS: Java syntax inside stage boxes, lambda notation, method names baked into shapes, Collectors class label, specific book field values, specific author names, stream() method call notation, code text of any kind, UML notation, database icons] -->
+
+*Figure 9.2 — Stream pipeline: source enters left, filter reduces, sorted reorders, collect materializes — original collection untouched below*
 
 There is one thing to watch for. Stream operations produce a new collection; they do not modify the original. If you call `books.stream().filter(...)` and do not assign the result, nothing changes. This is the most common beginner error with streams, and it is invisible: the code compiles, the operation runs, the result is discarded.
 
@@ -360,5 +362,3 @@ If you used AI to write a `Comparator`, include the ordering rule you provided �
 - *Java Language Specification* and the Java SE API documentation: authoritative sources on `Comparator`, `Comparable`, `Collections`, `List`, `Map`, `Set`, and the stream API.
 - Robins, Rountree, and Rountree, "Learning and Teaching Programming": research on the abstraction difficulties that collection-choice reasoning requires.
 - Peng et al. and Vaithilingam et al.: empirical work on AI coding assistance; the operation-profile phase gate is grounded in their findings on verification risk when collection-type decisions are delegated.
-
-*Current tool instructions, version-specific setup, and AI platform behavior require pre-offering verification.* [verify]
