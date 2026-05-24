@@ -1,0 +1,13 @@
+{
+  "name": "info-5100-application-engineering-and-development",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "INFO 5100 Application Engineering and Development",
+  "scripts": {
+    "svg-to-png": "node SCRIPTS/svg-to-png.mjs"
+  },
+  "dependencies": {
+    "sharp": "^0.33.0",
+    "glob": "^10.0.0"
+  }
+}

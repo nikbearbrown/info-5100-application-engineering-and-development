@@ -1,0 +1,18 @@
+date,book,chapter_slug,word_count,sources_count,verify_flag_count,pantry_notes_found,pantry_lib_files_used,thin_pantry,mechanism_explained,contested_claims_flagged
+2026-05-23,info-5100-application-engineering-and-development,01-introduction,838,0,0,no,0,no,"Roadmap explains the Java plus AI-verification course arc.",0
+2026-05-23,info-5100-application-engineering-and-development,02-setup,1588,8,1,yes,0,no,"Setup becomes the first evidence-based verification habit.",0
+2026-05-23,info-5100-application-engineering-and-development,03-introduction-socio-technical-engineering-and-the-object-model,1619,0,1,yes,0,no,"Students learn to read running code as a business model before writing new code.",0
+2026-05-23,info-5100-application-engineering-and-development,04-creating-and-displaying-multiple-objects,1573,8,1,yes,0,no,"The chapter builds the reference-versus-object mental model needed for later debugging.",0
+2026-05-23,info-5100-application-engineering-and-development,05-user-interaction-design,1563,8,1,yes,0,no,"User interaction becomes an auditable path between object states.",0
+2026-05-23,info-5100-application-engineering-and-development,06-finding-bugs-the-debugging-workflow,1579,8,1,yes,0,no,"The chapter teaches debugging as causal diagnosis rather than output patching.",0
+2026-05-23,info-5100-application-engineering-and-development,07-modeling-the-supply-side,1546,8,1,yes,0,no,"The chapter separates durable business resources from user transactions.",0
+2026-05-23,info-5100-application-engineering-and-development,08-designing-the-person-into-the-application,1580,8,1,yes,0,no,"Authentication becomes an object-model and risk-reasoning problem, not a pasted code block.",0
+2026-05-23,info-5100-application-engineering-and-development,09-order-processing-and-polymorphism,1554,8,1,yes,0,no,"The chapter turns inheritance into a design strategy for extensible transaction behavior.",0
+2026-05-23,info-5100-application-engineering-and-development,10-digital-ecosystems-data-management-and-crud,1579,8,1,yes,0,no,"The chapter makes data lifecycle and failure states visible before persistence code is accepted.",0
+2026-05-23,info-5100-application-engineering-and-development,11-targeting-and-sorting-working-with-collections,1563,8,1,yes,0,no,"The chapter connects collection type to access-pattern reasoning and performance consequences.",0
+2026-05-23,info-5100-application-engineering-and-development,12-introduction-to-gui-programming-with-javafx,1554,0,1,yes,0,no,"The chapter separates model truth from visual representation.",0
+2026-05-23,info-5100-application-engineering-and-development,13-event-driven-programming-making-the-application-respond,1526,8,1,yes,0,no,"The chapter makes user actions traceable through event, handler, model update, and view refresh.",0
+2026-05-23,info-5100-application-engineering-and-development,14-advanced-gui-scene-builder-and-complex-interfaces,1558,8,1,yes,0,no,"The chapter keeps visual design and controller logic connected but separate.",0
+2026-05-23,info-5100-application-engineering-and-development,15-advanced-data-collections-unit-testing-and-lambda,1576,8,1,yes,0,no,"The chapter turns correctness from guesswork into stated and executable behavioral claims.",0
+2026-05-23,info-5100-application-engineering-and-development,16-final-project-complete-application-with-ecosystem-design,1576,8,1,yes,0,no,"The chapter integrates Java implementation, object-oriented design, testing, GUI delivery, and accountable AI collaboration.",0
+2026-05-23,info-5100-application-engineering-and-development,97-fundamental-themes,311,0,0,no,0,no,"Appendix consolidates the course's fundamental themes.",0
