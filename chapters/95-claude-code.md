@@ -1,98 +1,91 @@
 # Appendix: Claude Code for Java
+*The tool that can change your project can also change it wrong. The question is whether you will notice.*
 
-This appendix is a rough working guide for using Claude Code in INFO 5100. It is meant to travel with every module. Keep it open while you work.
+There is a specific kind of mistake that fluent AI output makes possible. The code compiles. It runs in the demo. It looks like the code you would have written if you understood the problem. But you did not write it — you accepted it — and you do not understand it in the way that matters: you cannot predict what it does in a case you have not tested, you cannot explain why it is designed this way rather than another way, and you cannot defend it when someone asks.
 
-Claude Code is powerful because it can work inside a codebase. It can read files, search files, suggest edits, make edits, and run commands when you permit it. That is exactly why this course treats it carefully. A tool that can change your project can help you move faster. It can also help you create code you cannot explain.
+That mistake is not unique to AI. Students have always been able to copy code they do not understand. What AI changes is the fluency of the output and the invisibility of the gap. Copied code from Stack Overflow at least forces you to adapt it. AI-generated code arrives shaped exactly for your problem, in your naming conventions, with comments that sound like your reasoning. The gap between "I understand this" and "I accepted this" has never been harder to see from the outside — or from the inside.
 
-The rule for the course is simple:
+Claude Code is powerful in this course because it can work inside your project. It can read your files, trace your object structure, find inconsistencies across modules, suggest test cases, and generate scaffolding. Those capabilities are genuinely useful. They are also exactly why this appendix exists: a tool that can change your project is a tool that requires you to understand your project well enough to evaluate what comes back.
 
-> Claude Code may help only after you have enough understanding to verify what comes back.
+The rule is simple. Claude Code may help only after you have enough understanding to verify what comes back. Not after you have finished — after you have enough. That threshold moves across the semester. This appendix describes where it is at each stage.
 
-If you cannot explain the requirement, trace the behavior, test the result, or reject a plausible wrong answer, you are using Claude Code too early.
+---
 
-## What Claude Code Is For In This Course
+## What Claude Code Is For, and What It Is Not
 
-Use Claude Code as a tutor, reviewer, scaffold builder, and second reader. Do not use it as the engineer of record.
+Think of Claude Code in this course as having four legitimate roles: tutor, reviewer, scaffold builder, and second reader. It is not the engineer of record. The engineer of record is you.
 
-Good uses:
+As a tutor, Claude Code explains things. It can explain a Java error message if you paste the exact text. It can explain a piece of code line by line. It can quiz you on a class you already wrote, checking whether you understand fields, methods, and object instances. Explanation is safe because the output is text you evaluate, not code you run.
 
-- Explain a Java error message after you paste the exact text.
-- Ask quiz questions about a class you already wrote.
-- Generate layout or controller scaffolding after you supply the design.
-- Suggest debugging hypotheses after you state your own first.
-- Review a class for responsibility leaks.
-- Suggest test cases after you describe intended behavior.
-- Find inconsistencies across files before the final project defense.
+As a reviewer, Claude Code reads what you have already built and looks for problems. It can identify responsibility leaks in a class — places where one object is doing work that belongs to another. It can find inconsistencies between your FXML `fx:id` values and your controller field names. It can suggest places where your authentication logic might not match your stated threat model. Reviewing is useful because the judgment is still yours: Claude identifies candidates, you decide whether they are real problems.
 
-Bad uses:
+As a scaffold builder, Claude Code generates structural code from specifications you supply. Given a precise ordering rule, it writes a `Comparator`. Given an FXML file, it generates a controller stub with the right `@FXML` fields and empty handler signatures. Given a written class specification, it produces a class skeleton with empty method bodies. Scaffolding is appropriate when the design is yours and you need the mechanical translation into Java syntax.
 
-- "Write the assignment for me."
-- "Fix this bug" before you have a hypothesis.
-- "Design my classes" before you have named what each class knows and does.
-- "Generate my authentication system" before you have stated the threat model.
-- "Make the GUI work" before you can trace model state to view state.
-- "Write my tests" before you know what behavior the tests should prove.
+As a second reader, Claude Code checks your work against itself. Before the final project defense, you can ask it to read your entire codebase and identify inconsistencies — places where a class name in one module does not match the same class referenced in another, or where a field declared private is accessed in a way that assumes it is public. This is the kind of consistency check that is tedious for humans and straightforward for a tool with access to all your files simultaneously.
 
-Claude Code can reduce friction. It cannot remove your responsibility.
+What Claude Code is not: the tool that decides what your application does, what your objects model, how your data is stored, or what your security properties are. Those are engineering decisions. They require understanding your domain, your requirements, and the tradeoffs between possible designs. Claude Code does not have that understanding. You do, or you are in the process of building it.
 
-## The Three Things You Must Write Before Asking
+---
 
-Before you ask Claude Code for help, write three short statements:
+## The Three Things You Write Before Asking
 
-1. **Requirement:** What should the program do?
-2. **Artifact:** Where should that behavior live? Name the class, method, handler, file, test, or FXML element.
-3. **Evidence:** What would prove the answer is acceptable?
+There is a concrete discipline that separates productive Claude Code use from delegation. Before you ask Claude Code for help on any implementation task, write three short statements:
 
-Example:
+**Requirement:** What should the program do? Not "implement checkout" — that is a task. "A patron can check out an available book, the book becomes unavailable, and the patron's borrowed list is updated" — that is a requirement.
 
-```text
-Requirement: A patron can check out an available book.
-Artifact: CheckoutTransaction.process() changes Book.available and Patron.borrowedBooks.
-Evidence: After checkout, the book is unavailable, the patron list contains the book,
-and a second checkout attempt fails with a clear message.
-```
+**Artifact:** Where should that behavior live? Name the class, method, handler, field, test, or FXML element. If you cannot name it, you do not yet know where the code goes. Claude Code cannot know either.
 
-Now Claude Code has something to work against. Without those three statements, it will guess. The guess may be fluent. That is the danger.
+**Evidence:** What would prove the answer is acceptable? "It runs" is not evidence. "After checkout, `book.isAvailable()` returns false, `patron.getBorrowedBooks()` contains the book, and a second checkout attempt returns a failure message" — that is evidence.
+
+When these three statements exist, Claude Code has something to work against. It can evaluate whether its output satisfies the requirement, whether the artifact is the right place for the behavior, and whether the evidence conditions can be met. Without them, it guesses. The guess will be fluent. That is the danger.
 
 <!-- → [TABLE: Claude Code readiness checklist — columns: item, question to answer, example answer, what happens if missing; rows: requirement, artifact, evidence, current module phase gate, forbidden AI action, verification method.] -->
 
-## Project Setup
-
-Claude Code uses project context. In a real project, that context can include a `CLAUDE.md` file, settings, and optional custom commands.
-
-A simple course project may eventually look like this:
+Here is what a complete pre-ask statement looks like for the library domain:
 
 ```text
-my-info5100-project/
-  CLAUDE.md
-  .claude/
-    settings.json
-    commands/
-      explain-error.md
-      review-class.md
-      suggest-tests.md
-  src/
-    main/
-      java/
-  test/
-    java/
-  README.md
+Requirement: A patron can check out an available book.
+Artifact: CheckoutTransaction.process() changes Book.available
+          and Patron.borrowedBooks.
+Evidence: After checkout, book.isAvailable() returns false,
+          patron.getBorrowedBooks() contains the book,
+          and a second checkout attempt fails with a clear message.
 ```
 
-The exact tool setup may change before the course runs. Follow the current course setup instructions. Treat any installation or command detail in this appendix as something to verify for the current semester. [verify]
+That is three sentences. Writing them takes three minutes. What they protect is the difference between code you understand and code you accepted.
 
-## The Course CLAUDE.md
+---
 
-The project `CLAUDE.md` is not a magic shield. It is an instruction file. It tells Claude Code how to behave in this project. A weak file says, "help me with Java." A useful file says what Claude may do, what it may not do, and what evidence the student must produce.
+## The Phase Gates
 
-Start with this:
+The course relaxes AI assistance as your verification skill grows. What Claude Code may do in Module 0 is much narrower than what it may do in Module 12, because in Module 12 you have built enough understanding to evaluate more complex outputs.
+
+The gates are not arbitrary restrictions. They are calibrated to what you can verify at each stage. A gate that prevents Claude Code from generating authentication logic before Module 6 is not bureaucracy — it is the recognition that you cannot evaluate authentication logic before you understand threat modeling, hashing, and the separation between `Person` and `UserAccount`. If the gate were not there, Claude Code would generate a plausible login system, you would accept it, and you would have credentials stored in a way you cannot defend.
+
+<!-- → [FIGURE: Claude Code phase gate ladder from Module 0 diagnostic-only use through Module 14 full collaboration, with each rung showing what Claude may do and what the student must own.] -->
+
+In the early modules (0–2), Claude Code is diagnostic only. It explains errors you paste, quizzes you on code you already wrote, and clarifies terminology. It does not write submitted code. The first object you build in this course must be built by you, because building it is how you learn what building it involves.
+
+In the middle modules (3–7), Claude Code becomes a scaffold and coach. It can generate layout skeletons after you provide the screen flow. It can generate class stubs after you write the specification. It can review an inheritance hierarchy after you write the is-a statements. In every case, the design work precedes the generation. Claude Code implements what you have already decided.
+
+In the later modules (8–12), Claude Code assists with implementation. It can generate persistence boilerplate after you have answered the data-loss questions. It can generate comparators from precise ordering rules. It can generate FXML controller stubs from the FXML you designed. The scope of what it generates expands, but the principle does not change: your specification precedes its output.
+
+In the final modules (13–14), Claude Code becomes a synthesis assistant. It suggests test cases from behavior descriptions you provide. It reviews the project for inconsistencies. You write the final project's `CLAUDE.md` from scratch, specifying what Claude may and may not do for your specific application. That document is assessed. It must be specific. A `CLAUDE.md` that says "help me with Java" is not a design document; it is evidence that the process was not visible.
+
+---
+
+## The CLAUDE.md File
+
+The project `CLAUDE.md` is an instruction file. It tells Claude Code how to behave in this project. A weak file produces weak assistance: Claude makes plausible guesses about what you need, generates code shaped by generic Java conventions rather than your specific requirements, and marks no design decisions because it was not asked to.
+
+A useful `CLAUDE.md` states what Claude may do, what it may not do, and what evidence you must produce before accepting generated code. For the course project, start with this:
 
 ```text
 You are assisting a graduate Java student in INFO 5100.
 
 The goal is not to finish the code as quickly as possible.
-The goal is to help the student understand, build, debug, test, and defend
-their own object-oriented Java application.
+The goal is to help the student understand, build, debug, test,
+and defend their own object-oriented Java application.
 
 Rules:
 - Explain before generating.
@@ -104,372 +97,87 @@ Rules:
 - Never let plausible Java substitute for verified Java.
 ```
 
-Then add the current module's phase gate.
+Then add the current module's phase gate. The phase gate tells Claude what the module requires you to produce before asking for help — the screen flow table before navigation scaffolding, the threat model before authentication code, the is-a statements before inheritance review.
 
-## Phase Gates Across The Course
+The `CLAUDE.md` serves two purposes. The first is instrumental: it shapes Claude's behavior in the project. The second is epistemic: writing it forces you to articulate what you own and what you are asking for help with. A student who cannot write a `CLAUDE.md` specific to their application does not yet understand their application well enough to defend it.
 
-The course relaxes AI assistance as your verification skill grows.
+---
 
-| Modules | Constraint level | Claude Code may do | You must own |
-|---|---|---|---|
-| 0-2 | Diagnostic only | Explain errors, quiz you, clarify terms | First code, class structure, object tracing |
-| 3-4 | Scaffold and coach | Generate layout skeletons, explain debugging categories | Business behavior, bug hypothesis, root-cause reasoning |
-| 5-7 | Design review | Generate stubs from written specs, critique hierarchies | Class boundaries, is-a reasoning, inheritance validity |
-| 8-9 | Implementation assist | Generate persistence boilerplate, comparators, collection code | Data-loss decisions, collection choice, access-pattern rationale |
-| 10-12 | GUI assist | Generate view scaffolds, FXML/controller stubs, event registration | User workflow, model-view separation, handler responsibility |
-| 13-14 | Synthesis assist | Suggest test cases, review inconsistencies, draft documentation | Assertions, final architecture, project-specific Claude rules, defense |
+## Module-Level Boundaries
 
-<!-- → [FIGURE: Claude Code phase gate ladder from Module 0 diagnostic-only use through Module 14 full collaboration, with each rung showing what Claude may do and what the student must own.] -->
+Each module's boundary follows the same logic: Claude may help with the mechanical part of the module's skill after you have done the design part. The design part is what you own. The mechanical part is where AI assistance is appropriate.
 
-## Module Rules
+**Module 3 (User Interaction).** Claude may generate CardLayout or FXML navigation scaffolding only after you provide the screen flow table: screen, user action, object involved, state before, state after, next screen. Without the table, Claude generates a plausible navigation structure for a plausible application. With the table, Claude implements your flow.
 
-### Module 0: Setup
+**Module 4 (Debugging).** This is the strictest gate in the course, for a reason. The skill this module teaches is forming hypotheses about failure and testing them. AI assistance before you have formed a hypothesis teaches you nothing and robs you of the practice. You must provide symptom, suspected cause, isolation evidence, and the next thing you plan to check. Only then may Claude assess whether the hypothesis is plausible and suggest what to inspect. Claude does not identify the bug. You do.
 
-Claude Code may explain setup errors. Before asking, collect:
+**Module 6 (Authentication).** Claude must not generate authentication logic before you state the threat model. The threat model question is: if someone reads my user data file, what can they do? Write that answer before asking for code. Claude must not generate plaintext password storage under any framing. If it does, reject it. If you are not sure whether a storage design is plaintext or hashed, that uncertainty is the signal to ask for an explanation, not to accept the output.
 
-- operating system
-- JDK version
-- `javac` version
-- NetBeans version
-- full error message
+**Module 8 (Persistence).** Before Claude generates file I/O code, you answer four questions: What happens if the file does not exist? What happens if a read fails? What happens if a write fails halfway through? How much data loss is acceptable? You own the data-loss policy. Claude writes the boilerplate that implements it.
 
-Do not let Claude move you to a different IDE or invent a different course version.
+**Module 12 (Scene Builder).** Claude may generate controller stubs from FXML you provide. It may not invent FXML for an unspecified workflow. The prompt structure is: here is my FXML, generate `@FXML` fields and empty handler stubs, note every `fx:id` connection, do not implement handler logic. After receiving the stub, verify it against your mapping table before adding implementation.
 
-### Module 1: Object Model
+**Module 14 (Final Project).** You write the `CLAUDE.md` for your final project. It is specific to your application, your domain objects, your workflows, and your data-loss and security policies. It names what Claude may do, what Claude may not do, which design decisions you own, and how you will verify every AI-assisted component. A generic template is not acceptable. Generic templates describe generic applications, and your semester project is not generic.
 
-Claude may explain provided Java code line by line. It may not write new submitted code.
+---
 
-Use:
+## The Three-Question Audit
 
-```text
-Explain what this Java code does line by line.
-Do not rewrite it.
-After explaining, ask me three questions to check whether I understand it.
-```
+Before accepting any AI-assisted component — code, test, design suggestion, or documentation — answer three questions:
 
-### Module 2: Multiple Objects
+First: can you explain what this component does without using Claude's explanation? Not "Claude said it checks the hash" but "this method hashes the supplied password with SHA-256 and compares the result to the stored hash using `.equals()`." If your explanation requires borrowing Claude's words, you have accepted but not understood.
 
-Claude may quiz you on a class you already wrote. It may identify possible design issues. It may not write the first class body.
+Second: can you explain why it is designed this way, including the alternative you rejected? Not "Claude designed it this way" but "I stored `patronId` as a string rather than a `Patron` reference because holding a reference would give authentication code access to borrowing history, which violates separation of concerns." The alternative matters. Understanding a design decision means knowing what it costs.
 
-Use:
+Third: can you trace the non-trivial behavior to a test, a debugger trace, an inspection step, or an explicit reason it was not tested? If a method has a null path you have not exercised, you need a reason — the requirement rules out null input, or the field is always set in the constructor — not just an absence of testing. Untested does not mean correct.
 
-```text
-Here is my Book class.
-Ask me five questions that test whether I understand fields, methods,
-constructors, and object instances.
-Do not rewrite the class.
-```
+If any answer is no, the component is not ready. Put it back. Ask Claude for an explanation, not a replacement.
 
-### Module 3: User Interaction
+---
 
-Claude may generate CardLayout or navigation scaffolding only after you provide the screen flow. It may not decide business behavior.
+## The AI Use Disclosure
 
-Before asking, write:
+Every lab requires an AI use disclosure. The disclosure is not a formality. It is evidence that a process happened. A disclosure that says "I used Claude to help with the code" is a confession that the process is not visible. It proves nothing about what you understood or what you verified.
 
-```text
-Screen 1:
-User action:
-Object involved:
-State before:
-State after:
-Next screen:
-```
-
-### Module 4: Debugging
-
-This is the hardest gate.
-
-Claude may not identify or fix the bug before you state your hypothesis. You must first provide:
-
-- symptom
-- suspected cause
-- where you isolated it
-- evidence from running, tracing, or the debugger
-
-Use:
-
-```text
-Symptom: [what I observed]
-Hypothesis: [what I think is causing it]
-Isolation evidence: [where I checked]
-
-Is this hypothesis plausible?
-Do not fix the code yet.
-Ask me what evidence I should collect next.
-```
-
-### Module 5: Supply-Side Modeling
-
-Claude may generate class stubs only from a written specification.
-
-For each class, write:
-
-```text
-Class:
-What it knows:
-What it does:
-What it must not do:
-Related classes:
-```
-
-Ask Claude to generate stubs with empty method bodies and design-decision comments.
-
-### Module 6: Person And Authentication
-
-Claude must not generate authentication code before you state the threat model.
-
-Write first:
-
-```text
-If someone reads my user data file, what can they do?
-What should they still not be able to do?
-What password information, if any, will be stored?
-```
-
-Claude must not generate plaintext password storage.
-
-### Module 7: Polymorphism
-
-Claude may review an inheritance hierarchy only after you write is-a statements.
-
-```text
-CheckoutTransaction is a Transaction because...
-ReserveTransaction is a Transaction because...
-RenewTransaction is a Transaction because...
-```
-
-If you cannot finish the sentence, you do not have an inheritance design yet.
-
-### Module 8: CRUD And Persistence
-
-Before Claude generates persistence code, answer:
-
-```text
-What happens if the file does not exist?
-What happens if a read fails?
-What happens if a write fails halfway through?
-How much data loss is acceptable?
-```
-
-Claude may write CSV boilerplate. You own the data-loss policy.
-
-### Module 9: Collections
-
-Before Claude chooses `List`, `Map`, or `Set`, answer:
-
-```text
-What are the three most common operations?
-What is the expected size?
-Is order required?
-Is uniqueness required?
-Is lookup by key required?
-```
-
-Claude may suggest code only after the access pattern is clear.
-
-### Module 10: JavaFX Views
-
-Claude may generate view code. It may not generate model logic or event-handler behavior.
-
-Require comments like:
-
-```text
-DATA SOURCE: This column displays Book.title.
-STUDENT VERIFY: Run with real Book objects, not hardcoded strings.
-```
-
-### Module 11: Events
-
-Before asking for a handler, write the action sequence:
-
-```text
-When the user clicks [button], the application should:
-1.
-2.
-3.
-```
-
-Claude should generate a handler that calls separate methods. One action, one method.
-
-### Module 12: Scene Builder And FXML
-
-Claude may generate controller stubs from FXML. It must map every `fx:id` and handler.
-
-Ask:
-
-```text
-Here is my FXML.
-Generate controller fields and handler stubs only.
-For every field, write CONNECTS TO: [fx:id].
-For every handler, write TRIGGERED BY: [UI element].
-Do not implement handler logic.
-```
-
-### Module 13: Testing
-
-Claude may suggest test cases. It should not write the JUnit code before you state intended behavior.
-
-Ask:
-
-```text
-Method behavior: [plain-English behavior]
-Inputs:
-Expected output:
-Business rule:
-
-List test cases only.
-For each case, name input, expected output, and category:
-normal, boundary, error, null, or regression.
-Do not write JUnit code.
-```
-
-### Module 14: Final Project
-
-You write the final project `CLAUDE.md`. It is assessed. It must be specific to your application.
-
-It must name:
-
-- what Claude may do
-- what Claude may not do
-- which design decisions you own
-- which files or behaviors require special care
-- how you will verify every AI-assisted component
-
-## Permissions And Sensitive Files
-
-Claude Code can be configured with project and user settings. Settings can control permissions, tool behavior, environment variables, and file access. In a classroom project, the most important idea is simple: do not give an AI tool access to secrets or files you do not want read.
-
-If your project ever has API keys, credentials, private data, or `.env` files, those files should be denied or excluded according to current Claude Code settings guidance. This course project should not require real secrets.
-
-Student rule:
-
-> If you would not paste the file into a public classroom chat, do not expose it to Claude Code without explicit instructor guidance.
-
-## Custom Slash Commands
-
-Claude Code supports slash commands. You can think of a slash command as a reusable prompt stored in the project.
-
-Useful course commands:
-
-```text
-/explain-error
-/quiz-class
-/review-hypothesis
-/review-class-design
-/suggest-test-cases
-/draft-ai-disclosure
-/final-defense-audit
-```
-
-Example command file:
-
-```text
-.claude/commands/review-hypothesis.md
-```
-
-Possible content:
-
-```text
-Review my debugging hypothesis.
-Do not fix the code.
-Tell me whether the hypothesis is plausible,
-what evidence would strengthen it,
-and what I should inspect next.
-```
-
-Use commands to preserve the course gates. Do not create commands that bypass them.
-
-## The Three-Question AI Audit
-
-Before accepting any AI-assisted component, answer:
-
-1. Can I explain what this component does without using Claude's explanation?
-2. Can I explain why it is designed this way, including the alternative I rejected?
-3. Can I trace the non-trivial behavior to a test, debugger trace, inspection step, or explicit reason it was not tested?
-
-If any answer is no, the component is not ready.
-
-## AI Use Disclosure
-
-Every lab needs a disclosure. Use this template:
-
-```text
-I used Claude Code for:
-
-Prompt or command used:
-
-Claude's useful contribution:
-
-What I changed or rejected:
-
-How I verified the accepted part:
-
-One thing I still own:
-```
-
-Good disclosure:
+A useful disclosure names the specific task, the prompt or command used, what Claude contributed that was worth keeping, what you changed or rejected and why, and how you verified the part you accepted. Here is an example for Module 9:
 
 ```text
 I used Claude Code to suggest boundary test cases for Catalog.searchByTitle.
-It suggested empty catalog, no match, one match, and multiple matches.
-I rejected the null-input behavior because our requirement says null search text
-should be treated as an empty string, not as an exception.
-I wrote the JUnit tests myself and verified that two failed before I fixed the method.
-I still own the search requirement and the interpretation of what counts as a match.
+Prompt: "List test cases for a title search that returns a List<Book>.
+        Categories: normal, boundary, error, null."
+Claude suggested: empty catalog, no match, one match, multiple matches, null query.
+I rejected the null-query case — our requirement treats null as an empty string,
+not as an exception, so the expected output is an empty list, not a throw.
+I wrote the JUnit tests myself. Two failed before I fixed the method.
+I own the search requirement and the definition of what counts as a title match.
 ```
 
-Weak disclosure:
+That disclosure proves something. It shows the gate held: Claude suggested, you evaluated, you rejected one case on substantive grounds, you wrote the code, you ran the tests, two failed. The process is visible. The understanding is defensible.
 
-```text
-I used Claude to help with the code.
-```
+The disclosure also serves a function beyond the lab grade. Writing it makes visible any place where you accepted without verifying. If you cannot fill in "what I changed or rejected," you probably accepted everything. That is the signal to go back.
 
-That is not a disclosure. It is a confession that the process is not visible.
+---
 
-## Final Project Claude File Template
+## Permissions and the Project Boundary
 
-Use this as a starting point, then make it specific.
+Claude Code can be configured with project and user settings that control which files it can read, which commands it can run, and what tools it can invoke. In this course, the configuration concern is simple: do not give any AI tool access to secrets or files you would not paste into a public classroom chat.
 
-```text
-Project:
-Domain:
-Main workflow:
+This course project should not require real secrets. But the habit matters beyond this course. API keys, database credentials, private keys, and `.env` files should be excluded from AI tool access by default. The student rule is: if you would not paste the file into a public classroom chat, do not expose it to Claude Code without explicit instructor guidance.
 
-Claude may help with:
-- explanations of existing code
-- scaffolds for view/controller wiring
-- suggestions for test cases
-- consistency checks across files
+The exact setup details — how to configure settings, which tool version to use, which commands are available — change semester to semester and should be verified against current course instructions. This appendix describes the principles. The course setup guide describes the mechanics.
 
-Claude may not decide:
-- domain model boundaries
-- authentication behavior
-- data-loss policy
-- collection choices
-- final architecture
-- what counts as satisfying the requirement
+---
 
-For every generated or revised code block, include:
-- requirement being addressed
-- design assumption
-- verification step
-- possible failure mode
+## What Ownership Actually Means
 
-If my prompt is vague, ask for the missing requirement instead of guessing.
-If I ask for a complete solution, give me the smallest scaffold that lets me
-do the engineering work myself.
-```
+The closing rule of this appendix is: Claude Code can make the work faster. It cannot make the work yours.
 
-## Closing Rule
+The work becomes yours through a specific process. You state what you asked for. You describe what came back. You name what you checked and how. You name what you rejected and why. You explain why the final design is defensible — not just "it works" but "it works because it implements this requirement, and I verified that by doing this, and the alternative I rejected would have had this problem."
 
-Claude Code can make the work faster. It cannot make the work yours.
+That process is visible. It produces evidence. It is the standard this course holds you to, because it is the standard a professional engineer is held to. The professional engineer does not say "the AI generated it and it runs." They say "this design choice was deliberate, these are the tradeoffs, this is how I know it satisfies the requirement."
 
-The work becomes yours when you can say:
+The course moves from diagnostic-only AI use to full synthesis assistance not because the rules become less strict but because your ability to verify expands. In Module 14, Claude Code may do more than in Module 0 because you can evaluate more. The threshold is always the same: you must be able to verify what comes back. What changes is the scope of what you can verify.
 
-- this is what I asked for
-- this is what came back
-- this is what I checked
-- this is what I rejected
-- this is why the final design is defensible
+By the end of the semester, when you write the final project's `CLAUDE.md`, you are not describing constraints on a tool. You are describing your own engineering judgment — what you own, what you are willing to delegate, and what evidence you require before accepting anything back. That document is a statement of professional practice. Write it as one.
 
-That is the standard for this course.
+*Current tool instructions, version-specific setup, and AI platform behavior require pre-offering verification.* [verify]
