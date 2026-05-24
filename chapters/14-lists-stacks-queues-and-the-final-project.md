@@ -86,11 +86,7 @@ The event layer connected user actions to the model through handlers that transl
 
 What you have built is a layered system where each layer has a defined responsibility, a defined boundary, and a defined interface to the layers above and below it. The examiner's question — "why did you design it this way?" — is answered by pointing to the layers and explaining what each one is for.
 
-![Layered architecture diagram of the complete application ](images/14-final-project-complete-application-with-ecosystem-design-fig-01.png)
-*Figure 14.1 — Layered architecture diagram of the complete application *
-
-![Final defense matrix for Module 14, showing the](images/14-final-project-complete-application-with-ecosystem-design-fig-02.png)
-*Figure 14.2 — Final defense matrix for Module 14, showing the*
+<!-- → [SCOPE | Figure 14.1 | IMAGE: five-layer stacked architecture diagram for the complete semester project — layers from bottom to top in build order: Supply side (Book/Author/Patron/Catalog, M1–3), Transaction layer (CheckoutTransaction/PatronSession, M4–7), Persistence layer (CSV load/save/round-trip, M8), View layer (JavaFX/TableView/BorderPane, M10–11), Event layer (handlers/controller/model-view bridge, M11); each layer labeled with its name, its contents, its key constraint (e.g. "no knowledge of screens"), and the module range where it was built; vertical "build order" annotation on the right; summary note: "each layer depends only on layers below it — no layer reaches up" | CONTENT: five stacked labeled bands, module range labels, key constraint lines per band, build-order annotation | EXCLUSIONS: specific method signatures, class diagrams, UML notation, the defense rubric, the AI audit form — architecture only] -->
 
 ---
 
@@ -118,8 +114,7 @@ This is the question that separates engineering from transcription. The code may
 
 Three questions. Every AI-assisted component. No exceptions.
 
-![Three-question audit form ](images/14-final-project-complete-application-with-ecosystem-design-fig-03.png)
-*Figure 14.3 — Three-question audit form *
+<!-- → [SCOPE | Figure 14.3 | IMAGE: three-question AI audit form, completed with the persistence layer example from the chapter — structured as a filled disclosure form with three numbered sections: Q1 (purple): "what did you ask AI to do and what did it produce?" → answer names saveToFile task, prompt, and AI's failure to handle missing directory; Q2 (teal): "what did you verify and how?" → answer names the round-trip test specifically; Q3 (amber): "what did you decide that AI could not?" → answer names the first-run vs. mid-session missing-file decision; gate note at bottom: "if you cannot name a judgment you made that AI could not, inspect the component more carefully" | CONTENT: component label, three numbered question blocks with filled answers from the chapter's persistence example, gate note | EXCLUSIONS: generic blank form without example content — the example makes the form concrete; defense rubric content; architecture layers] -->
 
 ---
 
@@ -145,6 +140,8 @@ The same structure applies to every decision you defend:
 - If the requirements changed, which decision would change?
 
 Three decisions, prepared in this structure, before the defense.
+
+<!-- → [SCOPE | Figure 14.2 | TABLE: defense rubric — four rows (one per examiner question), three columns: Examiner question, Weak answer (what it reveals about the student), Strong answer (what it demonstrates); rows: "What does this component do?" / "What alternatives existed?" / "Why this choice for your requirements?" / "What would you change?"; each weak/strong answer cell uses the HashMap/linear-search example from the chapter | CONTENT: 4×3 rubric table, weak-answer column with coral badge, strong-answer column with teal badge, HashMap example populating all cells | EXCLUSIONS: the AI audit questions, the five "done" components, architecture layers — defense rubric only] -->
 
 | question | weak answer (what it reveals) | strong answer (what it demonstrates) |
 | --- | --- | --- |
@@ -205,6 +202,8 @@ For the final project, three categories of tests matter most.
 
 Tests are not proof of correctness. They are evidence of reasoning. A student who wrote tests for specific behaviors has demonstrated that they thought about what the correct behavior should be and checked whether the code produces it. That is the verification habit the course has been building toward.
 
+<!-- → [SCOPE | Figure 14.4 | IMAGE: "impression vs. evidence" two-column contrast — left column (coral, labeled Impression): quote "I ran it a few times and it seemed to work" with three consequences below: no specific input named, no specific output stated, not repeatable automatically; right column (teal, labeled Evidence): the specific test description from the chapter (add three books, save to temp file, new catalog instance, load, assert field equality) with three consequences: specific input named, specific output stated, repeatable automatically; note below: "the examiner's question cannot be answered with impression — evidence is the only answer that holds" | CONTENT: two labeled panels with quotes and consequence lists, horizontal vs. divider, summary note | EXCLUSIONS: JUnit syntax, @Test annotation, persistence layer architecture, the defense rubric — impression/evidence contrast only] -->
+
 | category | what it tests | example test description | what it proves to the examiner |
 | --- | --- | --- | --- |
 | persistence tests (round-trip survival, "save three books, reload, assert field equality", that the data layer works across restarts | A specific, evidence-linked version that readers can verify. | Use the chapter example as the concrete test case. | A concrete checkpoint for applying the chapter concept. |
@@ -227,9 +226,6 @@ The habit is this: before accepting any piece of code as correct, name the requi
 
 This is not a high bar. It is the minimum bar. It is what separates code that happens to work from code you can defend.
 
-!["impression vs evidence" contrast ](images/14-final-project-complete-application-with-ecosystem-design-fig-04.png)
-*Figure 14.4 — "impression vs evidence" contrast *
-
 ---
 
 ## What the Course Built
@@ -250,8 +246,7 @@ That is the whole course, compressed into the final defense. Not the running pro
 
 The bridge question this course leaves you with is this: the verification habit should travel to the next system. Every tool will change. The requirement to verify will not.
 
-![Course capability arc ](images/14-final-project-complete-application-with-ecosystem-design-fig-05.png)
-*Figure 14.5 — Course capability arc *
+<!-- → [SCOPE | Figure 14.5 | IMAGE: course capability arc — two side-by-side columns connected by a rightward arrow; left column (gray, "Arrived with"): four boxes listing sequential Java programs, variables/loops/conditionals, methods and basic objects, console I/O only; right column (teal, "Leaves with"): five boxes listing layered system design (supply→transactions→persistence→view), persistence round-trip, GUI with MVC separation, AI collaboration with preserved judgment, defense of design decisions with trade-offs named; arc path connecting the two columns; closing note: "the running program is evidence the code works — the explanation is evidence you built it" | CONTENT: two labeled columns, left with 4 capability boxes, right with 5 capability boxes, connecting arc or arrow, closing note | EXCLUSIONS: module numbers, specific class names, the defense rubric, the AI audit form — capability arc only] -->
 
 ---
 
