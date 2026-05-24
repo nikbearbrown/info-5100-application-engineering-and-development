@@ -40,9 +40,6 @@ When setup is ceremony, students skip the verification steps — not because the
 
 Setup done right shrinks that surface before the semester starts.
 
-![Diagram ](images/00-setup-fig-01.png)
-*Figure 1.1 — Diagram *
-
 Here is the concrete thing I want you to be able to do by the end of this module: run two commands and read the output of both, create a project in NetBeans, run Hello World, then find the source file and the compiled output on disk. That is the whole checklist. It sounds small. It is not small. A student who can do all of that without uncertainty has separated their environment from their programming problem space. Every lab after this one starts from a smaller, cleaner diagnostic surface.
 
 ---
@@ -59,8 +56,7 @@ Now here is why this matters for setup. The tool that contains the compiler — 
 
 This is the machine you are about to verify exists and is correctly assembled.
 
-![Diagram of the Java toolchain from source file](images/00-setup-fig-02.png)
-*Figure 1.2 — Diagram of the Java toolchain from source file*
+<!-- → [SCOPE | Figure 1.1 | IMAGE: JDK contains both javac and the JRE; JRE contains only the JVM and class libraries — shows why a JRE-only install cannot compile | CONTENT: outer JDK rect, inner JRE rect, javac box outside JRE but inside JDK, JVM box inside JRE, class libraries box inside JRE | EXCLUSIONS: PATH configuration, version numbers, operating system layers, classpath details, module system] -->
 
 ---
 
@@ -85,9 +81,7 @@ The same habit applies after you create your first project. You do not assume it
 
 That is not paranoia. That is engineering.
 
-| question | belief approach | evidence approach |
-| --- | --- | --- |
-| side-by-side comparison of the belief-based approach vs. the evidence-based approach — | A concrete checkpoint for applying the chapter concept. | A concrete checkpoint for applying the chapter concept. |
+<!-- → [SCOPE | Figure 1.3 | TABLE: belief-based vs. evidence-based approach to environment verification — two-column comparison | CONTENT: column 1 belief approach (installer says complete → assume it works → fail weeks later with no diagnostic anchor), column 2 evidence approach (run java/javac --version → inspect output → small diagnostic surface before writing code) | EXCLUSIONS: specific version numbers, IDE screenshots, AI tool comparisons, runtime errors] -->
 
 ---
 
@@ -105,8 +99,7 @@ Both failures have the same root. The student trusted the output without underst
 
 The habit we are building is knowing what it looks like. That way, when it changes — and it will change — you notice.
 
-![Timeline showing two student trajectories across fifteen modules](images/00-setup-fig-03.png)
-*Figure 1.3 — Timeline showing two student trajectories across fifteen modules*
+<!-- → [SCOPE | Figure 1.2 | IMAGE: Java toolchain as a left-to-right pipeline — source file compiled to bytecode by javac, bytecode executed by JVM on any OS | CONTENT: HelloWorld.java box, javac arrow, HelloWorld.class box, JVM arrow, execution box (Win/Mac/Linux), portability annotation below | EXCLUSIONS: classpath, packages, IDE toolbar, multiple class files, jar packaging, module system] -->
 
 ---
 
@@ -122,8 +115,7 @@ Run the program. NetBeans will compile and execute it. Look at the output panel 
 
 Now close the IDE and navigate to your project folder in your file explorer. Find the `src` directory: this is where your source files live. Find a folder called `build` or `target` or `dist` — the name depends on the project type — and inside it, find a folder called `classes`. In that folder, find a file with the `.class` extension. That is the compiled bytecode for your program. Touch it. Know it exists. You built it.
 
-![Screenshot of a NetBeans project structure showing the](images/00-setup-fig-04.png)
-*Figure 1.4 — Screenshot of a NetBeans project structure showing the*
+<!-- → [SCOPE | Figure 1.4 | IMAGE: NetBeans project folder tree — src branch holds .java source, build/classes branch holds compiled .class bytecode | CONTENT: MyProject root, src/ subfolder, HelloWorld.java leaf, build/ subfolder, classes/ subfolder, HelloWorld.class leaf | EXCLUSIONS: nbproject/ folder, manifest files, library jars, package subdirectories, IDE toolbar, run configuration] -->
 
 This is the verification checklist for Module 0:
 
@@ -201,8 +193,7 @@ Most setup failures live in the toolchain or project layer. Most programming fai
 
 When a student says "Java is broken," they almost always mean something in one of these three layers is misconfigured. Knowing which one cuts the debugging time dramatically. The verification checklist from this module gives you a clean toolchain and a correct project layer. After that, when something breaks, you can be much more confident about where to look.
 
-![Three-layer stack diagram ](images/00-setup-fig-05.png)
-*Figure 1.5 — Three-layer stack diagram *
+<!-- → [SCOPE | Figure 1.5 | IMAGE: three-layer stack — toolchain (widest/bottom), project (middle), program (narrowest/top) — wider base signals each layer contains the one above | CONTENT: toolchain layer (JDK, JVM, PATH — "command not found" failures), project layer (NetBeans structure, build config — "class not found" failures), program layer (Java source — compile errors and runtime exceptions) | EXCLUSIONS: IDE screenshots, specific error text, OS-specific path syntax, version numbers, network or classpath issues] -->
 
 ---
 
