@@ -43,8 +43,9 @@ Scene Builder is an editor for FXML files. When you drag a button onto the canva
 
 This is what FXML is: a serialized description of a JavaFX object graph. It is not the behavior of the application. It is not the model. It is not the controller. It is the structure of the view, expressed in a format that a visual editor can read and write.
 
-![Diagram ](images/12-advanced-gui-scene-builder-and-complex-interfaces-fig-01.png)
-*Figure 12.1 — Diagram *
+<!-- → [SCOPE | Figure 1 | IMAGE: two-representation equivalence diagram — the same UI object graph shown twice side by side with an equivalence indicator between them; left side shows a Java code representation (nested object shapes: BorderPane containing TableView and VBox containing Button); right side shows an FXML representation (nested tag shapes: same hierarchy expressed as XML-style nested boxes); Scene Builder shown above the right side as the editor that writes the FXML; an equivalence arrow or equals sign between the two sides indicating they describe the same structure; below both sides, the three-layer model (view / controller / model) shown as three horizontal bands, with the equivalence pair sitting entirely within the view band to show that FXML authorship does not change the layer structure | CONTENT: left side: nested shape hierarchy (outer BorderPane, inner TableView and VBox, Button inside VBox); right side: same nested hierarchy expressed as tag-style nested rectangles; equivalence indicator between the two sides; Scene Builder icon/box above the right side; three-layer band diagram below showing view, controller, model — the equivalence pair labeled as "view authoring" within the top band only | EXCLUSIONS: Java syntax baked into shapes, XML attribute text, fx:id values, specific component names as text labels, UML class diagram notation, injection arrows, handler method names, network diagrams, database icons] -->
+
+*Figure 12.1 — Two representations of the same object graph: Java code (left) and FXML (right); Scene Builder edits the FXML side; the three-layer structure is unchanged by either authoring approach*
 
 The important thing to understand is that FXML changes the *authoring* of the view, not the *ownership* of the behavior. In hand-written JavaFX, you wrote `Button checkoutButton = new Button("Checkout")` in Java. With FXML, the button is declared in XML and injected into the controller at load time. The button exists in the same place in the object hierarchy. The controller still handles its events. The model still owns the data. Nothing about the MVC structure changes. The view is just authored differently.
 
@@ -83,8 +84,9 @@ When JavaFX loads the FXML file, it constructs the object graph and then perform
 
 The `@FXML` annotation tells JavaFX that this field is injection-managed. Without it, the field is not injected and stays null. The field's access modifier does not matter for injection — `private` works just as well as `public` — but the name must match exactly, including case. `bookTable` and `BookTable` are different names. JavaFX does not correct for this.
 
-![Code pairing ](images/12-advanced-gui-scene-builder-and-complex-interfaces-fig-02.png)
-*Figure 12.2 — Code pairing *
+<!-- → [SCOPE | Figure 2 | IMAGE: injection connection diagram — FXML element with fx:id attribute on the left, controller field with @FXML annotation on the right, FXMLLoader as a central bridge box connecting them with arrows; a "match" path showing connected names producing a live component reference; a "mismatch" path below it showing a name change on the FXML side producing a null field and broken connection indicator on the controller side | CONTENT: left column: FXML element shape containing an fx:id label region; central bridge box: FXMLLoader; right column: controller field shape containing an @FXML label region; top path: matching name indicator on both sides, connected arrow through FXMLLoader, live reference indicator (filled/connected shape) on controller side; bottom path: mismatched name indicator (different label on FXML side vs. controller side), broken arrow through FXMLLoader, null/broken indicator (empty or X shape) on controller side | EXCLUSIONS: Java syntax baked into shapes, specific field names as text labels, XML attribute syntax, specific component types, access modifier symbols, UML notation, constructor shapes, model objects, handler method shapes] -->
+
+*Figure 12.2 — Injection mechanism: matching fx:id and @FXML field names (top path) produce a live reference; a name mismatch (bottom path) produces a null field with no compile-time warning*
 
 ---
 
@@ -138,8 +140,9 @@ The common mistake is putting setup code in the controller's constructor. At con
 
 This is the same setter-before-show ordering discipline from Module 3, expressed in a new context. State must exist before display operations run. The mechanism is different — `initialize` instead of a setter method — but the principle is the same.
 
-![JavaFX controller lifecycle ](images/12-advanced-gui-scene-builder-and-complex-interfaces-fig-03.png)
-*Figure 12.3 — JavaFX controller lifecycle *
+<!-- → [SCOPE | Figure 3 | IMAGE: JavaFX controller lifecycle — a vertical timeline showing four sequential phases as labeled bands: (1) constructor called — @FXML fields shown as empty/null shapes; (2) injection — FXMLLoader fills each @FXML field shape, fields transition from empty to filled; (3) initialize called — connected filled fields, setup operations run, UI ready indicator; (4) user interaction — event arrows entering from the left, handler methods responding; a distinct warning indicator beside phase 1 showing that @FXML fields are null during construction, with a "do not use here" signal; a distinct "correct location for setup" indicator beside phase 3 | CONTENT: four vertical phase bands, top to bottom; @FXML field shapes (3 of them) shown empty in phase 1, progressively filled from phase 2 onward; FXMLLoader actor shape appearing in phase 2 with injection arrows; initialize block in phase 3 with setup-operation indicators; event arrows and handler indicators in phase 4; warning shape at phase 1; checkmark or ready indicator at phase 3 | EXCLUSIONS: Java syntax, specific field names, specific component types, UML sequence diagram notation, model object shapes, handler method names baked in, specific event types, database or network shapes] -->
+
+*Figure 12.3 — Controller lifecycle: @FXML fields are null during construction, filled after injection, available in initialize — setup code belongs in phase 3, not phase 1*
 
 ---
 
@@ -178,8 +181,9 @@ Concretely: the `Book` object that was passed to the checkout panel via a setter
 
 The verification question for this module is an extension of the Module 3 flow table. You have an FXML component. That component has an `fx:id`. That `fx:id` is injected into a controller field. That field is used in a handler. That handler calls a method on a model object. The chain must be traceable, end to end, for every interactive component in the redesigned screen.
 
-![FXML to controller mapping table for Module 12,](images/12-advanced-gui-scene-builder-and-complex-interfaces-fig-04.png)
-*Figure 12.4 — FXML to controller mapping table for Module 12,*
+<!-- → [SCOPE | Figure 4 | IMAGE: end-to-end traceability chain — a single horizontal chain of five linked nodes showing the complete path from FXML component to model call: (1) FXML component with fx:id; (2) injection arrow; (3) @FXML controller field; (4) handler method; (5) model object method call; each node is a distinct labeled shape; a downward "evidence" indicator below each node showing what the mapping table captures at that position; below the chain, a broken-chain version of the same five nodes where the connection between nodes 3 and 4 is severed, showing a display-only handler that updates a label but makes no model call — the "handler that looks right but is wrong" failure | CONTENT: top row: five nodes (FXML component, injection arrow, controller field, handler, model call) connected in a left-to-right chain; downward evidence indicators below each node; bottom row: same five nodes, with nodes 4 and 5 disconnected — handler present but model call absent — with a distinct broken/absent indicator at the gap | EXCLUSIONS: Java syntax, specific field names, specific model object names, UML sequence diagram notation, database or network shapes, authentication logic, specific component types, access modifier symbols, constructor shapes] -->
+
+*Figure 12.4 — End-to-end traceability chain: every interactive component must be traceable from fx:id through injection, controller field, handler, to model call; a handler that terminates at node 4 without reaching node 5 is display code, not behavior*
 
 If you cannot trace a component from `fx:id` to model call, you have a handler that acts on the view without acting on the model. That handler is display code masquerading as behavior. It will pass a visual test — the button responds, the label changes — and fail a behavior test: the `Book` was not actually selected, the `Loan` was not created, the state the confirmation screen expects does not exist.
 
@@ -317,5 +321,3 @@ If you used AI to generate the controller stub from your FXML, include the FXML 
 - *Java Language Specification* and the Java SE API documentation: for JavaFX component types and their event models.
 - Robins, Rountree, and Rountree, "Learning and Teaching Programming": research on the connection-tracing difficulties this module's mapping table addresses.
 - Peng et al. and Vaithilingam et al.: empirical work on AI coding assistance; the FXML-first phase gate is grounded in their findings on the cost of unverified structural delegation.
-
-*Current tool instructions, version-specific setup, and AI platform behavior require pre-offering verification.* [verify]
