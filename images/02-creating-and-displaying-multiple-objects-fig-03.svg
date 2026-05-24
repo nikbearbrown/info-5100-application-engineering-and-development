@@ -1,0 +1,25 @@
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Stack/heap diagram showing the shared-reference situation </title>
+  <desc id="desc">stack/heap diagram showing the shared-reference situation — patronA and patronC both drawn as arrows converging on the same heap block, with a "99" wr</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#000000"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+  <text x="32" y="42" font-family="'Real Head Pro', 'FF Real', Lato, sans-serif" font-size="13" font-weight="700" fill="#000000">Stack/heap diagram showing the shared-reference situation </text>
+  <text x="32" y="62" font-family="'Real Head Pro', 'FF Real', Lato, sans-serif" font-size="10" fill="#555555">stack/heap diagram showing the shared-reference situation — patronA and patronC both drawn as arrows converging on the same heap block, with a "99" wr</text>
+  <rect x="64" y="116" width="160" height="180" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="1"/>
+  <text x="144" y="148" text-anchor="middle" font-family="'Real Head Pro', 'FF Real', Lato, sans-serif" font-size="10" fill="#555555">STACK/HEAP</text>
+  <circle cx="144" cy="204" r="28" fill="#000000"/>
+  <text x="144" y="266" text-anchor="middle" font-family="'Real Head Pro', 'FF Real', Lato, sans-serif" font-size="11" fill="#000000">evidence view</text>
+  <rect x="258" y="116" width="160" height="180" fill="#F5F5F5" stroke="#CCCCCC" stroke-width="1"/>
+  <text x="338" y="148" text-anchor="middle" font-family="'Real Head Pro', 'FF Real', Lato, sans-serif" font-size="10" fill="#555555">DIAGRAM</text>
+  <circle cx="338" cy="204" r="36" fill="#C8102E"/>
+  <text x="338" y="266" text-anchor="middle" font-family="'Real Head Pro', 'FF Real', Lato, sans-serif" font-size="11" fill="#000000">evidence view</text>
+  <rect x="452" y="116" width="160" height="180" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="1"/>
+  <text x="532" y="148" text-anchor="middle" font-family="'Real Head Pro', 'FF Real', Lato, sans-serif" font-size="10" fill="#555555">SHOWING</text>
+  <circle cx="532" cy="204" r="44" fill="#000000"/>
+  <text x="532" y="266" text-anchor="middle" font-family="'Real Head Pro', 'FF Real', Lato, sans-serif" font-size="11" fill="#000000">evidence view</text>
+  <text x="350" y="340" text-anchor="middle" font-family="'Real Head Pro', 'FF Real', Lato, sans-serif" font-size="11" fill="#000000">Panels translate the chapter prompt into comparable visual states.</text>
+</svg>

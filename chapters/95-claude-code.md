@@ -39,7 +39,9 @@ There is a concrete discipline that separates productive Claude Code use from de
 
 When these three statements exist, Claude Code has something to work against. It can evaluate whether its output satisfies the requirement, whether the artifact is the right place for the behavior, and whether the evidence conditions can be met. Without them, it guesses. The guess will be fluent. That is the danger.
 
-<!-- → [TABLE: Claude Code readiness checklist — columns: item, question to answer, example answer, what happens if missing; rows: requirement, artifact, evidence, current module phase gate, forbidden AI action, verification method.] -->
+| item | question to answer | example answer | what happens if missing |
+| --- | --- | --- | --- |
+| requirement, artifact, evidence, current module phase gate, forbidden AI action, verification method. | A concrete checkpoint for applying the chapter concept. | Use the chapter example as the concrete test case. | A concrete checkpoint for applying the chapter concept. |
 
 Here is what a complete pre-ask statement looks like for the library domain:
 
@@ -62,7 +64,8 @@ The course relaxes AI assistance as your verification skill grows. What Claude C
 
 The gates are not arbitrary restrictions. They are calibrated to what you can verify at each stage. A gate that prevents Claude Code from generating authentication logic before Module 6 is not bureaucracy — it is the recognition that you cannot evaluate authentication logic before you understand threat modeling, hashing, and the separation between `Person` and `UserAccount`. If the gate were not there, Claude Code would generate a plausible login system, you would accept it, and you would have credentials stored in a way you cannot defend.
 
-<!-- → [FIGURE: Claude Code phase gate ladder from Module 0 diagnostic-only use through Module 14 full collaboration, with each rung showing what Claude may do and what the student must own.] -->
+![Claude Code phase gate ladder from Module 0](images/95-claude-code-fig-01.png)
+*Figure 95.1 — Claude Code phase gate ladder from Module 0*
 
 In the early modules (0–2), Claude Code is diagnostic only. It explains errors you paste, quizzes you on code you already wrote, and clarifies terminology. It does not write submitted code. The first object you build in this course must be built by you, because building it is how you learn what building it involves.
 

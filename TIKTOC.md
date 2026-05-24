@@ -20,7 +20,7 @@
 5. Three-Act Learning Arc
 6. Prerequisite Map
 7. Assessment Structure
-8. Chapter-by-Chapter TOC (14 modules)
+8. Chapter-by-Chapter TOC (15 modules including Module 0)
 9. Chapter Anatomy Template
 10. Case Study Strategy
 11. Hard Topics, Contested Claims, Aging Risk
@@ -165,8 +165,7 @@ is required to begin Module 1.
 
 **PRIMARY TYPE:** Course textbook (Kindle) — adopted for a 15-week
 semester, module = week, read in sequence. Companion to INFO 5100 /
-EDGE (Coursera). Chapter count: 14 primary modules + Module 0 setup
-appendix.
+EDGE (Coursera). Chapter count: 15 course modules, Module 0 through Module 14.
 
 **NOT:** Practitioner handbook (chapters are not self-contained tasks),
 reference work (the out-of-scope section is too aggressive for a
@@ -193,7 +192,7 @@ advanced Java courses (prerequisites too low); bootcamp-style programs
 reference use (sequence dependency is too high).
 
 **How the TOC signals book type to a faculty reviewer:**
-14 modules, one per week, with a single business problem threaded from
+15 modules, Module 0 through Module 14, with a single business problem threaded from
 Module 1 through Module 14. Three explicit act transitions. A final
 project specified in Module 14 that requires a running GUI application.
 A faculty member building a 15-week syllabus can map this TOC in under
@@ -402,7 +401,7 @@ that discomfort productively.*
 
 ---
 
-### MODULE 0 — Setup (Pre-course appendix)
+### MODULE 0 — Welcome
 
 **One-line:** Install the JDK, NetBeans, and configure your first
 Java project without losing a lab session to tooling.
@@ -421,7 +420,7 @@ versions. CLAUDE.md setup walkthrough included here for the first time.
 
 ---
 
-### MODULE 1 — Introduction: Socio-Technical Engineering and the Object Model
+### MODULE 1 — Fundamentals of Programming in Java
 
 **One-line:** Students learn why objects — not procedures — are the right
 mental model for business software, by running and breaking a working
@@ -514,7 +513,7 @@ RULES:
 
 ---
 
-### MODULE 2 — Creating and Displaying Multiple Objects
+### MODULE 2 — Methods, Arrays, and File Objects
 
 **One-line:** Students learn to instantiate multiple objects from one
 class and trace how Java manages them in memory.
@@ -605,7 +604,7 @@ RULES:
 
 ---
 
-### MODULE 3 — User Interaction Design
+### MODULE 3 — Objects and Classes
 
 **One-line:** Students learn to design user flows as navigation between
 screens, connecting what the user sees to what the objects do.
@@ -700,7 +699,7 @@ RULES:
 
 ---
 
-### MODULE 4 — Finding Bugs: The Debugging Workflow
+### MODULE 4 — Basics of Object-Oriented Programming Part 2
 
 **One-line:** Students learn a systematic debugging methodology —
 hypothesis, isolation, test — using the IDE debugger and their own
@@ -818,7 +817,7 @@ as the student's verification capability builds.*
 
 ---
 
-### MODULE 5 — Modeling the Supply Side
+### MODULE 5 — Inheritance and Polymorphism
 
 **One-line:** Students learn to model the entities that provide
 resources in a business system — the objects that exist before any
@@ -925,7 +924,7 @@ RULES:
 
 ---
 
-### MODULE 6 — Designing the Person into the Application
+### MODULE 6 — Basics of GUI Programming in Java
 
 **One-line:** Students learn to model users and authentication as
 first-class objects — not as a database lookup, but as a designed
@@ -1033,7 +1032,7 @@ RULES:
 
 ---
 
-### MODULE 7 — Order Processing and Polymorphism
+### MODULE 7 — Midterm Exam
 
 **One-line:** Students learn why polymorphism is not a Java feature
 but a design strategy — the ability to add new types without
@@ -1141,7 +1140,7 @@ RULES:
 
 ---
 
-### MODULE 8 — Digital Ecosystems: Data Management and CRUD
+### MODULE 8 — Abstract Classes and Interfaces
 
 **One-line:** Students learn to design the full lifecycle of data
 in a business application — create, read, update, delete — and
@@ -1245,7 +1244,7 @@ RULES:
 
 ---
 
-### MODULE 9 — Targeting and Sorting: Working with Collections
+### MODULE 9 — Event-Driven Programming
 
 **One-line:** Students learn to sort, filter, and search collections
 of objects — and to choose the right collection type for each task.
@@ -1341,7 +1340,7 @@ RULES:
 
 ---
 
-### MODULE 10 — Introduction to GUI Programming with JavaFX
+### MODULE 10 — Event-Driven Programming with Scene Builder
 
 **One-line:** Students learn to connect the object model they have
 built to a visual interface — understanding that the GUI is a view
@@ -1457,7 +1456,7 @@ the design judgment requirement is also at its highest.*
 
 ---
 
-### MODULE 11 — Event-Driven Programming: Making the Application Respond
+### MODULE 11 — Generics
 
 **One-line:** Students learn to connect user actions to application
 behavior using JavaFX event handling — and to maintain the
@@ -1556,7 +1555,7 @@ RULES:
 
 ---
 
-### MODULE 12 — Advanced GUI: Scene Builder and Complex Interfaces
+### MODULE 12 — Recursion
 
 **One-line:** Students learn to use Scene Builder to design complex
 interfaces while maintaining a clean boundary between the visual
@@ -1655,7 +1654,7 @@ RULES:
 
 ---
 
-### MODULE 13 — Advanced Data: Collections, Unit Testing, and Lambda
+### MODULE 13 — Collections and Iterators
 
 **One-line:** Students learn to write tests for their own code and
 use Java's advanced collection operations — and discover that
@@ -1751,7 +1750,7 @@ RULES:
 
 ---
 
-### MODULE 14 — Final Project: Complete Application with Ecosystem Design
+### MODULE 14 — Lists, Stacks, Queues, and the Final Project
 
 **One-line:** Students complete, defend, and present a full GUI
 business application — and demonstrate, for every AI-assisted
