@@ -1,0 +1,64 @@
+<!--
+  Impression vs Evidence
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 14-lists-stacks-queues-and-the-final-project
+  Figure: 03
+  Type: Comparison panels
+  Generated: 2026-05-25
+  Source: pantry/14-lists-stacks-queues-and-the-final-project-cajal.md
+-->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title">
+  <title id="fig-title">Impression vs Evidence</title>
+  <desc>A defense built on impressions sounds confident and dissolves under questioning. A defense built on evidence cites concrete artifacts — tests passing, traces captured, decisions documented — and stays standing when pressed.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="14-lists-stacks-queues-and-the-final-project"
+      figure-number="03"
+      figure-title="Impression vs Evidence"
+      figure-slug="impression-vs-evidence"
+      figure-type="comparison-panels"
+      priority="Critical"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/14-lists-stacks-queues-and-the-final-project-cajal.md"
+    />
+  </metadata>
+  <rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">Impression vs Evidence</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">Two ways of answering "how do you know it works?" — one of them survives follow-up questions.</text>
+
+  <line x1="350" y1="80" x2="350" y2="392" stroke="#2a1a0e" stroke-width="0.5"/>
+
+  <text x="190" y="106" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">IMPRESSION</text>
+
+  <rect x="80" y="124" width="220" height="50" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+  <text x="190" y="154" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">"I think it works"</text>
+
+  <rect x="80" y="184" width="220" height="50" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+  <text x="190" y="214" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">"it looked right when I ran it"</text>
+
+  <rect x="80" y="244" width="220" height="50" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+  <text x="190" y="274" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">"the AI said it was correct"</text>
+
+  <text x="190" y="332" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">dissolves on the second question</text>
+  <text x="190" y="350" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">no artifact to point at</text>
+
+  <text x="510" y="106" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E" letter-spacing="0.08em">EVIDENCE</text>
+
+  <rect x="400" y="124" width="220" height="50" fill="#C8102E" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="510" y="154" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#FFFFFF">"these 12 tests pass"</text>
+
+  <rect x="400" y="184" width="220" height="50" fill="#C8102E" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="510" y="214" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#FFFFFF">"trace shows expected mutation"</text>
+
+  <rect x="400" y="244" width="220" height="50" fill="#C8102E" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="510" y="274" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#FFFFFF">"AI suggestion + my verification log"</text>
+
+  <text x="510" y="332" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#C8102E">stays standing under pressure</text>
+  <text x="510" y="350" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">every answer points at an artifact</text>
+</svg>

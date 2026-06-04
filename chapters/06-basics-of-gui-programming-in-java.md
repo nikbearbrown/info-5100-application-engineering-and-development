@@ -53,9 +53,9 @@ When you mix them — when the `Patron` class has a `passwordHash` field, or whe
 
 The design move this module introduces is keeping them separate: a `Person` (or `Patron`, or `Employee`, or `Patient`) for the domain participant, and a `UserAccount` for the credential. A `LoginManager` that takes a username and password, checks the credential against the stored hash, and returns whether access is granted. The `LoginManager` does not become the `Person` record. It does not return the `Person` object. It answers one question: are these credentials valid?
 
-<!-- → [SCOPE | Figure 1 | IMAGE: conflated design vs. separated design — two-panel structural contrast; left panel shows a single Patron class box with domain fields AND a passwordHash field mixed together (conflated); right panel shows two separate boxes (Patron with domain fields only, UserAccount with credential fields only) connected by a thin ID-link arrow, with a distinct LoginManager box below UserAccount | CONTENT: left panel: one class box containing patronId, name, borrowedBooks, passwordHash fields — passwordHash visually marked as the problem element (distinct border or fill); right panel: Patron box with patronId, name, borrowedBooks; UserAccount box with username, passwordHash, patronId (as key); thin arrow from UserAccount.patronId to Patron.patronId labeled "links by ID"; LoginManager box below UserAccount with a single boolean return indicator | EXCLUSIONS: Java syntax inside boxes, access modifier symbols, getter/setter method signatures, inheritance arrows, UML multiplicity notation, Loan object, Library object, database icons, network elements, constructor syntax] -->
+![Conflated vs. separated credential design rendered as a comparison panels for the chapter concept.](images/06-basics-of-gui-programming-in-java-fig-01.png)
+*Figure 6.1 — Conflated vs. separated credential design*
 
-*Figure 6.1 — Conflated design (left) vs. separated design (right): mixing credentials into the domain object creates a security surface problem*
 
 ---
 
@@ -88,9 +88,9 @@ public static String hash(String password) throws Exception {
 
 The method takes a password string, computes its SHA-256 hash, and returns the hash as a hexadecimal string. You call it once when creating a `UserAccount` to store the hash. You call it again at login, hash the supplied password, and compare the result to the stored hash.
 
-<!-- → [SCOPE | Figure 2 | IMAGE: one-way hash function mechanism — a conceptual pipeline diagram showing password input on the left flowing through a transformation box (the hash function) to a fixed-length hash output on the right; a distinct "cannot reverse" blocked arrow pointing leftward from the output back toward the input, visually severed or blocked; below the pipeline, a two-step verification flow showing: (1) "store" path — password at account creation → hash function → stored hash; (2) "verify" path — supplied password at login → hash function → compare to stored hash → match/no-match result | CONTENT: input shape (password string, arbitrary length); central transformation box (hash function); output shape (hash string, fixed length, visually uniform/fixed width regardless of input); blocked reverse arrow; two sub-flows (store and verify) below; match/no-match indicator at end of verify path | EXCLUSIONS: Java syntax of any kind, MessageDigest class name, method names, byte array notation, hex conversion code, SHA-256 label inside diagram, salt or bcrypt references, specific hash output strings, numeric bit lengths] -->
+![Hash function mechanism rendered as a process flowchart for the chapter concept.](images/06-basics-of-gui-programming-in-java-fig-02.png)
+*Figure 6.2 — Hash function mechanism*
 
-*Figure 6.2 — The hash function: any password in, fixed-length output, no path back*
 
 There is one caveat worth naming even at this level: SHA-256 without salting is vulnerable to precomputed lookup tables (rainbow tables) for common passwords. For production systems, you would use a purpose-built password hashing function like bcrypt or Argon2, which incorporate a random salt and are deliberately slow to compute. This module uses SHA-256 because the point is the design habit — separate the credential from the person, hash the password, ask the threat-model question — not the production-hardening details. The further reading section points to where those details live.
 
@@ -257,13 +257,13 @@ Notice what is not in this trace. The `Patron` object is never retrieved during 
 
 That separation is the design. It is also the verification target. After implementing the login flow, trace it manually and confirm: does authentication touch the `Patron` object? It should not. Does the hash comparison use the same algorithm in both directions? It must. Does a failed login give the caller any information about why it failed — username not found vs. wrong password? It probably should not, because that distinction helps an attacker enumerate valid usernames.
 
-<!-- → [SCOPE | Figure 3 | IMAGE: login flow sequence diagram — five vertical swimlane columns representing: Login panel, submit handler, LoginManager, UserAccount, boolean result; horizontal arrows showing the sequence of calls from left to right and results returning right to left; (1) user input arrives at login panel; (2) submit handler calls loginManager.login(); (3) LoginManager calls accounts.get(username); (4) if found, LoginManager calls account.checkPassword(); (5) checkPassword hashes supplied password and compares; (6) boolean result returns back through the chain to the submit handler; (7) submit handler navigates forward (true) or shows error (false); Patron object visually absent from all swimlanes | CONTENT: five swimlane columns (Login panel, submit handler, LoginManager, UserAccount, boolean result); seven numbered horizontal arrows showing call sequence; Patron object shown as a separate grayed-out shape to the side with a "not touched" indicator; true/false result at the rightmost column | EXCLUSIONS: Java syntax inside the diagram, HashMap internals, byte array operations, hex conversion details, specific hash values, field names inside class boxes, salt operations, session management, authorization logic, role labels] -->
+![Login flow sequence (5 swimlanes) rendered as a systems diagram (sequence) for the chapter concept.](images/06-basics-of-gui-programming-in-java-fig-03.png)
+*Figure 6.3 — Login flow sequence (5 swimlanes)*
 
-*Figure 6.3 — Login flow sequence: five components, one boolean result, Patron never touched*
 
-<!-- → [SCOPE | Figure 4 | IMAGE: plaintext vs. hashed credential file — two side-by-side panels representing what an attacker reads from the credential file under each design; left panel (plaintext) shows three credential rows with passwords directly readable, and a large downward "attacker gains" arrow pointing to a list of three consequences (all passwords readable, credential reuse, immediate access); right panel (hashed) shows the same three rows with hash strings instead of passwords, and a smaller "attacker gains" arrow pointing to a shorter, bounded consequence list (dictionary attack required, strong passwords safe); a visual "damage boundary" shape around the right panel's consequence list that is noticeably smaller than the left panel's | CONTENT: left panel: three file rows (alice: plaintext, bob: plaintext, carol: plaintext); large consequence zone below with three items; right panel: three file rows (alice: hash, bob: hash, carol: hash); smaller consequence zone below with two items; visual size contrast between the two consequence zones encodes the damage reduction | EXCLUSIONS: specific password strings, specific hash strings, Java code, MessageDigest class, file I/O code, bcrypt or Argon2 labels, network diagrams, server architecture, attacker figure illustrations, rainbow table labels, cryptographic notation] -->
+![Attacker reads: plaintext vs. hashed rendered as a comparison panels for the chapter concept.](images/06-basics-of-gui-programming-in-java-fig-04.png)
+*Figure 6.4 — Attacker reads: plaintext vs. hashed*
 
-*Figure 6.4 — What the attacker reads: plaintext (left) exposes everything immediately; hashed (right) bounds the damage to dictionary-attackable passwords*
 
 ---
 
@@ -349,5 +349,9 @@ If you used AI to scaffold the `HashMap` directory or explain `MessageDigest`, i
 - Robins, Rountree, and Rountree, "Learning and Teaching Programming": research on the design-confusion patterns this module addresses.
 - Peng et al. and Vaithilingam et al.: empirical work on verification risk in AI-generated security code; the threat-model phase gate in this module is grounded in their findings.
 
+---
 
+## References
 
+<!-- Fact-check pass references. -->
+1. OpenJFX. Class Node. JavaFX 21 API Specification, 2023. https://openjfx.io/javadoc/21/javafx.graphics/javafx/scene/Node.html

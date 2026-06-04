@@ -1,0 +1,69 @@
+<!--
+  Handler Responsibility Decomposition
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 11-generics
+  Figure: 02
+  Type: Systems diagram
+  Generated: 2026-05-25
+  Source: pantry/11-generics-cajal.md
+-->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title">
+  <title id="fig-title">Handler Responsibility Decomposition</title>
+  <desc>A clean handler does four things in order. It validates input. It calls one model method. It updates the view. It returns. Anything beyond those four is leakage from another layer.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="11-generics"
+      figure-number="02"
+      figure-title="Handler Responsibility Decomposition"
+      figure-slug="handler-responsibility-decomposition"
+      figure-type="systems-diagram"
+      priority="Critical"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/11-generics-cajal.md"
+    />
+  </metadata>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#2a1a0e"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">Handler Responsibility Decomposition</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">A clean handler does exactly four things. Anything else is leakage.</text>
+
+  <rect x="48" y="160" width="140" height="80" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="118" y="184" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">1 · VALIDATE</text>
+  <text x="118" y="208" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">guard the input</text>
+  <text x="118" y="228" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">isbn nonempty?</text>
+
+  <path d="M 192 200 L 220 200" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <rect x="224" y="160" width="140" height="80" fill="#C8102E" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="294" y="184" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#FFFFFF" letter-spacing="0.08em">2 · ONE MODEL CALL</text>
+  <text x="294" y="208" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#FFFFFF">one method, no more</text>
+  <text x="294" y="228" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#FFFFFF">loans.record(p, b)</text>
+
+  <path d="M 368 200 L 396 200" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <rect x="400" y="160" width="140" height="80" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="470" y="184" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">3 · UPDATE VIEW</text>
+  <text x="470" y="208" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">reflect new state</text>
+  <text x="470" y="228" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">label.setText(...)</text>
+
+  <path d="M 544 200 L 572 200" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <rect x="576" y="160" width="80" height="80" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="616" y="184" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">4 · RETURN</text>
+  <text x="616" y="210" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">done</text>
+
+  <text x="350" y="292" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">EVERYTHING ELSE BELONGS SOMEWHERE ELSE</text>
+  <text x="350" y="318" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="12" fill="#2a1a0e">business rules → model · formatting → view · persistence → save() · logging → infrastructure</text>
+
+  <text x="350" y="372" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">A handler is a thin seam, not a place to hide other layers' work.</text>
+</svg>

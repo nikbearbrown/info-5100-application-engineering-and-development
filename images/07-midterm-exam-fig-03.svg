@@ -1,0 +1,91 @@
+<!--
+  If-Else vs Polymorphic: Before / After
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 07-midterm-exam
+  Figure: 03
+  Type: Comparison panels
+  Generated: 2026-05-25
+  Source: pantry/07-midterm-exam-cajal.md
+-->
+<svg viewBox="0 0 700 480" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title">
+  <title id="fig-title">If-Else vs Polymorphic — Before and After</title>
+  <desc>The if-else version branches on the vehicle type in one method. The polymorphic version dispatches to three subclasses, each holding its own move() implementation. Adding a new vehicle touches one new class in the polymorphic version; in the if-else version it touches the call site and every other call site like it.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="07-midterm-exam"
+      figure-number="03"
+      figure-title="If-Else vs Polymorphic — Before and After"
+      figure-slug="ifelse-vs-polymorphic-before-after"
+      figure-type="comparison-panels"
+      priority="Critical"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/07-midterm-exam-cajal.md"
+    />
+  </metadata>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#2a1a0e"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="700" height="480" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">If-Else vs Polymorphic — Before and After</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">The same behavior, two structures. One braces for change; the other invites it.</text>
+
+  <line x1="350" y1="80" x2="350" y2="456" stroke="#2a1a0e" stroke-width="0.5"/>
+
+  <text x="190" y="106" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">BEFORE — IF-ELSE</text>
+
+  <rect x="80" y="124" width="220" height="320" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="190" y="148" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">void move(Vehicle v) {</text>
+  <text x="100" y="172" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">if (v.type == CAR)</text>
+  <text x="120" y="190" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">driveCar(v);</text>
+  <text x="100" y="214" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">else if (v.type == BIKE)</text>
+  <text x="120" y="232" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">pedalBike(v);</text>
+  <text x="100" y="256" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">else if (v.type == BOARD)</text>
+  <text x="120" y="274" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">push(v);</text>
+  <text x="100" y="296" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">// add a SCOOTER?</text>
+  <text x="100" y="314" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#C8102E">// → edit this method</text>
+  <text x="100" y="332" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#C8102E">// and every other one</text>
+  <text x="100" y="350" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#C8102E">// that branches on type</text>
+  <text x="190" y="380" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">}</text>
+
+  <text x="190" y="416" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">type-test bug surface</text>
+  <text x="190" y="432" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">grows with every subtype</text>
+
+  <text x="510" y="106" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E" letter-spacing="0.08em">AFTER — POLYMORPHIC</text>
+
+  <rect x="400" y="124" width="220" height="80" fill="#C8102E" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="510" y="148" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="12" fill="#FFFFFF">Vehicle</text>
+  <line x1="416" y1="156" x2="604" y2="156" stroke="#FFFFFF" stroke-width="0.5"/>
+  <text x="510" y="178" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#FFFFFF">abstract move()</text>
+  <text x="510" y="196" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#FFFFFF">one polymorphic call site</text>
+
+  <path d="M 460 204 L 430 244" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path d="M 510 204 L 510 244" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path d="M 560 204 L 590 244" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <rect x="400" y="250" width="64" height="50" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+  <text x="432" y="270" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">Car</text>
+  <text x="432" y="288" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">move()</text>
+
+  <rect x="478" y="250" width="64" height="50" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+  <text x="510" y="270" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">Bicycle</text>
+  <text x="510" y="288" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">move()</text>
+
+  <rect x="556" y="250" width="64" height="50" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+  <text x="588" y="270" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">Board</text>
+  <text x="588" y="288" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">move()</text>
+
+  <rect x="478" y="332" width="64" height="50" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="1" stroke-dasharray="4 3"/>
+  <text x="510" y="352" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#545454">Scooter</text>
+  <text x="510" y="370" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">move()</text>
+
+  <text x="510" y="416" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#C8102E">add Scooter: write one class.</text>
+  <text x="510" y="432" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">No edit to the call site.</text>
+</svg>

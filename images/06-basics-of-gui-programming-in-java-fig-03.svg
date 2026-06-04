@@ -1,0 +1,89 @@
+<!--
+  Login Flow Sequence
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 06-basics-of-gui-programming-in-java
+  Figure: 03
+  Type: Systems diagram (sequence)
+  Generated: 2026-05-25
+  Source: pantry/06-basics-of-gui-programming-in-java-cajal.md
+-->
+<svg viewBox="0 0 700 480" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title">
+  <title id="fig-title">Login Flow Sequence</title>
+  <desc>A five-swimlane sequence: user, login form, LoginManager, UserAccount, and hash function. Patron is deliberately absent — the domain object plays no role in login. The boolean result returns up the call chain.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="06-basics-of-gui-programming-in-java"
+      figure-number="03"
+      figure-title="Login Flow Sequence"
+      figure-slug="login-flow-sequence"
+      figure-type="systems-diagram"
+      priority="Critical"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/06-basics-of-gui-programming-in-java-cajal.md"
+    />
+  </metadata>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#2a1a0e"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="700" height="480" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">Login Flow Sequence</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">Patron is not on this diagram. Domain data never sees raw credentials.</text>
+
+  <!-- Swimlane headers -->
+  <g font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em" text-anchor="middle">
+    <text x="100" y="96">USER</text>
+    <text x="230" y="96">LOGIN FORM</text>
+    <text x="360" y="96">LOGIN MANAGER</text>
+    <text x="490" y="96">USER ACCOUNT</text>
+    <text x="610" y="96">HASH FUNCTION</text>
+  </g>
+
+  <!-- Vertical lifelines -->
+  <g stroke="#D4D4D4" stroke-width="0.75" stroke-dasharray="3 3">
+    <line x1="100" y1="108" x2="100" y2="420"/>
+    <line x1="230" y1="108" x2="230" y2="420"/>
+    <line x1="360" y1="108" x2="360" y2="420"/>
+    <line x1="490" y1="108" x2="490" y2="420"/>
+    <line x1="610" y1="108" x2="610" y2="420"/>
+  </g>
+
+  <!-- Step 1: user submits -->
+  <text x="40" y="142" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#545454">①</text>
+  <path d="M 108 144 L 224 144" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <text x="166" y="138" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#2a1a0e">submit(user, pass)</text>
+
+  <!-- Step 2: form to LoginManager -->
+  <text x="40" y="186" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#545454">②</text>
+  <path d="M 238 188 L 354 188" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <text x="296" y="182" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#2a1a0e">authenticate(user, pass)</text>
+
+  <!-- Step 3: LoginManager looks up UserAccount -->
+  <text x="40" y="230" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#545454">③</text>
+  <path d="M 368 232 L 484 232" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <text x="426" y="226" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#2a1a0e">find(username)</text>
+
+  <!-- Step 4: hash the input -->
+  <text x="40" y="274" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#545454">④</text>
+  <path d="M 368 276 L 604 276" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <text x="486" y="270" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#2a1a0e">hash(submittedPass)</text>
+
+  <!-- Step 5: compare and return boolean -->
+  <text x="40" y="320" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#545454">⑤</text>
+  <path d="M 354 322 L 238 322" stroke="#C8102E" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <text x="296" y="316" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#C8102E">boolean ok</text>
+
+  <!-- Step 6: form returns to user -->
+  <text x="40" y="364" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#545454">⑥</text>
+  <path d="M 224 366 L 108 366" stroke="#C8102E" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <text x="166" y="360" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#C8102E">grant or deny</text>
+
+  <text x="350" y="448" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">A single boolean travels back. The plaintext password never leaves the LoginManager.</text>
+</svg>

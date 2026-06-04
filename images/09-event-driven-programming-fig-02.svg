@@ -1,0 +1,83 @@
+<!--
+  Stream Pipeline with Persistent Source
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 09-event-driven-programming
+  Figure: 02
+  Type: Process flowchart
+  Generated: 2026-05-25
+  Source: pantry/09-event-driven-programming-cajal.md
+-->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title">
+  <title id="fig-title">Stream Pipeline with Persistent Source</title>
+  <desc>Items flow from a source collection through filter, sorted, and collect stages into a result. The source collection sits below the pipeline, unchanged — streams produce a new result without consuming the source.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="09-event-driven-programming"
+      figure-number="02"
+      figure-title="Stream Pipeline with Persistent Source"
+      figure-slug="stream-pipeline-persistent-source"
+      figure-type="process-flowchart"
+      priority="Critical"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/09-event-driven-programming-cajal.md"
+    />
+  </metadata>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#2a1a0e"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">Stream Pipeline with Persistent Source</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">The pipeline reads from the source. It does not consume the source.</text>
+
+  <!-- Source (origin) -->
+  <rect x="32" y="140" width="100" height="60" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="82" y="162" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">SOURCE</text>
+  <text x="82" y="184" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">books</text>
+
+  <path d="M 136 170 L 156 170" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <!-- Filter stage -->
+  <rect x="160" y="140" width="120" height="60" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1"/>
+  <text x="220" y="162" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">FILTER</text>
+  <text x="220" y="184" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">.filter(b -&gt; …)</text>
+
+  <path d="M 284 170 L 304 170" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <!-- Sorted stage -->
+  <rect x="308" y="140" width="120" height="60" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1"/>
+  <text x="368" y="162" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">SORTED</text>
+  <text x="368" y="184" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">.sorted(BY_YEAR)</text>
+
+  <path d="M 432 170 L 452 170" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <!-- Collect stage -->
+  <rect x="456" y="140" width="120" height="60" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1"/>
+  <text x="516" y="162" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">COLLECT</text>
+  <text x="516" y="184" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">.collect(toList())</text>
+
+  <path d="M 580 170 L 600 170" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <!-- Result -->
+  <rect x="604" y="140" width="64" height="60" fill="#C8102E" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="636" y="162" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#FFFFFF" letter-spacing="0.08em">RESULT</text>
+  <text x="636" y="184" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#FFFFFF">new list</text>
+
+  <!-- Persistent-source track below — same source still intact -->
+  <text x="32" y="276" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">SOURCE AFTER</text>
+  <rect x="32" y="290" width="100" height="60" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text x="82" y="312" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">books</text>
+  <text x="82" y="330" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">untouched</text>
+
+  <text x="350" y="312" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">the original collection still contains everything it did before .stream() was called</text>
+  <text x="350" y="334" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#C8102E">the pipeline produces a new result; it does not consume the source</text>
+
+  <text x="350" y="392" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">A stream is a view. Use it once. The source is yours to query again.</text>
+</svg>

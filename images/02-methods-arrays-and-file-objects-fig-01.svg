@@ -1,0 +1,65 @@
+<!--
+  Reference Variable Points to Heap Object
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 02-methods-arrays-and-file-objects
+  Figure: 01
+  Type: Structural schematic (stack / heap)
+  Generated: 2026-05-25
+  Source: pantry/02-methods-arrays-and-file-objects-cajal.md
+-->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title">
+  <title id="fig-title">Reference Variable Points to Heap Object</title>
+  <desc>A reference variable lives on the stack and points to an object that lives on the heap. The variable holds an address; the object holds the data.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="02-methods-arrays-and-file-objects"
+      figure-number="01"
+      figure-title="Reference Variable Points to Heap Object"
+      figure-slug="reference-variable-heap-object"
+      figure-type="structural-schematic"
+      priority="Critical"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/02-methods-arrays-and-file-objects-cajal.md"
+    />
+  </metadata>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#2a1a0e"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">Reference Variable Points to Heap Object</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">The variable holds an address. The object holds the data.</text>
+
+  <!-- Stack region -->
+  <rect x="80" y="120" width="200" height="220" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="180" y="144" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">STACK</text>
+
+  <rect x="100" y="200" width="160" height="60" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+  <text x="180" y="222" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="12" fill="#2a1a0e">patron</text>
+  <text x="180" y="242" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">reference variable</text>
+
+  <!-- Heap region -->
+  <rect x="420" y="120" width="200" height="220" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="520" y="144" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">HEAP</text>
+
+  <rect x="440" y="170" width="160" height="140" fill="#FFFFFF" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="520" y="190" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="12" fill="#2a1a0e">Patron</text>
+  <line x1="456" y1="200" x2="584" y2="200" stroke="#D4D4D4" stroke-width="0.75"/>
+  <text x="520" y="226" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">name = "Maya"</text>
+  <text x="520" y="252" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">borrowedBooks = []</text>
+  <text x="520" y="278" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">checkOut(), …</text>
+  <text x="520" y="298" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">the object</text>
+
+  <!-- Arrow from reference to object -->
+  <path d="M 262 230 L 436 230" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <text x="350" y="220" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">points to</text>
+
+  <text x="350" y="378" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">The variable and the object are in different places. They are linked, not the same.</text>
+</svg>

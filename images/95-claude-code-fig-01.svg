@@ -1,25 +1,56 @@
-<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
-  <title id="title">Claude Code phase gate ladder from Module 0</title>
-  <desc id="desc">Claude Code phase gate ladder from Module 0 diagnostic-only use through Module 14 full collaboration, with each rung showing what Claude may do and wh</desc>
-  <defs>
-    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-      <polygon points="0 0, 8 3, 0 6" fill="#000000"/>
-    </marker>
-  </defs>
+<!--
+  Phase-Gate Ladder
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 95-claude-code
+  Figure: 01
+  Type: Hierarchy / progression
+  Generated: 2026-05-25
+  Source: pantry/95-claude-code-cajal.md
+-->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title">
+  <title id="fig-title">Phase-Gate Ladder — AI Permission Across the Semester</title>
+  <desc>Four widening bars track the AI permission scope across four module clusters. A constant left edge — the verification threshold — does not move even as the bars extend rightward. Permission grows; the requirement to verify what comes back does not.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="95-claude-code"
+      figure-number="01"
+      figure-title="Phase-Gate Ladder — AI Permission Across the Semester"
+      figure-slug="phase-gate-ladder"
+      figure-type="hierarchy"
+      priority="Critical"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/95-claude-code-cajal.md"
+    />
+  </metadata>
   <rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
-  <text x="32" y="42" font-family="'Real Head Pro', 'FF Real', Lato, sans-serif" font-size="13" font-weight="bold" fill="#000000">Claude Code phase gate ladder from Module 0</text>
-  <text x="32" y="62" font-family="'Real Head Pro', 'FF Real', Lato, sans-serif" font-size="10" fill="#555555">Claude Code phase gate ladder from Module 0 diagnostic-only use through Module 14 full collaboration, with each rung showing what Claude may do and wh</text>
-  <rect x="64" y="116" width="160" height="180" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="1"/>
-  <text x="144" y="148" text-anchor="middle" font-family="'Real Head Pro', 'FF Real', Lato, sans-serif" font-size="10" letter-spacing="0.08em" fill="#555555">CLAUDE</text>
-  <circle cx="144" cy="204" r="28" fill="#000000"/>
-  <text x="144" y="266" text-anchor="middle" font-family="'Real Head Pro', 'FF Real', Lato, sans-serif" font-size="11" fill="#000000">evidence view</text>
-  <rect x="258" y="116" width="160" height="180" fill="#F5F5F5" stroke="#CCCCCC" stroke-width="1"/>
-  <text x="338" y="148" text-anchor="middle" font-family="'Real Head Pro', 'FF Real', Lato, sans-serif" font-size="10" letter-spacing="0.08em" fill="#555555">CODE</text>
-  <circle cx="338" cy="204" r="36" fill="#C8102E"/>
-  <text x="338" y="266" text-anchor="middle" font-family="'Real Head Pro', 'FF Real', Lato, sans-serif" font-size="11" fill="#000000">evidence view</text>
-  <rect x="452" y="116" width="160" height="180" fill="#FFFFFF" stroke="#CCCCCC" stroke-width="1"/>
-  <text x="532" y="148" text-anchor="middle" font-family="'Real Head Pro', 'FF Real', Lato, sans-serif" font-size="10" letter-spacing="0.08em" fill="#555555">PHASE</text>
-  <circle cx="532" cy="204" r="44" fill="#000000"/>
-  <text x="532" y="266" text-anchor="middle" font-family="'Real Head Pro', 'FF Real', Lato, sans-serif" font-size="11" fill="#000000">evidence view</text>
-  <text x="350" y="340" text-anchor="middle" font-family="'Real Head Pro', 'FF Real', Lato, sans-serif" font-size="11" fill="#000000">Panels translate the chapter prompt into comparable visual states.</text>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">Phase-Gate Ladder — AI Permission Across the Semester</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">Permission widens as verification capacity grows. The threshold does not move.</text>
+
+  <line x1="180" y1="96" x2="180" y2="360" stroke="#C8102E" stroke-width="2"/>
+  <text x="172" y="92" text-anchor="end" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E" letter-spacing="0.08em">INVARIANT</text>
+  <text x="172" y="378" text-anchor="end" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E">"must verify what comes back"</text>
+
+  <rect x="180" y="116" width="120" height="36" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="60" y="138" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#545454">M1–M3</text>
+  <text x="240" y="138" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#2a1a0e">syntax help only</text>
+
+  <rect x="180" y="164" width="240" height="36" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="60" y="186" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#545454">M4–M7</text>
+  <text x="300" y="186" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#2a1a0e">draft methods, you trace</text>
+
+  <rect x="180" y="212" width="360" height="36" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="60" y="234" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#545454">M8–M11</text>
+  <text x="360" y="234" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#2a1a0e">scaffold classes, you fill bodies</text>
+
+  <rect x="180" y="260" width="480" height="36" fill="#C8102E" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="60" y="282" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#545454">M12–M14</text>
+  <text x="420" y="282" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#FFFFFF">propose architectures, you defend them</text>
+
+  <text x="350" y="408" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">Wider permission is earned by stronger verification — not the other way around.</text>
 </svg>

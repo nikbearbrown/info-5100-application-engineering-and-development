@@ -1,0 +1,82 @@
+<!--
+  Before / After Deadline Refactor
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 11-generics
+  Figure: 05
+  Type: Comparison panels
+  Generated: 2026-05-25
+  Source: pantry/11-generics-cajal.md
+-->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title">
+  <title id="fig-title">Before and After a Deadline Refactor</title>
+  <desc>The handler before the deadline is a 40-line method touching the model, the file system, the view, and the log. After the refactor, the handler is 4 lines that delegate to three named collaborators. The substance has not changed; the structure has.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="11-generics"
+      figure-number="05"
+      figure-title="Before and After a Deadline Refactor"
+      figure-slug="before-after-deadline-refactor"
+      figure-type="comparison-panels"
+      priority="Important"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/11-generics-cajal.md"
+    />
+  </metadata>
+  <rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">Before and After a Deadline Refactor</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">Same behavior. Different structure. The post-deadline shape survives next year's pressure.</text>
+
+  <line x1="350" y1="80" x2="350" y2="392" stroke="#2a1a0e" stroke-width="0.5"/>
+
+  <text x="190" y="106" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">BEFORE — 40 LINES</text>
+
+  <rect x="80" y="124" width="220" height="48" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="190" y="152" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">checkoutBtn handler</text>
+
+  <rect x="100" y="184" width="180" height="20" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="0.75"/>
+  <text x="190" y="198" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#2a1a0e">parse + validate</text>
+
+  <rect x="100" y="208" width="180" height="20" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="0.75"/>
+  <text x="190" y="222" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#2a1a0e">find Book in catalog</text>
+
+  <rect x="100" y="232" width="180" height="20" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="0.75"/>
+  <text x="190" y="246" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#2a1a0e">check fees + overdue</text>
+
+  <rect x="100" y="256" width="180" height="20" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="0.75"/>
+  <text x="190" y="270" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#2a1a0e">write to loans.csv</text>
+
+  <rect x="100" y="280" width="180" height="20" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="0.75"/>
+  <text x="190" y="294" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#2a1a0e">log audit event</text>
+
+  <rect x="100" y="304" width="180" height="20" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="0.75"/>
+  <text x="190" y="318" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#2a1a0e">update label + table</text>
+
+  <text x="190" y="362" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">five extra concerns piled in</text>
+
+  <text x="510" y="106" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E" letter-spacing="0.08em">AFTER — 4 LINES</text>
+
+  <rect x="400" y="124" width="220" height="48" fill="#C8102E" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="510" y="152" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#FFFFFF">checkoutBtn handler</text>
+
+  <rect x="420" y="184" width="180" height="20" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="0.75"/>
+  <text x="510" y="198" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#2a1a0e">validate(input)</text>
+
+  <rect x="420" y="208" width="180" height="20" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="0.75"/>
+  <text x="510" y="222" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#2a1a0e">loan = checkout.run(b)</text>
+
+  <rect x="420" y="232" width="180" height="20" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="0.75"/>
+  <text x="510" y="246" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#2a1a0e">view.show(loan)</text>
+
+  <rect x="420" y="256" width="180" height="20" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="0.75"/>
+  <text x="510" y="270" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#2a1a0e">return</text>
+
+  <text x="510" y="312" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#C8102E">other concerns moved to:</text>
+  <text x="510" y="330" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">CheckoutService · LoanRepo · AuditLog</text>
+  <text x="510" y="362" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">named collaborators with their own tests</text>
+</svg>

@@ -1,0 +1,69 @@
+<!--
+  Hypothesize → Isolate → Test Debugging Loop
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 04-basics-of-object-oriented-programming-part-2
+  Figure: 02
+  Type: Cycle diagram
+  Generated: 2026-05-25
+  Source: pantry/04-basics-of-object-oriented-programming-part-2-cajal.md
+-->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title">
+  <title id="fig-title">Hypothesize, Isolate, Test — the Debugging Loop</title>
+  <desc>Three nodes in a clockwise cycle: form a hypothesis about what is broken, isolate the smallest test that would refute it, then run that test. A refuted hypothesis returns to the first node — debugging is the practice of going around this loop until the hypothesis survives the test.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="04-basics-of-object-oriented-programming-part-2"
+      figure-number="02"
+      figure-title="Hypothesize, Isolate, Test — the Debugging Loop"
+      figure-slug="hypothesize-isolate-test-loop"
+      figure-type="cycle-diagram"
+      priority="Critical"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/04-basics-of-object-oriented-programming-part-2-cajal.md"
+    />
+  </metadata>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#2a1a0e"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">Hypothesize, Isolate, Test — the Debugging Loop</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">Debugging is the discipline of going around this loop until your hypothesis survives a test.</text>
+
+  <!-- Hypothesize (top) -->
+  <rect x="280" y="100" width="140" height="64" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="350" y="122" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">1 · HYPOTHESIZE</text>
+  <text x="350" y="144" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">what's broken?</text>
+  <text x="350" y="160" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">a specific, falsifiable claim</text>
+
+  <!-- Isolate (bottom-right) -->
+  <rect x="450" y="284" width="140" height="64" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="520" y="306" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">2 · ISOLATE</text>
+  <text x="520" y="328" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">smallest refuting test</text>
+  <text x="520" y="344" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">change one thing only</text>
+
+  <!-- Test (bottom-left) -->
+  <rect x="110" y="284" width="140" height="64" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="180" y="306" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">3 · TEST</text>
+  <text x="180" y="328" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">run; observe</text>
+  <text x="180" y="344" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">does the hypothesis survive?</text>
+
+  <!-- Solid clockwise arrows (forward path) -->
+  <path d="M 416 164 Q 500 220 514 280" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path d="M 450 316 L 254 316" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <!-- Return arrow on refutation (dashed back to hypothesize) -->
+  <path d="M 186 284 Q 200 220 284 164" stroke="#C8102E" stroke-width="1.5" stroke-dasharray="5 4" fill="none" marker-end="url(#arrow)"/>
+
+  <text x="350" y="222" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#C8102E" letter-spacing="0.12em">REFUTED → BACK</text>
+  <text x="350" y="240" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">a wrong hypothesis is information</text>
+
+  <text x="350" y="392" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">The loop ends when the test confirms the hypothesis. Not when you change something and it seems better.</text>
+</svg>

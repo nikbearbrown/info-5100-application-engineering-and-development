@@ -1,0 +1,93 @@
+<!--
+  Click-to-View Chain with Bug Locations
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 11-generics
+  Figure: 04
+  Type: Process flowchart
+  Generated: 2026-05-25
+  Source: pantry/11-generics-cajal.md
+-->
+<svg viewBox="0 0 700 480" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title">
+  <title id="fig-title">Click-to-View Chain with Bug Locations</title>
+  <desc>The journey from a click to a redrawn view passes through seven nodes: the click event, the framework dispatch, the registered handler, validation, the model method, the view update, and the screen paint. Each transition is a place a bug can live.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="11-generics"
+      figure-number="04"
+      figure-title="Click-to-View Chain with Bug Locations"
+      figure-slug="click-to-view-chain"
+      figure-type="process-flowchart"
+      priority="Critical"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/11-generics-cajal.md"
+    />
+  </metadata>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#2a1a0e"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="700" height="480" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">Click-to-View Chain with Bug Locations</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">"The click does nothing" can break at any one of seven places. Find which.</text>
+
+  <!-- Seven nodes in a horizontal chain (wraps if too tight) -->
+  <rect x="40" y="160" width="100" height="56" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="90" y="184" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="12" fill="#2a1a0e">1 · click</text>
+  <text x="90" y="202" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">user gesture</text>
+
+  <path d="M 144 188 L 164 188" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <rect x="168" y="160" width="100" height="56" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="218" y="184" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="12" fill="#2a1a0e">2 · dispatch</text>
+  <text x="218" y="202" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">framework finds handler</text>
+
+  <path d="M 272 188 L 292 188" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <rect x="296" y="160" width="100" height="56" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="346" y="184" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="12" fill="#2a1a0e">3 · handler</text>
+  <text x="346" y="202" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">your code runs</text>
+
+  <path d="M 400 188 L 420 188" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <rect x="424" y="160" width="100" height="56" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="474" y="184" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="12" fill="#2a1a0e">4 · validate</text>
+  <text x="474" y="202" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">guard input</text>
+
+  <path d="M 528 188 L 548 188" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <rect x="552" y="160" width="100" height="56" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="602" y="184" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="12" fill="#2a1a0e">5 · model</text>
+  <text x="602" y="202" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">domain mutation</text>
+
+  <!-- Wrap to next row -->
+  <path d="M 602 220 L 602 240 L 90 240 L 90 260" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <rect x="40" y="264" width="100" height="56" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="90" y="288" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="12" fill="#2a1a0e">6 · view</text>
+  <text x="90" y="306" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">setText, refresh</text>
+
+  <path d="M 144 292 L 164 292" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <rect x="168" y="264" width="100" height="56" fill="#C8102E" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="218" y="288" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="12" fill="#FFFFFF">7 · paint</text>
+  <text x="218" y="306" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#FFFFFF">screen redraws</text>
+
+  <!-- Bug-location callouts below -->
+  <text x="350" y="360" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E" letter-spacing="0.08em">BUG LOCATIONS</text>
+  <text x="90" y="382" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E">handler not registered</text>
+  <text x="218" y="382" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E">wrong fx:id</text>
+  <text x="346" y="382" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E">null reference</text>
+  <text x="474" y="382" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E">silent early return</text>
+  <text x="602" y="382" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E">no exception, no mutation</text>
+  <text x="90" y="406" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E">refresh not called</text>
+  <text x="218" y="406" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E">wrong thread</text>
+
+  <text x="350" y="452" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">When the bug surfaces, ask which node fired — and stop guessing.</text>
+</svg>

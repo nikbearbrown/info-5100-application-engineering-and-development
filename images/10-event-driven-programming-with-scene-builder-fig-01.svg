@@ -1,0 +1,78 @@
+<!--
+  MVC Responsibility Map
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 10-event-driven-programming-with-scene-builder
+  Figure: 01
+  Type: Systems diagram
+  Generated: 2026-05-25
+  Source: pantry/10-event-driven-programming-with-scene-builder-cajal.md
+-->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title">
+  <title id="fig-title">MVC Responsibility Map</title>
+  <desc>Model, View, and Controller as three labeled nodes with directional arrows describing what each may ask of the others. The Controller mediates: it reads state from the Model and updates the View; it accepts events from the View and writes to the Model.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="10-event-driven-programming-with-scene-builder"
+      figure-number="01"
+      figure-title="MVC Responsibility Map"
+      figure-slug="mvc-responsibility-map"
+      figure-type="systems-diagram"
+      priority="Critical"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/10-event-driven-programming-with-scene-builder-cajal.md"
+    />
+  </metadata>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#2a1a0e"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">MVC Responsibility Map</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">Three boxes. The Controller is the only one that talks to the other two.</text>
+
+  <!-- View (left) -->
+  <rect x="60" y="160" width="160" height="100" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="140" y="184" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">VIEW</text>
+  <text x="140" y="210" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">what the user sees</text>
+  <text x="140" y="232" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">FXML, buttons, labels,</text>
+  <text x="140" y="248" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">no logic of its own</text>
+
+  <!-- Controller (center, the seam — highlighted) -->
+  <rect x="270" y="160" width="160" height="100" fill="#C8102E" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="350" y="184" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#FFFFFF" letter-spacing="0.08em">CONTROLLER</text>
+  <text x="350" y="210" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#FFFFFF">the seam</text>
+  <text x="350" y="232" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#FFFFFF">handles events,</text>
+  <text x="350" y="248" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#FFFFFF">translates between sides</text>
+
+  <!-- Model (right) -->
+  <rect x="480" y="160" width="160" height="100" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="560" y="184" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">MODEL</text>
+  <text x="560" y="210" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">the truth of the domain</text>
+  <text x="560" y="232" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">Book, Patron, Catalog —</text>
+  <text x="560" y="248" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">knows nothing of UI</text>
+
+  <!-- Arrows: view → controller (event) -->
+  <path d="M 224 196 L 266 196" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <text x="245" y="188" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">event</text>
+
+  <!-- Controller → view (update) -->
+  <path d="M 266 224 L 224 224" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <text x="245" y="240" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">update</text>
+
+  <!-- Controller → model (mutate) -->
+  <path d="M 434 196 L 476 196" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <text x="455" y="188" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">mutate</text>
+
+  <!-- Model → controller (state read) -->
+  <path d="M 476 224 L 434 224" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <text x="455" y="240" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">read state</text>
+
+  <text x="350" y="380" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">No arrow connects View and Model directly. That absence is the architectural commitment.</text>
+</svg>

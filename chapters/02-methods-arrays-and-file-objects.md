@@ -55,7 +55,9 @@ The word `patronA` on the left side of the assignment is not the object. This is
 
 `patronA` is a reference variable. It holds an address — a way of finding the object in memory. Think of it as a sticky note with a street address written on it. The note is not the house. If you hand someone the note, they can find the house. If you lose the note, the house does not disappear immediately (though eventually Java's garbage collector will reclaim it). If you write a new address on the note, you are not demolishing the old house — you are just pointing somewhere else.
 
-<!-- → [SCOPE | Figure 2.1 | IMAGE: reference variable on stack points to Patron object on heap — shows that patronA is an address, not the object itself | CONTENT: stack column, patronA reference variable, arrow, heap column, Patron object block with name/age/libraryId fields | EXCLUSIONS: patronB, second object, constructor internals, garbage collector, primitive types] -->
+![Reference variable → heap object rendered as a structural schematic for the chapter concept.](images/02-methods-arrays-and-file-objects-fig-01.png)
+*Figure 2.1 — Reference variable → heap object*
+
 
 ---
 
@@ -80,7 +82,9 @@ patronB  ──────────►  [ name: "Bernard" | age: 51 | librar
 
 The stack is where Java keeps local variables and references. The heap is where it keeps objects. The arrows represent the reference — the address on the sticky note.
 
-<!-- → [SCOPE | Figure 2.2 | IMAGE: clean two-column stack/heap diagram — patronA and patronB on the stack, each arrow pointing to a separate Patron object block on the heap | CONTENT: stack with patronA and patronB variables, heap with two distinct Patron blocks (Alice/34 and Bernard/51), two independent arrows | EXCLUSIONS: patronC, shared reference, constructor, class definition, garbage collector] -->
+![Two independent objects rendered as a structural schematic for the chapter concept.](images/02-methods-arrays-and-file-objects-fig-02.png)
+*Figure 2.2 — Two independent objects*
+
 
 Now try this:
 
@@ -114,7 +118,9 @@ Most students guess 34. The answer is 99.
 
 This is not a bug in Java. It is Java working exactly as designed. But it will feel like a bug every time you encounter it without the mental model, because the printout will show you a number you didn't expect and give you no indication why.
 
-<!-- → [SCOPE | Figure 2.3 | IMAGE: shared-reference trap — patronA and patronC both point to same heap block, patronB points to a different block | CONTENT: stack with patronA, patronB, patronC variables, heap with two object blocks, two arrows from patronA and patronC converging on same block, single arrow from patronB to its own block | EXCLUSIONS: field values other than age:99, method calls, null state, array context] -->
+![Shared-reference trap rendered as a structural schematic for the chapter concept.](images/02-methods-arrays-and-file-objects-fig-03.png)
+*Figure 2.3 — Shared-reference trap*
+
 
 The reference-versus-object distinction is not a detail. It is the foundational model for understanding every null pointer exception, every unexpected mutation, every moment when two variables seem to be mysteriously synchronized. Those errors do not make sense without this. They make complete sense with it.
 
@@ -223,7 +229,9 @@ This is the Feynman standard applied to code: you understand something when you 
 
 The trace habit is especially important for the reference-versus-object model because the relationship between variable names and heap blocks is invisible at runtime. The printout shows you values. It does not show you addresses, arrows, or which variables share a block. The trace makes the invisible visible before execution hides it again.
 
-<!-- → [SCOPE | Figure 2.4 | IMAGE: two-panel before/after trace — left panel shows hand-drawn stack/heap prediction, right panel shows actual console output with match/mismatch indicators | CONTENT: left panel with stack variables and heap boxes labeled "Prediction written down", right panel with console output, match indicator (teal), mismatch indicator pointing to "find the gap" | EXCLUSIONS: specific field values, code listing, patronC shared-reference scenario, file I/O] -->
+![Trace-before-run rendered as a comparison panels for the chapter concept.](images/02-methods-arrays-and-file-objects-fig-04.png)
+*Figure 2.4 — Trace-before-run*
+
 
 ---
 
@@ -243,7 +251,9 @@ The phase gate for this module: write the class yourself first. Then ask AI to a
 
 If you pass the five questions — if you can answer them without looking at the code — the class is yours. If you cannot, you have found the gap, which is exactly the information the module is designed to surface.
 
-<!-- → [SCOPE | Figure 2.5 | IMAGE: horizontal flowchart of the AI boundary rule — write class first, then AI quizzes you, then decision gate: can you answer without looking? yes = class is yours, no = gap found | CONTENT: start node, "write the class yourself" step, "ask AI for 5 questions" step, decision diamond, yes branch to "class is yours" terminus, no branch to "gap found" terminus with loop back | EXCLUSIONS: specific question text, code snippets, Patron class fields, file I/O context] -->
+![AI boundary flowchart rendered as a process flowchart for the chapter concept.](images/02-methods-arrays-and-file-objects-fig-05.png)
+*Figure 2.5 — AI boundary flowchart*
+
 
 ---
 
@@ -343,3 +353,11 @@ The bridge question is this: you have objects. How does a user move through them
 - *Java Language Specification* and Java SE API documentation: authoritative source for language and library facts.
 - Robins, Rountree, and Rountree, "Learning and Teaching Programming": on common novice difficulties and what instruction actually changes.
 - Peng et al. and Vaithilingam et al.: on cautious claims about AI coding assistance, verification risk, and what delegation costs.
+
+---
+
+## References
+
+<!-- Fact-check pass references. -->
+1. Oracle. Class Object. Java SE 21 API Specification, 2023. https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html
+2. Oracle. The Structure of the Java Virtual Machine. Java Virtual Machine Specification, Java SE 21, 2023. https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-2.html

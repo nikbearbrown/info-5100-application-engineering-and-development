@@ -1,0 +1,89 @@
+<!--
+  Controller Lifecycle — Four Phases
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 12-recursion
+  Figure: 03
+  Type: Timeline / progression
+  Generated: 2026-05-25
+  Source: pantry/12-recursion-cajal.md
+-->
+<svg viewBox="0 0 700 480" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title">
+  <title id="fig-title">Controller Lifecycle — Four Phases</title>
+  <desc>The controller progresses through four phases. Construction creates the object with null @FXML fields. Injection populates them. initialize() runs with fields available. The application is event-responsive.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="12-recursion"
+      figure-number="03"
+      figure-title="Controller Lifecycle — Four Phases"
+      figure-slug="controller-lifecycle-four-phases"
+      figure-type="timeline"
+      priority="Critical"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/12-recursion-cajal.md"
+    />
+  </metadata>
+  <rect x="0" y="0" width="700" height="480" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">Controller Lifecycle — Four Phases</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">@FXML fields are null in phase 1. Use them there and the program crashes.</text>
+
+  <!-- Timeline axis -->
+  <line x1="80" y1="380" x2="620" y2="380" stroke="#2a1a0e" stroke-width="1.5"/>
+  <text x="350" y="412" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">TIME →</text>
+
+  <!-- Phase 1: Construction (null fields) -->
+  <rect x="80" y="100" width="120" height="260" fill="#C8102E" stroke="#C8102E" stroke-width="1.5" opacity="0.92"/>
+  <text x="140" y="124" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#FFFFFF" letter-spacing="0.08em">PHASE 1</text>
+  <text x="140" y="148" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#FFFFFF">construct</text>
+  <text x="140" y="170" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#FFFFFF">new Controller()</text>
+  <text x="140" y="220" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#FFFFFF" letter-spacing="0.06em">@FXML FIELDS</text>
+  <text x="140" y="248" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="14" fill="#FFFFFF">null</text>
+  <text x="140" y="316" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#FFFFFF">⚠ do not use</text>
+  <text x="140" y="332" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#FFFFFF">fields here</text>
+
+  <!-- Phase 2: Injection -->
+  <rect x="208" y="100" width="120" height="260" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1"/>
+  <text x="268" y="124" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">PHASE 2</text>
+  <text x="268" y="148" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">inject</text>
+  <text x="268" y="170" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">FXMLLoader wires</text>
+  <text x="268" y="220" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.06em">@FXML FIELDS</text>
+  <text x="268" y="248" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="13" fill="#2a1a0e">filling…</text>
+
+  <!-- Phase 3: initialize() -->
+  <rect x="336" y="100" width="120" height="260" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1"/>
+  <text x="396" y="124" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">PHASE 3</text>
+  <text x="396" y="148" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">initialize()</text>
+  <text x="396" y="170" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">runs once</text>
+  <text x="396" y="220" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.06em">@FXML FIELDS</text>
+  <text x="396" y="248" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="13" fill="#2a1a0e">populated</text>
+  <text x="396" y="316" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">set up listeners,</text>
+  <text x="396" y="332" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">load initial data here</text>
+
+  <!-- Phase 4: Event-responsive -->
+  <rect x="464" y="100" width="156" height="260" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+  <text x="542" y="124" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">PHASE 4</text>
+  <text x="542" y="148" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">running</text>
+  <text x="542" y="170" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">user clicks happen</text>
+  <text x="542" y="220" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.06em">@FXML FIELDS</text>
+  <text x="542" y="248" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="13" fill="#2a1a0e">live</text>
+  <text x="542" y="316" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">handlers fire on events</text>
+
+  <!-- Phase tick marks on timeline -->
+  <g font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#545454" text-anchor="middle">
+    <line x1="140" y1="376" x2="140" y2="384" stroke="#545454" stroke-width="0.75"/>
+    <text x="140" y="400">t₁</text>
+    <line x1="268" y1="376" x2="268" y2="384" stroke="#545454" stroke-width="0.75"/>
+    <text x="268" y="400">t₂</text>
+    <line x1="396" y1="376" x2="396" y2="384" stroke="#545454" stroke-width="0.75"/>
+    <text x="396" y="400">t₃</text>
+    <line x1="542" y1="376" x2="542" y2="384" stroke="#545454" stroke-width="0.75"/>
+    <text x="542" y="400">t₄</text>
+  </g>
+
+  <text x="350" y="448" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">If you touch a field in the constructor (phase 1), it is null. initialize() exists exactly to escape that trap.</text>
+</svg>

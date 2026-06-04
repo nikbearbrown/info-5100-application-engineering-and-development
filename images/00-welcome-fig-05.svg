@@ -1,0 +1,65 @@
+<!--
+  Three-Layer Diagnostic Model
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 00-welcome
+  Figure: 05
+  Type: Structural schematic (stacked bands)
+  Generated: 2026-05-25
+  Source: pantry/00-welcome-cajal.md
+-->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title">
+  <title id="fig-title">Three-Layer Diagnostic Model</title>
+  <desc>A vertical stack of three bands of decreasing width. The widest band is the toolchain (JDK/JVM/PATH). Above sits the project layer (NetBeans structure, build config). Above that, the narrowest, is the program layer (Java source). Each layer's characteristic failure mode is named beside it.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="00-welcome"
+      figure-number="05"
+      figure-title="Three-Layer Diagnostic Model"
+      figure-slug="three-layer-diagnostic-model"
+      figure-type="structural-schematic"
+      priority="Critical"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/00-welcome-cajal.md"
+    />
+  </metadata>
+  <rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">Three-Layer Diagnostic Model</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">Every error you encounter this semester belongs to one of three layers. Identify the layer first.</text>
+
+  <!-- Top band: PROGRAM (narrowest) -->
+  <rect x="200" y="100" width="200" height="60" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1"/>
+  <text x="300" y="124" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">LAYER 3 — PROGRAM</text>
+  <text x="300" y="148" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">your Java source</text>
+  <!-- Failure indicator for program -->
+  <text x="420" y="124" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E" letter-spacing="0.06em">FAILS WITH</text>
+  <text x="420" y="142" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#C8102E">compile errors</text>
+  <text x="420" y="158" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#C8102E">runtime exceptions</text>
+
+  <!-- Middle band: PROJECT -->
+  <rect x="150" y="180" width="300" height="60" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1"/>
+  <text x="300" y="204" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">LAYER 2 — PROJECT</text>
+  <text x="300" y="228" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">NetBeans structure, build config</text>
+  <!-- Failure indicator for project -->
+  <text x="470" y="204" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E" letter-spacing="0.06em">FAILS WITH</text>
+  <text x="470" y="224" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#C8102E">class not found</text>
+
+  <!-- Bottom band: TOOLCHAIN (widest, foundation) -->
+  <rect x="80" y="260" width="440" height="80" fill="#2a1a0e" stroke="#2a1a0e" stroke-width="1"/>
+  <text x="300" y="288" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#FFFFFF" letter-spacing="0.08em">LAYER 1 — TOOLCHAIN</text>
+  <text x="300" y="312" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#FFFFFF">JDK, JVM, PATH</text>
+  <text x="300" y="330" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#FFFFFF">the foundation everything rests on</text>
+  <!-- Failure indicator for toolchain -->
+  <text x="540" y="288" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E" letter-spacing="0.06em">FAILS WITH</text>
+  <text x="540" y="308" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#C8102E">command not found</text>
+  <text x="540" y="324" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#C8102E">unsupported version</text>
+
+  <!-- Footer -->
+  <text x="350" y="384" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">A program error you cannot fix is usually a toolchain error in disguise.</text>
+  <text x="350" y="402" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">Diagnose from the bottom up.</text>
+</svg>

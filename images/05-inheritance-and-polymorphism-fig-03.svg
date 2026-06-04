@@ -1,0 +1,62 @@
+<!--
+  Author Shared Across Books
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 05-inheritance-and-polymorphism
+  Figure: 03
+  Type: Structural schematic (object graph)
+  Generated: 2026-05-25
+  Source: pantry/05-inheritance-and-polymorphism-cajal.md
+-->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title">
+  <title id="fig-title">Author Shared Across Books</title>
+  <desc>Two Book objects each hold a reference to the same Author object. Updating the author's name once propagates to both Books because they share the underlying object.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="05-inheritance-and-polymorphism"
+      figure-number="03"
+      figure-title="Author Shared Across Books"
+      figure-slug="author-shared-across-books"
+      figure-type="structural-schematic"
+      priority="Important"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/05-inheritance-and-polymorphism-cajal.md"
+    />
+  </metadata>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#2a1a0e"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">Author Shared Across Books</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">One Author object; many Books referencing it. Update the author once and every Book sees the change.</text>
+
+  <rect x="80" y="120" width="200" height="100" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+  <text x="180" y="142" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="12" fill="#2a1a0e">Book #1</text>
+  <line x1="96" y1="150" x2="264" y2="150" stroke="#D4D4D4" stroke-width="0.5"/>
+  <text x="180" y="172" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">title = "Dune"</text>
+  <text x="180" y="194" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">author = ───→</text>
+
+  <rect x="80" y="240" width="200" height="100" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+  <text x="180" y="262" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="12" fill="#2a1a0e">Book #2</text>
+  <line x1="96" y1="270" x2="264" y2="270" stroke="#D4D4D4" stroke-width="0.5"/>
+  <text x="180" y="292" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">title = "Children of Dune"</text>
+  <text x="180" y="314" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">author = ───→</text>
+
+  <rect x="440" y="180" width="200" height="100" fill="#C8102E" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="540" y="204" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="12" fill="#FFFFFF">Author</text>
+  <line x1="456" y1="212" x2="624" y2="212" stroke="#FFFFFF" stroke-width="0.5"/>
+  <text x="540" y="236" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#FFFFFF">name = "Frank Herbert"</text>
+  <text x="540" y="256" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#FFFFFF">birthYear = 1920</text>
+
+  <path d="M 282 194 L 436 220" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path d="M 282 314 L 436 244" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <text x="350" y="384" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">No duplicated Author. No copies to keep synchronized. The shared object is the synchronization.</text>
+</svg>

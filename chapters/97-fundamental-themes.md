@@ -119,3 +119,10 @@ The last sentence is the Feynman test. If you can say "here is what I still do n
 These seven themes are not a checklist to complete. They are habits of mind that compound over time, the way good design decisions compound over the life of a project. They are available to you now because you have spent a semester applying them — sometimes well, sometimes poorly, sometimes without recognizing that you were applying them at all.
 
 The Java will change. The frameworks will change. AI tools will change faster than either. The habits are the durable thing. Take them.
+
+---
+
+## References
+
+<!-- Fact-check pass references. -->
+No references added by fact-check pass.

@@ -63,7 +63,6 @@ The vocabulary for these three kinds is entity, relationship, and transaction. E
 
 Supply-side modeling is the work of getting the entities and relationships right before you write a single transaction.
 
-<!-- → [SCOPE | Figure 5.1 | TABLE: entity / relationship / transaction — three-column classification showing what each kind of object is, when it exists, and what it depends on | CONTENT: column headers (Entity, Relationship, Transaction), row 1 (what is it: durable resource / structural connection / user event), row 2 (when it exists: before any session / before any session / only during session), row 3 (what it depends on: nothing / two entities / entities must exist first) | EXCLUSIONS: Java syntax, specific class names, constructor details, ArrayList, inheritance hierarchy] -->
 
 ---
 
@@ -81,7 +80,9 @@ This design can run for a long time without visibly breaking. A single patron, a
 
 At each of these moments, you discover that the entity does not really exist in your design. The data is there, but it is scattered across transaction objects, or recreated on demand, or duplicated across methods. The supply side was never modeled. It was just implied.
 
-<!-- → [SCOPE | Figure 5.2 | IMAGE: two-column before/after — left: transaction creates resource (checkout() constructs Book objects; no checkout = no catalog); right: supply side preloaded independently (Catalog built at startup; checkout() calls into it) | CONTENT: left column with checkout box containing Book construction and consequence list (can't search, two sessions = two catalogs), right column with Catalog box above checkout box, arrow labeled "queries" between them | EXCLUSIONS: code syntax, specific field names, Author entity, inheritance] -->
+![Supply-coupled vs. preloaded rendered as a comparison panels for the chapter concept.](images/05-inheritance-and-polymorphism-fig-01.png)
+*Figure 5.2 — Supply-coupled vs. preloaded*
+
 
 The fix is to model it first, explicitly, as its own layer — before writing any transaction code.
 
@@ -151,7 +152,9 @@ catalog.addBook(new Book("The Timeless Way of Building",
 
 The catalog now exists. No patron was needed to create it. Any transaction that later needs to find a book will look here — not construct its own view of what books exist.
 
-<!-- → [SCOPE | Figure 5.3 | IMAGE: Catalog class boundary diagram — outer container shows the class, inner left box shows private state (Book[] books, int count), inner right box shows public interface (addBook, findByIsbn, searchByTitle), lower red box shows what Catalog does NOT know (which patron, whether checkout is running, current screen) | CONTENT: Catalog outer rect, internal state box, public interface box, "does not know" exclusion box, add arrow entering from left, query arrow exiting right | EXCLUSIONS: code syntax, Author entity, inheritance, ArrayList, constructor chaining] -->
+![Catalog class boundary rendered as a structural schematic for the chapter concept.](images/05-inheritance-and-polymorphism-fig-02.png)
+*Figure 5.3 — Catalog class boundary*
+
 
 ---
 
@@ -199,7 +202,9 @@ public class Book {
 
 Now the author exists as an entity. You can update the biography in one place. You can find all books by a given author by scanning the catalog for books whose author array contains that author reference. The relationship is modeled, not implied.
 
-<!-- → [SCOPE | Figure 5.4 | IMAGE: object graph showing two Author heap objects on the left, three Book heap objects on the right, arrows from each Book's authors[] field to the Author it references — two Books share a single Author object, demonstrating that updating the Author once updates all references | CONTENT: two Author objects (Don Norman, C. Alexander), three Book objects (Design of Everyday Things → Norman, A Pattern Language → Alexander, Timeless Way → Alexander), arrows with field label "authors[0]", callout noting "two books, one Author object" | EXCLUSIONS: Catalog, Patron, transaction objects, constructor syntax, ArrayList] -->
+![Author shared across Books rendered as a structural schematic for the chapter concept.](images/05-inheritance-and-polymorphism-fig-03.png)
+*Figure 5.4 — Author shared across Books*
+
 
 | concept | Java artifact | what AI may do | what the student must verify | evidence before submission |
 | --- | --- | --- | --- | --- |
@@ -316,7 +321,9 @@ public static void main(String[] args) {
 
 The separation is visible in the structure of main. Supply side first. Demand side after. The catalog does not know the patron exists. The patron knows the catalog exists and asks it for resources.
 
-<!-- → [SCOPE | Figure 5.5 | IMAGE: annotated main() block — supply-side lines highlighted in teal, demand-side lines highlighted in amber, dashed horizontal divider between the two regions with label, separation test note below | CONTENT: teal region (Catalog construction, addBook calls, searchByTitle call), dashed line with "supply above / demand below" label, amber region (Patron construction, checkout call), caption explaining the separation test | EXCLUSIONS: full method bodies, Author entity, relationship objects, ArrayList] -->
+![main() with supply/demand divider rendered as a annotated example for the chapter concept.](images/05-inheritance-and-polymorphism-fig-04.png)
+*Figure 5.5 — main() with supply/demand divider*
+
 
 ---
 
@@ -336,7 +343,9 @@ Write that. Three sentences per class is enough. Then give it to AI and ask for 
 
 What you get back is a starting point, not a design. Your job is to evaluate the stubs against the specification you wrote, not against your intuition that the code looks right. AI will generate a `Book` class with fields. Your job is to check whether those fields are the fields your specification required — not whether the fields seem reasonable in the abstract.
 
-<!-- → [SCOPE | Figure 5.6 | IMAGE: three-stage horizontal flow — Stage 1: write the spec (what it knows / does / relates), Stage 2: give to AI (returns class shell, constructor, method stubs), Stage 3: evaluate stubs against spec (not intuition) — with a warning band below showing what happens without Stage 1 | CONTENT: three labeled stage boxes with sub-bullets, arrows between stages, warning banner "Without Stage 1: AI solves a generic library problem — stubs compile but may not match your requirements" | EXCLUSIONS: specific class names, code syntax, Java keywords, inheritance diagram] -->
+![AI three-stage workflow rendered as a process flowchart for the chapter concept.](images/05-inheritance-and-polymorphism-fig-05.png)
+*Figure 5.6 — AI three-stage workflow*
+
 
 ---
 
@@ -437,3 +446,10 @@ The bridge question is this: the system has resources. Who is allowed to use the
 - *Java Language Specification* and Java SE API documentation: authoritative source for language and library facts.
 - Robins, Rountree, and Rountree, "Learning and Teaching Programming": on common novice difficulties and what instruction actually changes.
 - Peng et al. and Vaithilingam et al.: on cautious claims about AI coding assistance, verification risk, and what delegation costs.
+
+---
+
+## References
+
+<!-- Fact-check pass references. -->
+1. Oracle. Method Invocation Expressions. Java Language Specification, Java SE 21, 2023. https://docs.oracle.com/javase/specs/jls/se21/html/jls-15.html#jls-15.12.4.4

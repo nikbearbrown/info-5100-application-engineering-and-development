@@ -1,0 +1,81 @@
+<!--
+  Event Structure with Three Registration Forms
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 11-generics
+  Figure: 01
+  Type: Annotated example
+  Generated: 2026-05-25
+  Source: pantry/11-generics-cajal.md
+-->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title">
+  <title id="fig-title">Event Structure with Three Registration Forms</title>
+  <desc>An event has three structural parts — the source, the event object, and the handler. Three syntactic forms register the same handler: anonymous inner class, lambda, and method reference. Identical behavior, three weights of syntax.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="11-generics"
+      figure-number="01"
+      figure-title="Event Structure with Three Registration Forms"
+      figure-slug="event-structure-three-registrations"
+      figure-type="annotated-example"
+      priority="Important"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/11-generics-cajal.md"
+    />
+  </metadata>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#2a1a0e"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">Event Structure with Three Registration Forms</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">Same event, same handler — three syntactic forms with different weight.</text>
+
+  <!-- Event structure (top row): source → event → handler -->
+  <text x="32" y="92" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">EVENT STRUCTURE</text>
+
+  <rect x="60" y="108" width="140" height="48" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="130" y="128" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">source</text>
+  <text x="130" y="146" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">a button</text>
+  <path d="M 204 132 L 234 132" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <rect x="238" y="108" width="140" height="48" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="308" y="128" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">event object</text>
+  <text x="308" y="146" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">ActionEvent e</text>
+  <path d="M 382 132 L 412 132" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <rect x="416" y="108" width="220" height="48" fill="#C8102E" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="526" y="128" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#FFFFFF">handler</text>
+  <text x="526" y="146" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#FFFFFF">runs the response</text>
+
+  <!-- Three registration forms -->
+  <text x="32" y="200" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">THREE REGISTRATION FORMS</text>
+
+  <rect x="40" y="216" width="200" height="100" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="140" y="236" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">ANONYMOUS CLASS</text>
+  <text x="56" y="260" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#2a1a0e">btn.setOnAction(</text>
+  <text x="64" y="276" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#2a1a0e">new EventHandler() {</text>
+  <text x="72" y="292" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#2a1a0e">public void handle…</text>
+  <text x="56" y="308" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#2a1a0e">});</text>
+
+  <rect x="250" y="216" width="200" height="100" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="350" y="236" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">LAMBDA</text>
+  <text x="266" y="260" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#2a1a0e">btn.setOnAction(e -&gt; {</text>
+  <text x="274" y="276" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#2a1a0e">checkOutBook();</text>
+  <text x="266" y="292" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#2a1a0e">});</text>
+
+  <rect x="460" y="216" width="200" height="100" fill="#F5F5F5" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="560" y="236" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E" letter-spacing="0.08em">METHOD REFERENCE</text>
+  <text x="476" y="260" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#2a1a0e">btn.setOnAction(</text>
+  <text x="484" y="276" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#2a1a0e">this::checkOutBook);</text>
+  <text x="560" y="304" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">cleanest when handler is named</text>
+
+  <text x="350" y="364" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">Pick the form whose weight matches the handler's substance.</text>
+  <text x="350" y="382" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">A short inline action wants a lambda. A named method wants a method reference.</text>
+</svg>

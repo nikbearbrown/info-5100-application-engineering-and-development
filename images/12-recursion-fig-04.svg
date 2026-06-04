@@ -1,0 +1,111 @@
+<!--
+  Traceability Chain — Intact vs Broken
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 12-recursion
+  Figure: 04
+  Type: Comparison panels
+  Generated: 2026-05-25
+  Source: pantry/12-recursion-cajal.md
+-->
+<svg viewBox="0 0 700 480" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title">
+  <title id="fig-title">Traceability Chain — Intact vs Broken</title>
+  <desc>Five nodes connected end to end describe a working feature: FXML element, controller field, controller handler, service method, model mutation. In the broken version, the third link is severed — the handler returns silently. The screen still looks right.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="12-recursion"
+      figure-number="04"
+      figure-title="Traceability Chain — Intact vs Broken"
+      figure-slug="traceability-chain-intact-vs-broken"
+      figure-type="comparison-panels"
+      priority="Critical"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/12-recursion-cajal.md"
+    />
+  </metadata>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#2a1a0e"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="700" height="480" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">Traceability Chain — Intact vs Broken</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">A click that does nothing is most often a chain with one severed link.</text>
+
+  <!-- Intact chain -->
+  <text x="32" y="92" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">INTACT</text>
+
+  <rect x="40" y="108" width="108" height="56" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="94" y="130" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="12" fill="#2a1a0e">FXML</text>
+  <text x="94" y="148" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#545454">fx:id</text>
+
+  <path d="M 152 136 L 178 136" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <rect x="182" y="108" width="108" height="56" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="236" y="130" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="12" fill="#2a1a0e">field</text>
+  <text x="236" y="148" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#545454">@FXML Button</text>
+
+  <path d="M 294 136 L 320 136" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <rect x="324" y="108" width="108" height="56" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="378" y="130" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="12" fill="#2a1a0e">handler</text>
+  <text x="378" y="148" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#545454">onAction()</text>
+
+  <path d="M 436 136 L 462 136" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <rect x="466" y="108" width="108" height="56" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="520" y="130" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="12" fill="#2a1a0e">service</text>
+  <text x="520" y="148" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#545454">checkout.run()</text>
+
+  <path d="M 578 136 L 604 136" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <rect x="608" y="108" width="52" height="56" fill="#C8102E" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="634" y="130" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="12" fill="#FFFFFF">model</text>
+  <text x="634" y="148" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#FFFFFF">mutated</text>
+
+  <text x="350" y="208" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">click → model change. The screen reflects it.</text>
+
+  <!-- Divider -->
+  <line x1="32" y1="232" x2="668" y2="232" stroke="#D4D4D4" stroke-width="0.75"/>
+
+  <!-- Broken chain -->
+  <text x="32" y="268" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E" letter-spacing="0.08em">BROKEN</text>
+
+  <rect x="40" y="284" width="108" height="56" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="94" y="306" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="12" fill="#2a1a0e">FXML</text>
+  <text x="94" y="324" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#545454">fx:id</text>
+
+  <path d="M 152 312 L 178 312" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <rect x="182" y="284" width="108" height="56" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="236" y="306" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="12" fill="#2a1a0e">field</text>
+  <text x="236" y="324" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#545454">@FXML Button</text>
+
+  <path d="M 294 312 L 320 312" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <rect x="324" y="284" width="108" height="56" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="378" y="306" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="12" fill="#2a1a0e">handler</text>
+  <text x="378" y="324" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#C8102E">early return</text>
+
+  <!-- Severed link -->
+  <line x1="436" y1="305" x2="462" y2="319" stroke="#C8102E" stroke-width="2"/>
+  <line x1="436" y1="319" x2="462" y2="305" stroke="#C8102E" stroke-width="2"/>
+
+  <rect x="466" y="284" width="108" height="56" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="1" stroke-dasharray="4 3"/>
+  <text x="520" y="306" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="12" fill="#545454">service</text>
+  <text x="520" y="324" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">never called</text>
+
+  <rect x="608" y="284" width="52" height="56" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="1" stroke-dasharray="4 3"/>
+  <text x="634" y="306" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="12" fill="#545454">model</text>
+  <text x="634" y="324" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">unchanged</text>
+
+  <text x="350" y="380" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#C8102E">click → handler runs → returns silently → no model call → no error → no change</text>
+
+  <text x="350" y="436" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">"It looks right but does nothing" is a chain break, not a UI bug.</text>
+  <text x="350" y="454" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">Walk each link from FXML to model and find the severed one.</text>
+</svg>

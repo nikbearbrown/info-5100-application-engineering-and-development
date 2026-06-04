@@ -1,0 +1,61 @@
+<!--
+  Trace Before You Run
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 02-methods-arrays-and-file-objects
+  Figure: 04
+  Type: Comparison panels (prediction vs actual)
+  Generated: 2026-05-25
+  Source: pantry/02-methods-arrays-and-file-objects-cajal.md
+-->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title">
+  <title id="fig-title">Trace Before You Run</title>
+  <desc>Predicted output written by hand, side by side with the actual program output, line by line. Mismatches reveal exactly which mental model step is wrong.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="02-methods-arrays-and-file-objects"
+      figure-number="04"
+      figure-title="Trace Before You Run"
+      figure-slug="trace-before-you-run"
+      figure-type="comparison-panels"
+      priority="Important"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/02-methods-arrays-and-file-objects-cajal.md"
+    />
+  </metadata>
+  <rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">Trace Before You Run</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">Write down what you expect line by line. Then run. Mismatches name the broken step in your mental model.</text>
+
+  <line x1="350" y1="84" x2="350" y2="392" stroke="#2a1a0e" stroke-width="0.5"/>
+
+  <text x="190" y="106" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">PREDICTION (BY HAND)</text>
+
+  <rect x="80" y="124" width="220" height="240" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="100" y="150" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">L1  Maya</text>
+  <text x="100" y="178" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">L2  []</text>
+  <text x="100" y="206" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">L3  [Dune]</text>
+  <text x="100" y="234" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">L4  Maya</text>
+  <text x="100" y="262" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">L5  Theo</text>
+  <text x="100" y="290" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">L6  []</text>
+  <text x="100" y="318" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">L7  [Dune]</text>
+
+  <text x="510" y="106" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E" letter-spacing="0.08em">ACTUAL OUTPUT</text>
+
+  <rect x="400" y="124" width="220" height="240" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="420" y="150" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">L1  Maya</text>
+  <text x="420" y="178" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">L2  []</text>
+  <text x="420" y="206" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">L3  [Dune]</text>
+  <text x="420" y="234" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">L4  Maya</text>
+  <text x="420" y="262" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">L5  Theo</text>
+  <text x="420" y="290" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#C8102E">L6  [Dune]</text>
+  <text x="420" y="318" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#C8102E">L7  [Dune]</text>
+  <text x="500" y="290" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E">← unexpected</text>
+
+  <text x="350" y="392" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">L6 prediction was wrong. The mental model that produced L6 is the one to repair.</text>
+</svg>

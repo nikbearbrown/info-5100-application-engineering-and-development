@@ -1,0 +1,55 @@
+<!--
+  AI Audit Form
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 14-lists-stacks-queues-and-the-final-project
+  Figure: 02
+  Type: Annotated example
+  Generated: 2026-05-25
+  Source: pantry/14-lists-stacks-queues-and-the-final-project-cajal.md
+-->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title">
+  <title id="fig-title">AI Audit Form</title>
+  <desc>A four-field disclosure record that accompanies any AI-assisted code in the final project. Each field forces the student to articulate the boundary of AI assistance and the evidence of their own verification.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="14-lists-stacks-queues-and-the-final-project"
+      figure-number="02"
+      figure-title="AI Audit Form"
+      figure-slug="ai-audit-form"
+      figure-type="annotated-example"
+      priority="Important"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/14-lists-stacks-queues-and-the-final-project-cajal.md"
+    />
+  </metadata>
+  <rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">AI Audit Form</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">Attach to any AI-assisted commit. Four answers; no skipping.</text>
+
+  <rect x="80" y="100" width="540" height="68" fill="#FFFFFF" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="100" y="124" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E" letter-spacing="0.08em">1 · WHAT DID THE AI WRITE?</text>
+  <text x="100" y="146" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">names the specific files, methods, or sections</text>
+  <text x="100" y="162" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">"the controller for the checkout screen, lines 12–48"</text>
+
+  <rect x="80" y="180" width="540" height="68" fill="#FFFFFF" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="100" y="204" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E" letter-spacing="0.08em">2 · WHAT PROMPT DID YOU GIVE?</text>
+  <text x="100" y="226" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">paste the prompt verbatim</text>
+  <text x="100" y="242" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">"a controller that wires checkoutBtn to call CheckoutService.run(isbn)…"</text>
+
+  <rect x="80" y="260" width="540" height="68" fill="#FFFFFF" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="100" y="284" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E" letter-spacing="0.08em">3 · WHAT DID YOU CHANGE?</text>
+  <text x="100" y="306" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">the modifications you made before committing</text>
+  <text x="100" y="322" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">"removed two unused imports; renamed handler to handleCheckout()"</text>
+
+  <rect x="80" y="340" width="540" height="48" fill="#FFFFFF" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="100" y="362" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E" letter-spacing="0.08em">4 · HOW DID YOU VERIFY IT?</text>
+  <text x="100" y="382" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">tests run, traces inspected, evidence captured</text>
+
+  <text x="350" y="412" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">An empty field is a missing defense.</text>
+</svg>

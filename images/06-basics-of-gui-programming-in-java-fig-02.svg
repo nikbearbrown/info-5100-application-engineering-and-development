@@ -1,0 +1,67 @@
+<!--
+  Hash Function Mechanism
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 06-basics-of-gui-programming-in-java
+  Figure: 02
+  Type: Process flowchart
+  Generated: 2026-05-25
+  Source: pantry/06-basics-of-gui-programming-in-java-cajal.md
+-->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title">
+  <title id="fig-title">Hash Function Mechanism</title>
+  <desc>A password fed into a hash function produces a fixed-length digest. The forward direction is fast; the reverse direction is blocked. Different inputs produce different digests.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="06-basics-of-gui-programming-in-java"
+      figure-number="02"
+      figure-title="Hash Function Mechanism"
+      figure-slug="hash-function-mechanism"
+      figure-type="process-flowchart"
+      priority="Critical"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/06-basics-of-gui-programming-in-java-cajal.md"
+    />
+  </metadata>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#2a1a0e"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">Hash Function Mechanism</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">A one-way pipeline. The same input always yields the same digest. No reverse path exists.</text>
+
+  <rect x="56" y="160" width="156" height="80" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="134" y="184" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">INPUT</text>
+  <text x="134" y="208" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="12" fill="#2a1a0e">"sunset42"</text>
+  <text x="134" y="226" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">user's password</text>
+
+  <path d="M 216 200 L 268 200" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <rect x="272" y="160" width="156" height="80" fill="#C8102E" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="350" y="184" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#FFFFFF" letter-spacing="0.08em">HASH FUNCTION</text>
+  <text x="350" y="208" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#FFFFFF">SHA-256</text>
+  <text x="350" y="226" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#FFFFFF">deterministic, irreversible</text>
+
+  <path d="M 432 200 L 484 200" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <rect x="488" y="160" width="156" height="80" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="566" y="184" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">DIGEST</text>
+  <text x="566" y="208" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#2a1a0e">7a3e…f91d</text>
+  <text x="566" y="226" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">256 bits, fixed length</text>
+
+  <!-- Reverse arrow blocked -->
+  <path d="M 484 268 L 432 268" stroke="#C8102E" stroke-width="1.5" stroke-dasharray="5 4" fill="none"/>
+  <line x1="476" y1="260" x2="488" y2="276" stroke="#C8102E" stroke-width="2"/>
+  <line x1="476" y1="276" x2="488" y2="260" stroke="#C8102E" stroke-width="2"/>
+  <text x="350" y="282" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#C8102E">no reverse path</text>
+
+  <text x="350" y="378" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">A stolen database of digests does not tell the attacker the passwords.</text>
+  <text x="350" y="396" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">It tells them only that a guess matches when re-hashing it lands on the same digest.</text>
+</svg>

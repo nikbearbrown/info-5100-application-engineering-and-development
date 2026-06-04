@@ -1,0 +1,81 @@
+<!--
+  Regression Timeline
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 13-collections-and-iterators
+  Figure: 01
+  Type: Timeline / progression
+  Generated: 2026-05-25
+  Source: pantry/13-collections-and-iterators-cajal.md
+-->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title">
+  <title id="fig-title">Regression Timeline — Tests Catch What People Miss</title>
+  <desc>Two parallel tracks across the semester. The tests-on track breaks at the exact moment the regression is introduced. The no-tests track stays green until the demo, where the regression surfaces in front of stakeholders.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="13-collections-and-iterators"
+      figure-number="01"
+      figure-title="Regression Timeline — Tests Catch What People Miss"
+      figure-slug="regression-timeline"
+      figure-type="timeline"
+      priority="Critical"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/13-collections-and-iterators-cajal.md"
+    />
+  </metadata>
+  <rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">Regression Timeline — Tests Catch What People Miss</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">Same regression, two outcomes. Tests close the gap between cause and discovery.</text>
+
+  <!-- Track 1: WITH TESTS -->
+  <text x="40" y="124" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E" letter-spacing="0.08em">WITH TESTS</text>
+  <line x1="100" y1="148" x2="356" y2="148" stroke="#2a1a0e" stroke-width="2"/>
+  <line x1="356" y1="148" x2="620" y2="148" stroke="#C8102E" stroke-width="2" stroke-dasharray="4 3"/>
+
+  <!-- Track 2: WITHOUT TESTS -->
+  <text x="40" y="270" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">WITHOUT TESTS</text>
+  <line x1="100" y1="294" x2="556" y2="294" stroke="#2a1a0e" stroke-width="2"/>
+  <line x1="556" y1="294" x2="620" y2="294" stroke="#C8102E" stroke-width="2"/>
+
+  <!-- Regression event marker -->
+  <line x1="356" y1="120" x2="356" y2="322" stroke="#2a1a0e" stroke-width="1" stroke-dasharray="2 3"/>
+  <text x="356" y="112" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#2a1a0e">regression</text>
+  <text x="356" y="332" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#2a1a0e">introduced</text>
+
+  <!-- Demo event marker -->
+  <line x1="556" y1="120" x2="556" y2="322" stroke="#2a1a0e" stroke-width="1" stroke-dasharray="2 3"/>
+  <text x="556" y="112" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#2a1a0e">final demo</text>
+
+  <!-- Detection on tests-on track -->
+  <circle cx="356" cy="148" r="6" fill="#C8102E"/>
+  <text x="356" y="172" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E">caught now</text>
+
+  <!-- Detection on no-tests track -->
+  <circle cx="556" cy="294" r="6" fill="#C8102E"/>
+  <text x="556" y="320" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E">caught on stage</text>
+
+  <!-- Gap shading on no-tests track -->
+  <rect x="356" y="284" width="200" height="20" fill="#C8102E" opacity="0.18"/>
+  <text x="456" y="276" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E" letter-spacing="0.08em">UNDETECTED GAP</text>
+
+  <!-- Module ticks below the second track -->
+  <g font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#545454" text-anchor="middle">
+    <line x1="100" y1="356" x2="100" y2="360" stroke="#545454"/>
+    <text x="100" y="372">M1</text>
+    <line x1="220" y1="356" x2="220" y2="360" stroke="#545454"/>
+    <text x="220" y="372">M4</text>
+    <line x1="356" y1="356" x2="356" y2="360" stroke="#545454"/>
+    <text x="356" y="372">M7</text>
+    <line x1="476" y1="356" x2="476" y2="360" stroke="#545454"/>
+    <text x="476" y="372">M10</text>
+    <line x1="556" y1="356" x2="556" y2="360" stroke="#545454"/>
+    <text x="556" y="372">M13</text>
+  </g>
+
+  <text x="350" y="402" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">A test suite is a smoke detector you write once and run forever.</text>
+</svg>

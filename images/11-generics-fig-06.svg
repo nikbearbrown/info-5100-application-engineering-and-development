@@ -1,0 +1,70 @@
+<!--
+  AI Scaffolds / You Fill Bodies
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 11-generics
+  Figure: 06
+  Type: Comparison panels
+  Generated: 2026-05-25
+  Source: pantry/11-generics-cajal.md
+-->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title">
+  <title id="fig-title">AI Scaffolds / You Fill Bodies</title>
+  <desc>AI is fast at producing scaffolding — class declarations, method signatures, registration boilerplate. You are responsible for the method bodies that carry domain logic and the tests that prove they work.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="11-generics"
+      figure-number="06"
+      figure-title="AI Scaffolds / You Fill Bodies"
+      figure-slug="ai-scaffolds-you-fill-bodies"
+      figure-type="comparison-panels"
+      priority="Important"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/11-generics-cajal.md"
+    />
+  </metadata>
+  <rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">AI Scaffolds. You Fill Bodies.</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">Outline by AI. Substance by you. Verification by you.</text>
+
+  <line x1="350" y1="80" x2="350" y2="392" stroke="#2a1a0e" stroke-width="0.5"/>
+
+  <text x="190" y="106" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">AI HANDLES</text>
+
+  <rect x="80" y="124" width="220" height="40" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="190" y="148" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">class declarations</text>
+
+  <rect x="80" y="174" width="220" height="40" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="190" y="198" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">method signatures</text>
+
+  <rect x="80" y="224" width="220" height="40" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="190" y="248" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">registration boilerplate</text>
+
+  <rect x="80" y="274" width="220" height="40" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="190" y="298" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">imports, getters, setters</text>
+
+  <text x="190" y="350" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">structure, not substance</text>
+  <text x="190" y="368" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">read once, never re-read</text>
+
+  <text x="510" y="106" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E" letter-spacing="0.08em">YOU HANDLE</text>
+
+  <rect x="400" y="124" width="220" height="40" fill="#C8102E" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="510" y="148" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#FFFFFF">method bodies</text>
+
+  <rect x="400" y="174" width="220" height="40" fill="#C8102E" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="510" y="198" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#FFFFFF">business rules</text>
+
+  <rect x="400" y="224" width="220" height="40" fill="#C8102E" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="510" y="248" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#FFFFFF">edge-case behavior</text>
+
+  <rect x="400" y="274" width="220" height="40" fill="#C8102E" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="510" y="298" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#FFFFFF">tests that verify both</text>
+
+  <text x="510" y="350" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#C8102E">substance and verification</text>
+  <text x="510" y="368" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">the part you must defend</text>
+</svg>

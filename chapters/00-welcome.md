@@ -56,7 +56,6 @@ Now here is why this matters for setup. The tool that contains the compiler — 
 
 This is the machine you are about to verify exists and is correctly assembled.
 
-<!-- → [SCOPE | Figure 1.1 | IMAGE: JDK contains both javac and the JRE; JRE contains only the JVM and class libraries — shows why a JRE-only install cannot compile | CONTENT: outer JDK rect, inner JRE rect, javac box outside JRE but inside JDK, JVM box inside JRE, class libraries box inside JRE | EXCLUSIONS: PATH configuration, version numbers, operating system layers, classpath details, module system] -->
 
 ---
 
@@ -81,7 +80,6 @@ The same habit applies after you create your first project. You do not assume it
 
 That is not paranoia. That is engineering.
 
-<!-- → [SCOPE | Figure 1.3 | TABLE: belief-based vs. evidence-based approach to environment verification — two-column comparison | CONTENT: column 1 belief approach (installer says complete → assume it works → fail weeks later with no diagnostic anchor), column 2 evidence approach (run java/javac --version → inspect output → small diagnostic surface before writing code) | EXCLUSIONS: specific version numbers, IDE screenshots, AI tool comparisons, runtime errors] -->
 
 ---
 
@@ -99,7 +97,6 @@ Both failures have the same root. The student trusted the output without underst
 
 The habit we are building is knowing what it looks like. That way, when it changes — and it will change — you notice.
 
-<!-- → [SCOPE | Figure 1.2 | IMAGE: Java toolchain as a left-to-right pipeline — source file compiled to bytecode by javac, bytecode executed by JVM on any OS | CONTENT: HelloWorld.java box, javac arrow, HelloWorld.class box, JVM arrow, execution box (Win/Mac/Linux), portability annotation below | EXCLUSIONS: classpath, packages, IDE toolbar, multiple class files, jar packaging, module system] -->
 
 ---
 
@@ -115,7 +112,6 @@ Run the program. NetBeans will compile and execute it. Look at the output panel 
 
 Now close the IDE and navigate to your project folder in your file explorer. Find the `src` directory: this is where your source files live. Find a folder called `build` or `target` or `dist` — the name depends on the project type — and inside it, find a folder called `classes`. In that folder, find a file with the `.class` extension. That is the compiled bytecode for your program. Touch it. Know it exists. You built it.
 
-<!-- → [SCOPE | Figure 1.4 | IMAGE: NetBeans project folder tree — src branch holds .java source, build/classes branch holds compiled .class bytecode | CONTENT: MyProject root, src/ subfolder, HelloWorld.java leaf, build/ subfolder, classes/ subfolder, HelloWorld.class leaf | EXCLUSIONS: nbproject/ folder, manifest files, library jars, package subdirectories, IDE toolbar, run configuration] -->
 
 This is the verification checklist for Module 0:
 
@@ -193,7 +189,6 @@ Most setup failures live in the toolchain or project layer. Most programming fai
 
 When a student says "Java is broken," they almost always mean something in one of these three layers is misconfigured. Knowing which one cuts the debugging time dramatically. The verification checklist from this module gives you a clean toolchain and a correct project layer. After that, when something breaks, you can be much more confident about where to look.
 
-<!-- → [SCOPE | Figure 1.5 | IMAGE: three-layer stack — toolchain (widest/bottom), project (middle), program (narrowest/top) — wider base signals each layer contains the one above | CONTENT: toolchain layer (JDK, JVM, PATH — "command not found" failures), project layer (NetBeans structure, build config — "class not found" failures), program layer (Java source — compile errors and runtime exceptions) | EXCLUSIONS: IDE screenshots, specific error text, OS-specific path syntax, version numbers, network or classpath issues] -->
 
 ---
 
@@ -289,3 +284,32 @@ A complete evidence packet is not proof that you are a Java programmer. It is pr
 - Peng et al. and Vaithilingam et al.: empirical work on AI coding assistance and the verification risks that attend it. The AI boundary rules in this module are grounded in this literature.
 
 *Current tool instructions, version-specific setup steps, and AI platform behavior require pre-offering verification.* [verify]
+<!-- FACT-CHECK FLAG: UNVERIFIED — see factchecks/00-welcome-assertions.md -->
+
+![A nested rectangle composition. Outer rectangle (JDK): Blue outlined 1pt, no fill, taking up approximately 70% of the panel area. Inside the outer rectangle, in its lower-left quadrant, an inner rectangle (JRE): Sky...](images/00-welcome-fig-01.png)
+*Figure 0.1 — JDK vs. JRE Containment*
+
+
+![A horizontal flow. From left to right: a small rectangle (HelloWorld.java) Sky Blue filled, a Black 1pt arrow labeled implicitly *javac*, a rectangle (HelloWorld.class) Blue filled, a Black 1pt arrow labeled...](images/00-welcome-fig-02.png)
+*Figure 0.2 — Java Toolchain Pipeline*
+
+
+![A two-column composition. Left column header band (blank, for "Belief"); right column header band (blank, for "Evidence"). Below each header, a vertical stack of four small indicator rectangles. Left column (Belief...](images/00-welcome-fig-03.png)
+*Figure 0.3 — Belief-Based vs. Evidence-Based Verification*
+
+
+![A vertical tree diagram. Root node at top center: a Black 1pt outlined rectangle labeled (in post) "MyProject". Two branches descend to two child folder nodes side by side: src/ on the left (Sky Blue filled...](images/00-welcome-fig-04.png)
+*Figure 0.4 — NetBeans Project Folder Tree*
+
+
+![A vertical stack of three horizontal bands of varying widths. Bottom band (widest, foundation): Blue filled, full panel width — the toolchain layer (JDK, JVM, PATH). Middle band (medium width, centered): Sky Blue...](images/00-welcome-fig-05.png)
+*Figure 0.5 — Three-Layer Diagnostic Model*
+
+---
+
+## References
+
+<!-- Fact-check pass references. -->
+1. Oracle. The javac Command. Java SE 21 / JDK 21 Tool Guides, 2023. https://docs.oracle.com/en/java/javase/21/docs/specs/man/javac.html
+2. Oracle. The Structure of the Java Virtual Machine. Java Virtual Machine Specification, Java SE 21, 2023. https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-2.html
+3. Oracle. The java Command. Java SE 21 / JDK 21 Tool Guides, 2023. https://docs.oracle.com/en/java/javase/21/docs/specs/man/java.html

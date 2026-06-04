@@ -1,0 +1,63 @@
+<!--
+  AI Three-Stage Workflow
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 05-inheritance-and-polymorphism
+  Figure: 05
+  Type: Process flowchart
+  Generated: 2026-05-25
+  Source: pantry/05-inheritance-and-polymorphism-cajal.md
+-->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title">
+  <title id="fig-title">AI Three-Stage Workflow</title>
+  <desc>Three sequential stages for using AI on an inheritance task. Stage 1, the student names the abstraction. Stage 2, AI proposes the class hierarchy. Stage 3, the student verifies and commits.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="05-inheritance-and-polymorphism"
+      figure-number="05"
+      figure-title="AI Three-Stage Workflow"
+      figure-slug="ai-three-stage-workflow"
+      figure-type="process-flowchart"
+      priority="Important"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/05-inheritance-and-polymorphism-cajal.md"
+    />
+  </metadata>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#2a1a0e"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">AI Three-Stage Workflow</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">Use AI between two student-owned stages. The abstraction and the commitment belong to you.</text>
+
+  <rect x="56" y="160" width="180" height="100" fill="#C8102E" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="146" y="184" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#FFFFFF" letter-spacing="0.08em">STAGE 1 · STUDENT</text>
+  <text x="146" y="212" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#FFFFFF">name the abstraction</text>
+  <text x="146" y="232" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#FFFFFF">"what's common?"</text>
+  <text x="146" y="248" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#FFFFFF">"what varies?"</text>
+
+  <path d="M 240 210 L 256 210" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <rect x="260" y="160" width="180" height="100" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1"/>
+  <text x="350" y="184" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">STAGE 2 · AI</text>
+  <text x="350" y="212" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">propose a hierarchy</text>
+  <text x="350" y="232" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">base class + subclasses,</text>
+  <text x="350" y="248" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">overrides, method signatures</text>
+
+  <path d="M 444 210 L 460 210" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <rect x="464" y="160" width="180" height="100" fill="#C8102E" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="554" y="184" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#FFFFFF" letter-spacing="0.08em">STAGE 3 · STUDENT</text>
+  <text x="554" y="212" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#FFFFFF">verify and commit</text>
+  <text x="554" y="232" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#FFFFFF">test each subclass;</text>
+  <text x="554" y="248" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#FFFFFF">defend the design</text>
+
+  <text x="350" y="312" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">AI works fastest in the middle stage. Skipping stage 1 or 3 collapses the workflow into hallucination.</text>
+</svg>

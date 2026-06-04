@@ -1,0 +1,77 @@
+<!--
+  Supply-Coupled vs Preloaded Construction
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 05-inheritance-and-polymorphism
+  Figure: 01
+  Type: Comparison panels
+  Generated: 2026-05-25
+  Source: pantry/05-inheritance-and-polymorphism-cajal.md
+-->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title">
+  <title id="fig-title">Supply-Coupled vs Preloaded Construction</title>
+  <desc>Two construction strategies for a catalog. Supply-coupled builds new domain objects on every checkout, conflating supply with transaction. Preloaded builds the catalog once and reuses it; transactions never construct domain objects.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="05-inheritance-and-polymorphism"
+      figure-number="01"
+      figure-title="Supply-Coupled vs Preloaded Construction"
+      figure-slug="supply-coupled-vs-preloaded"
+      figure-type="comparison-panels"
+      priority="Critical"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/05-inheritance-and-polymorphism-cajal.md"
+    />
+  </metadata>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#2a1a0e"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">Supply-Coupled vs Preloaded Construction</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">Two construction strategies; one of them is the antipattern this chapter corrects.</text>
+
+  <line x1="350" y1="80" x2="350" y2="396" stroke="#2a1a0e" stroke-width="0.5"/>
+
+  <text x="190" y="106" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">SUPPLY-COUPLED (ANTIPATTERN)</text>
+
+  <rect x="80" y="124" width="220" height="48" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+  <text x="190" y="148" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="12" fill="#2a1a0e">user clicks checkout</text>
+  <path d="M 190 172 L 190 192" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <rect x="80" y="198" width="220" height="48" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+  <text x="190" y="222" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="12" fill="#2a1a0e">new Book(), new Author()</text>
+  <path d="M 190 246 L 190 266" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <rect x="80" y="272" width="220" height="48" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+  <text x="190" y="296" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="12" fill="#2a1a0e">record the loan</text>
+
+  <text x="190" y="356" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">supply and transaction tangled</text>
+  <text x="190" y="372" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">duplicate Books appear at every click</text>
+
+  <text x="510" y="106" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E" letter-spacing="0.08em">PRELOADED (CORRECTED)</text>
+
+  <rect x="400" y="124" width="220" height="48" fill="#C8102E" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="510" y="142" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="12" fill="#FFFFFF">at startup: build the Catalog</text>
+  <text x="510" y="160" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#FFFFFF">supply happens once</text>
+
+  <path d="M 510 172 L 510 192" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <rect x="400" y="198" width="220" height="48" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+  <text x="510" y="222" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="12" fill="#2a1a0e">user clicks checkout</text>
+
+  <path d="M 510 246 L 510 266" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <rect x="400" y="272" width="220" height="48" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+  <text x="510" y="290" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="12" fill="#2a1a0e">look up Book in Catalog</text>
+  <text x="510" y="308" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">record the loan — no new()</text>
+
+  <text x="510" y="356" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#C8102E">supply and transaction separated</text>
+  <text x="510" y="372" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">one Book; many loans of it</text>
+</svg>

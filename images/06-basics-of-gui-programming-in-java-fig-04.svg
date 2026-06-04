@@ -1,0 +1,64 @@
+<!--
+  Attacker Reads: Plaintext vs Hashed Storage
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 06-basics-of-gui-programming-in-java
+  Figure: 04
+  Type: Comparison panels (proportional damage encoding)
+  Generated: 2026-05-25
+  Source: pantry/06-basics-of-gui-programming-in-java-cajal.md
+-->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title">
+  <title id="fig-title">Attacker Reads: Plaintext vs Hashed Storage</title>
+  <desc>If credentials are stored as plaintext, an attacker who reads the database obtains every password. If credentials are stored as hashes, the same read yields only digests and a slow guessing problem. Damage drops by orders of magnitude.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="06-basics-of-gui-programming-in-java"
+      figure-number="04"
+      figure-title="Attacker Reads: Plaintext vs Hashed Storage"
+      figure-slug="attacker-reads-plaintext-vs-hashed"
+      figure-type="comparison-panels"
+      priority="Important"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/06-basics-of-gui-programming-in-java-cajal.md"
+    />
+  </metadata>
+  <rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">Attacker Reads: Plaintext vs Hashed Storage</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">Both diagrams assume the database is read. The two designs differ in what the attacker walks away with.</text>
+
+  <line x1="350" y1="80" x2="350" y2="392" stroke="#2a1a0e" stroke-width="0.5"/>
+
+  <text x="190" y="106" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">PLAINTEXT STORAGE</text>
+
+  <rect x="80" y="124" width="220" height="240" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="100" y="148" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">maya       → sunset42</text>
+  <text x="100" y="168" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">theo       → P@ssword1</text>
+  <text x="100" y="188" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">li         → mango_2024</text>
+  <text x="100" y="208" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">rasha      → 9d8f-rasha</text>
+
+  <text x="190" y="252" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">ATTACKER OBTAINS</text>
+  <text x="190" y="280" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">every password</text>
+  <text x="190" y="302" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">+ same password reused</text>
+  <text x="190" y="318" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">on email, banking, work</text>
+  <text x="190" y="346" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">damage: unbounded</text>
+
+  <text x="510" y="106" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E" letter-spacing="0.08em">HASHED STORAGE</text>
+
+  <rect x="400" y="124" width="220" height="240" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="420" y="148" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">maya       → 7a3e…f91d</text>
+  <text x="420" y="168" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">theo       → b21c…0e44</text>
+  <text x="420" y="188" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">li         → 9f70…2a18</text>
+  <text x="420" y="208" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">rasha      → 4d3a…ccef</text>
+
+  <text x="510" y="252" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E" letter-spacing="0.08em">ATTACKER OBTAINS</text>
+  <text x="510" y="280" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#C8102E">a slow guessing problem</text>
+  <text x="510" y="302" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">guesses must be hashed</text>
+  <text x="510" y="318" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">and compared one by one</text>
+  <text x="510" y="346" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#C8102E">damage: bounded</text>
+</svg>

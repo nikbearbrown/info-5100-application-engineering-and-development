@@ -1,0 +1,71 @@
+<!--
+  Dynamic Dispatch
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 07-midterm-exam
+  Figure: 01
+  Type: Systems diagram
+  Generated: 2026-05-25
+  Source: pantry/07-midterm-exam-cajal.md
+-->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title">
+  <title id="fig-title">Dynamic Dispatch</title>
+  <desc>A reference of compile-time type Vehicle holds an object of runtime type Bicycle. When .move() is called, the JVM consults the runtime type and dispatches to Bicycle.move() — not the type the variable was declared with.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="07-midterm-exam"
+      figure-number="01"
+      figure-title="Dynamic Dispatch"
+      figure-slug="dynamic-dispatch"
+      figure-type="systems-diagram"
+      priority="Critical"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/07-midterm-exam-cajal.md"
+    />
+  </metadata>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#2a1a0e"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">Dynamic Dispatch</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">The declared type controls what you can call. The runtime type controls which method actually runs.</text>
+
+  <rect x="60" y="120" width="160" height="68" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+  <text x="140" y="142" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">CALL SITE</text>
+  <text x="140" y="164" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">Vehicle v = …;</text>
+  <text x="140" y="182" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">v.move();</text>
+
+  <path d="M 224 154 L 270 154" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <text x="247" y="146" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">JVM</text>
+
+  <rect x="274" y="120" width="180" height="68" fill="#C8102E" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="364" y="142" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#FFFFFF" letter-spacing="0.08em">CHECK RUNTIME TYPE</text>
+  <text x="364" y="164" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#FFFFFF">what is v actually?</text>
+  <text x="364" y="182" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#FFFFFF">consult the object header</text>
+
+  <!-- Three candidate paths -->
+  <path d="M 364 196 L 200 280" stroke="#2a1a0e" stroke-width="1" stroke-dasharray="4 3" fill="none"/>
+  <path d="M 364 196 L 364 280" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path d="M 364 196 L 528 280" stroke="#2a1a0e" stroke-width="1" stroke-dasharray="4 3" fill="none"/>
+
+  <rect x="120" y="288" width="160" height="60" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="200" y="310" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#545454">Car.move()</text>
+  <text x="200" y="328" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">not selected</text>
+
+  <rect x="284" y="288" width="160" height="60" fill="#C8102E" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="364" y="310" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#FFFFFF">Bicycle.move()</text>
+  <text x="364" y="328" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#FFFFFF">selected</text>
+
+  <rect x="448" y="288" width="160" height="60" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="528" y="310" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#545454">Skateboard.move()</text>
+  <text x="528" y="328" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">not selected</text>
+
+  <text x="350" y="384" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">The choice happens at runtime, not when the source was compiled.</text>
+</svg>

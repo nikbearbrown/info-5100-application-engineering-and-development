@@ -1,0 +1,80 @@
+<!--
+  NetBeans Project Folder Tree
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 00-welcome
+  Figure: 04
+  Type: Hierarchy / taxonomy
+  Generated: 2026-05-25
+  Source: pantry/00-welcome-cajal.md
+-->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title">
+  <title id="fig-title">NetBeans Project Folder Tree</title>
+  <desc>A vertical tree showing the NetBeans project layout: MyProject contains src and build folders. The HelloWorld.java source sits under src; HelloWorld.class — the verification artifact — sits under build/classes.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="00-welcome"
+      figure-number="04"
+      figure-title="NetBeans Project Folder Tree"
+      figure-slug="netbeans-project-folder-tree"
+      figure-type="hierarchy"
+      priority="Critical"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/00-welcome-cajal.md"
+    />
+  </metadata>
+  <rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">NetBeans Project Folder Tree</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">If you cannot locate the .class file, you have not verified the build.</text>
+
+  <!-- Root: MyProject -->
+  <rect x="295" y="96" width="110" height="40" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1.5"/>
+  <text x="350" y="112" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">ROOT</text>
+  <text x="350" y="128" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="12" fill="#2a1a0e">MyProject/</text>
+
+  <!-- Connector down + split -->
+  <line x1="350" y1="136" x2="350" y2="160" stroke="#2a1a0e" stroke-width="1"/>
+  <line x1="190" y1="160" x2="510" y2="160" stroke="#2a1a0e" stroke-width="1"/>
+  <line x1="190" y1="160" x2="190" y2="180" stroke="#2a1a0e" stroke-width="1"/>
+  <line x1="510" y1="160" x2="510" y2="180" stroke="#2a1a0e" stroke-width="1"/>
+
+  <!-- src/ folder (left) -->
+  <rect x="135" y="180" width="110" height="36" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="190" y="202" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="12" fill="#2a1a0e">src/</text>
+
+  <!-- build/ folder (right) -->
+  <rect x="455" y="180" width="110" height="36" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="510" y="202" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="12" fill="#2a1a0e">build/</text>
+
+  <!-- Connector from src to HelloWorld.java -->
+  <line x1="190" y1="216" x2="190" y2="244" stroke="#2a1a0e" stroke-width="1"/>
+
+  <!-- HelloWorld.java leaf -->
+  <rect x="116" y="244" width="148" height="36" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="190" y="266" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">HelloWorld.java</text>
+
+  <!-- Connector from build to classes/ -->
+  <line x1="510" y1="216" x2="510" y2="244" stroke="#2a1a0e" stroke-width="1"/>
+
+  <!-- classes/ folder -->
+  <rect x="455" y="244" width="110" height="36" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="510" y="266" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="12" fill="#2a1a0e">classes/</text>
+
+  <!-- Connector from classes/ to HelloWorld.class -->
+  <line x1="510" y1="280" x2="510" y2="308" stroke="#2a1a0e" stroke-width="1"/>
+
+  <!-- HelloWorld.class leaf — highlighted as the verification artifact -->
+  <rect x="436" y="308" width="148" height="36" fill="#C8102E" stroke="#C8102E" stroke-width="1"/>
+  <text x="510" y="330" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#FFFFFF">HelloWorld.class</text>
+
+  <!-- Annotation for the verification artifact -->
+  <text x="510" y="362" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#C8102E">the artifact you must locate</text>
+
+  <!-- Footer -->
+  <text x="350" y="396" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">src holds what you wrote. build holds what the compiler made.</text>
+</svg>

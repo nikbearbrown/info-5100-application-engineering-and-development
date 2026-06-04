@@ -1,0 +1,59 @@
+<!--
+  CardLayout Container Structure
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 03-objects-and-classes
+  Figure: 02
+  Type: Structural schematic
+  Generated: 2026-05-25
+  Source: pantry/03-objects-and-classes-cajal.md
+-->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title">
+  <title id="fig-title">CardLayout Container Structure</title>
+  <desc>One container holds four child panels stacked in the same region. Exactly one panel is visible at a time. The other three are dormant — still constructed, still holding state, but not painted.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="03-objects-and-classes"
+      figure-number="02"
+      figure-title="CardLayout Container Structure"
+      figure-slug="cardlayout-container-structure"
+      figure-type="structural-schematic"
+      priority="Important"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/03-objects-and-classes-cajal.md"
+    />
+  </metadata>
+  <rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">CardLayout Container Structure</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">One container; four panels stacked in the same region; one painted at a time.</text>
+
+  <!-- Outer container -->
+  <rect x="80" y="100" width="540" height="260" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1.5"/>
+  <text x="96" y="124" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">CONTAINER (JPANEL WITH CARDLAYOUT)</text>
+
+  <!-- Visible panel (front) — highlighted -->
+  <rect x="120" y="160" width="260" height="160" fill="#C8102E" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="250" y="184" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#FFFFFF" letter-spacing="0.08em">VISIBLE PANEL</text>
+  <text x="250" y="232" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="15" fill="#FFFFFF">result</text>
+  <text x="250" y="258" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#FFFFFF">painted on screen now</text>
+
+  <!-- Dormant panels (shown as stacked offsets behind) -->
+  <rect x="440" y="160" width="140" height="32" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="510" y="180" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#545454">search</text>
+
+  <rect x="440" y="200" width="140" height="32" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="510" y="220" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#545454">checkout</text>
+
+  <rect x="440" y="240" width="140" height="32" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="510" y="260" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#545454">confirm</text>
+
+  <text x="510" y="296" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">DORMANT PANELS</text>
+  <text x="510" y="312" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">constructed, not painted</text>
+
+  <text x="350" y="390" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">CardLayout.show() makes one dormant panel visible — the others remain in memory, holding their state.</text>
+</svg>

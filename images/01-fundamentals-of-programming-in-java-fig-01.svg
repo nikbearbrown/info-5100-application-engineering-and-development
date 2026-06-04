@@ -1,0 +1,88 @@
+<!--
+  Procedural vs Object Model: Where Behavior Lives
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 01-fundamentals-of-programming-in-java
+  Figure: 01
+  Type: Comparison panels (structural schematic)
+  Generated: 2026-05-25
+  Source: pantry/01-fundamentals-of-programming-in-java-cajal.md
+-->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title-01">
+  <title id="fig-title-01">Procedural vs Object Model: Where Behavior Lives</title>
+  <desc>Two side-by-side panels. Left: procedural model with three free-floating procedure boxes pointing to a shared patron data store. Right: object model with a Patron object boundary enclosing its data fields and methods, no arrows crossing the boundary.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="01-fundamentals-of-programming-in-java"
+      figure-number="01"
+      figure-title="Procedural vs Object Model: Where Behavior Lives"
+      figure-slug="procedural-vs-object-model"
+      figure-type="comparison-panels"
+      priority="Critical"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/01-fundamentals-of-programming-in-java-cajal.md"
+    />
+  </metadata>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#2a1a0e"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">Procedural vs Object Model: Where Behavior Lives</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">Procedures act on shared data versus objects that encapsulate behavior.</text>
+
+  <line x1="350" y1="80" x2="350" y2="394" stroke="#2a1a0e" stroke-width="0.5"/>
+
+  <text x="190" y="100" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">PROCEDURAL MODEL</text>
+
+  <rect x="56" y="124" width="144" height="40" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="128" y="148" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">checkOut()</text>
+
+  <rect x="56" y="180" width="144" height="40" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="128" y="204" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">returnBook()</text>
+
+  <rect x="56" y="236" width="144" height="40" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="128" y="260" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">getBorrowedCount()</text>
+
+  <rect x="224" y="180" width="104" height="60" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="276" y="206" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#2a1a0e">patron data</text>
+  <text x="276" y="224" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">(shared)</text>
+
+  <path d="M 200 144 L 222 198" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path d="M 200 200 L 222 208" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path d="M 200 256 L 222 220" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <text x="190" y="312" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#2a1a0e">Behavior is external.</text>
+  <text x="190" y="328" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">Data is shared. Anyone can change it.</text>
+
+  <text x="510" y="100" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">OBJECT MODEL</text>
+
+  <rect x="378" y="124" width="264" height="180" fill="#FFFFFF" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="510" y="146" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="12" fill="#2a1a0e">Patron</text>
+  <line x1="394" y1="158" x2="626" y2="158" stroke="#D4D4D4" stroke-width="0.75"/>
+
+  <rect x="394" y="170" width="232" height="24" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="0.75"/>
+  <text x="510" y="187" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">name</text>
+
+  <rect x="394" y="200" width="232" height="24" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="0.75"/>
+  <text x="510" y="217" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">borrowedBooks[ ]</text>
+
+  <line x1="394" y1="234" x2="626" y2="234" stroke="#D4D4D4" stroke-width="0.75"/>
+
+  <rect x="394" y="244" width="232" height="20" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="0.75"/>
+  <text x="510" y="258" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">checkOut()</text>
+
+  <rect x="394" y="266" width="232" height="20" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="0.75"/>
+  <text x="510" y="280" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">returnBook()</text>
+
+  <rect x="394" y="288" width="232" height="20" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="0.75"/>
+  <text x="510" y="302" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">getBorrowedCount()</text>
+
+  <text x="510" y="328" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#2a1a0e">Behavior lives inside the boundary.</text>
+</svg>

@@ -1,0 +1,54 @@
+<!--
+  Five-Layer Project Architecture
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 14-lists-stacks-queues-and-the-final-project
+  Figure: 01
+  Type: Hierarchy / layered stack
+  Generated: 2026-05-25
+  Source: pantry/14-lists-stacks-queues-and-the-final-project-cajal.md
+-->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title">
+  <title id="fig-title">Five-Layer Project Architecture</title>
+  <desc>The capstone project's architecture in five layers. Event sits at the top, view below, then transaction, persistence, and supply at the foundation. Each layer is reachable only from the one above it.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="14-lists-stacks-queues-and-the-final-project"
+      figure-number="01"
+      figure-title="Five-Layer Project Architecture"
+      figure-slug="five-layer-project-architecture"
+      figure-type="hierarchy"
+      priority="Critical"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/14-lists-stacks-queues-and-the-final-project-cajal.md"
+    />
+  </metadata>
+  <rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">Five-Layer Project Architecture</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">Five layers built across the semester. Each reaches only into the one beneath it.</text>
+
+  <rect x="160" y="92" width="380" height="52" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="350" y="114" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">LAYER 5 — EVENT</text>
+  <text x="350" y="134" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">handlers, lambdas, registration</text>
+
+  <rect x="140" y="156" width="420" height="52" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="350" y="178" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">LAYER 4 — VIEW</text>
+  <text x="350" y="198" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">FXML, scene graph, controller seam</text>
+
+  <rect x="120" y="220" width="460" height="52" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="350" y="242" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">LAYER 3 — TRANSACTION</text>
+  <text x="350" y="262" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">CheckoutService, LoanRepo, business rules</text>
+
+  <rect x="100" y="284" width="500" height="52" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="350" y="306" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">LAYER 2 — PERSISTENCE</text>
+  <text x="350" y="326" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">save, load, file paths, audit trail</text>
+
+  <rect x="80" y="348" width="540" height="52" fill="#C8102E" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="350" y="370" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#FFFFFF" letter-spacing="0.08em">LAYER 1 — SUPPLY</text>
+  <text x="350" y="390" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#FFFFFF">Catalog, Patron, Book — the domain</text>
+</svg>

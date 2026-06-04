@@ -1,0 +1,74 @@
+<!--
+  Course-Capability Arc — Before / After
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 14-lists-stacks-queues-and-the-final-project
+  Figure: 04
+  Type: Comparison panels
+  Generated: 2026-05-25
+  Source: pantry/14-lists-stacks-queues-and-the-final-project-cajal.md
+-->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title">
+  <title id="fig-title">Course-Capability Arc — What You Arrived With, What You Leave With</title>
+  <desc>Three capability clusters on each side, collapsed from the longer list. On arrival: procedural mindset, console-level skills, basic syntax. On departure: layered design instinct, AI collaboration discipline, defense capability built on evidence.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="14-lists-stacks-queues-and-the-final-project"
+      figure-number="04"
+      figure-title="Course-Capability Arc — Before and After"
+      figure-slug="course-capability-arc"
+      figure-type="comparison-panels"
+      priority="Important"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/14-lists-stacks-queues-and-the-final-project-cajal.md"
+    />
+  </metadata>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#2a1a0e"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">Course-Capability Arc — What You Arrived With, What You Leave With</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">Three capability clusters on each side. The arrow is one semester long.</text>
+
+  <text x="170" y="106" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">ARRIVED WITH</text>
+
+  <rect x="60" y="124" width="220" height="60" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="170" y="146" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">procedural mindset</text>
+  <text x="170" y="166" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">code as a script</text>
+
+  <rect x="60" y="200" width="220" height="60" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="170" y="222" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">console-level skills</text>
+  <text x="170" y="242" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">println debugging</text>
+
+  <rect x="60" y="276" width="220" height="60" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="170" y="298" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">basic syntax</text>
+  <text x="170" y="318" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">loops, ifs, arrays</text>
+
+  <!-- Arrow spanning a semester -->
+  <path d="M 296 230 L 404 230" stroke="#2a1a0e" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+  <text x="350" y="222" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">ONE SEMESTER</text>
+  <text x="350" y="250" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">M1 → M14</text>
+
+  <text x="530" y="106" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E" letter-spacing="0.08em">LEAVE WITH</text>
+
+  <rect x="420" y="124" width="220" height="60" fill="#C8102E" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="530" y="146" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#FFFFFF">layered design instinct</text>
+  <text x="530" y="166" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#FFFFFF">supply / view / event boundaries</text>
+
+  <rect x="420" y="200" width="220" height="60" fill="#C8102E" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="530" y="222" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#FFFFFF">AI collaboration discipline</text>
+  <text x="530" y="242" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#FFFFFF">prompt → verify → commit</text>
+
+  <rect x="420" y="276" width="220" height="60" fill="#C8102E" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="530" y="298" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#FFFFFF">defense capability</text>
+  <text x="530" y="318" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#FFFFFF">argument backed by evidence</text>
+
+  <text x="350" y="384" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">The same person. New instincts.</text>
+</svg>

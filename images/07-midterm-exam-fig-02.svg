@@ -1,0 +1,103 @@
+<!--
+  Change-Cost Trajectory: Polymorphic vs If-Else
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 07-midterm-exam
+  Figure: 02
+  Type: Statistical / quantitative (line chart)
+  Generated: 2026-05-25
+  Source: pantry/07-midterm-exam-cajal.md
+-->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title">
+  <title id="fig-title">Change-Cost Trajectory: Polymorphic vs If-Else</title>
+  <desc>As the number of subtypes grows, the places that must change in an if-else design grow linearly while the polymorphic design stays nearly flat — each new subtype adds one class, not edits to every call site.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="07-midterm-exam"
+      figure-number="02"
+      figure-title="Change-Cost Trajectory: Polymorphic vs If-Else"
+      figure-slug="change-cost-trajectory"
+      figure-type="statistical"
+      priority="Critical"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/07-midterm-exam-cajal.md"
+    />
+  </metadata>
+  <rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">Change-Cost Trajectory: Polymorphic vs If-Else</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">Places to change when a new subtype is added.</text>
+
+  <!-- Chart plot region -->
+  <rect x="80" y="100" width="540" height="240" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="0.75"/>
+
+  <!-- Y-axis label -->
+  <text x="40" y="220" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em" transform="rotate(-90 40 220)">PLACES TO CHANGE</text>
+
+  <!-- Y-axis ticks (starts at zero) -->
+  <g font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#545454" text-anchor="end">
+    <line x1="76" y1="340" x2="80" y2="340" stroke="#545454" stroke-width="0.75"/>
+    <text x="72" y="344">0</text>
+    <line x1="76" y1="292" x2="80" y2="292" stroke="#545454" stroke-width="0.75"/>
+    <text x="72" y="296">5</text>
+    <line x1="76" y1="244" x2="80" y2="244" stroke="#545454" stroke-width="0.75"/>
+    <text x="72" y="248">10</text>
+    <line x1="76" y1="196" x2="80" y2="196" stroke="#545454" stroke-width="0.75"/>
+    <text x="72" y="200">15</text>
+    <line x1="76" y1="148" x2="80" y2="148" stroke="#545454" stroke-width="0.75"/>
+    <text x="72" y="152">20</text>
+    <line x1="76" y1="100" x2="80" y2="100" stroke="#545454" stroke-width="0.75"/>
+    <text x="72" y="104">25</text>
+  </g>
+
+  <!-- X-axis ticks: number of subtypes -->
+  <g font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#545454" text-anchor="middle">
+    <line x1="80" y1="340" x2="80" y2="344" stroke="#545454" stroke-width="0.75"/>
+    <text x="80" y="358">1</text>
+    <line x1="188" y1="340" x2="188" y2="344" stroke="#545454" stroke-width="0.75"/>
+    <text x="188" y="358">3</text>
+    <line x1="296" y1="340" x2="296" y2="344" stroke="#545454" stroke-width="0.75"/>
+    <text x="296" y="358">5</text>
+    <line x1="404" y1="340" x2="404" y2="344" stroke="#545454" stroke-width="0.75"/>
+    <text x="404" y="358">7</text>
+    <line x1="512" y1="340" x2="512" y2="344" stroke="#545454" stroke-width="0.75"/>
+    <text x="512" y="358">9</text>
+    <line x1="620" y1="340" x2="620" y2="344" stroke="#545454" stroke-width="0.75"/>
+    <text x="620" y="358">11</text>
+  </g>
+  <text x="350" y="380" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">NUMBER OF SUBTYPES</text>
+
+  <!-- If-else line (steep, primary red, the highlighted antipattern) -->
+  <polyline points="80,330 188,292 296,254 404,216 512,178 620,140"
+            stroke="#C8102E" stroke-width="2" fill="none"/>
+  <g fill="#C8102E">
+    <circle cx="80" cy="330" r="3"/>
+    <circle cx="188" cy="292" r="3"/>
+    <circle cx="296" cy="254" r="3"/>
+    <circle cx="404" cy="216" r="3"/>
+    <circle cx="512" cy="178" r="3"/>
+    <circle cx="620" cy="140" r="3"/>
+  </g>
+
+  <!-- Polymorphic line (nearly flat, ink, dashed for distinction) -->
+  <polyline points="80,332 188,328 296,324 404,320 512,316 620,312"
+            stroke="#2a1a0e" stroke-width="2" stroke-dasharray="6 4" fill="none"/>
+  <g fill="#2a1a0e">
+    <circle cx="80" cy="332" r="3"/>
+    <circle cx="188" cy="328" r="3"/>
+    <circle cx="296" cy="324" r="3"/>
+    <circle cx="404" cy="320" r="3"/>
+    <circle cx="512" cy="316" r="3"/>
+    <circle cx="620" cy="312" r="3"/>
+  </g>
+
+  <!-- Series labels -->
+  <text x="624" y="140" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#C8102E">if-else (every call site)</text>
+  <text x="624" y="312" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#2a1a0e">polymorphic (one new class)</text>
+
+  <text x="350" y="408" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">Polymorphism is the architectural choice that keeps the change cost constant.</text>
+</svg>

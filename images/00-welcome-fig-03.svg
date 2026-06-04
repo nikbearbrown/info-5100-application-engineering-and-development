@@ -1,0 +1,92 @@
+<!--
+  Belief-Based vs Evidence-Based Verification
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 00-welcome
+  Figure: 03
+  Type: Comparison panels (two columns)
+  Generated: 2026-05-25
+  Source: pantry/00-welcome-cajal.md
+-->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title">
+  <title id="fig-title">Belief-Based vs Evidence-Based Verification</title>
+  <desc>Two parallel four-step columns. The belief column trusts the installer and discovers failure during coding. The evidence column runs version checks, inspects output, and enters coding with a known small diagnostic surface.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="00-welcome"
+      figure-number="03"
+      figure-title="Belief-Based vs Evidence-Based Verification"
+      figure-slug="belief-vs-evidence-verification"
+      figure-type="comparison-panels"
+      priority="Important"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/00-welcome-cajal.md"
+    />
+  </metadata>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#2a1a0e"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">Belief-Based vs Evidence-Based Verification</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">Two ways to know the toolchain works. Only one of them is verification.</text>
+
+  <!-- Divider -->
+  <line x1="350" y1="84" x2="350" y2="396" stroke="#2a1a0e" stroke-width="0.5"/>
+
+  <!-- LEFT: BELIEF column -->
+  <text x="190" y="106" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">BELIEF APPROACH</text>
+
+  <rect x="80" y="124" width="220" height="44" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+  <text x="190" y="142" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="12" fill="#2a1a0e">installer says complete</text>
+  <text x="190" y="158" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">a dialog box closed</text>
+
+  <path d="M 190 168 L 190 184" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <rect x="80" y="190" width="220" height="44" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+  <text x="190" y="208" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="12" fill="#2a1a0e">assume it works</text>
+  <text x="190" y="224" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">no check performed</text>
+
+  <path d="M 190 234 L 190 250" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <rect x="80" y="256" width="220" height="44" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+  <text x="190" y="274" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="12" fill="#2a1a0e">write code</text>
+  <text x="190" y="290" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">build a large surface</text>
+
+  <path d="M 190 300 L 190 316" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <rect x="80" y="322" width="220" height="44" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+  <text x="190" y="340" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="12" fill="#2a1a0e">fail with no anchor</text>
+  <text x="190" y="356" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">which layer broke?</text>
+
+  <!-- RIGHT: EVIDENCE column -->
+  <text x="510" y="106" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E" letter-spacing="0.08em">EVIDENCE APPROACH</text>
+
+  <rect x="400" y="124" width="220" height="44" fill="#FFFFFF" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="510" y="142" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="12" fill="#2a1a0e">run java &amp; javac --version</text>
+  <text x="510" y="158" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">ask the tools directly</text>
+
+  <path d="M 510 168 L 510 184" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <rect x="400" y="190" width="220" height="44" fill="#FFFFFF" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="510" y="208" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="12" fill="#2a1a0e">inspect output</text>
+  <text x="510" y="224" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">version reported on stdout</text>
+
+  <path d="M 510 234 L 510 250" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <rect x="400" y="256" width="220" height="44" fill="#FFFFFF" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="510" y="274" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="12" fill="#2a1a0e">locate the .class file</text>
+  <text x="510" y="290" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">build produced an artifact</text>
+
+  <path d="M 510 300 L 510 316" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <rect x="400" y="322" width="220" height="44" fill="#FFFFFF" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="510" y="340" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="12" fill="#2a1a0e">enter coding with a small surface</text>
+  <text x="510" y="356" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">known-good baseline</text>
+</svg>

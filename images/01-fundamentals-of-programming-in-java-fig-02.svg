@@ -1,0 +1,68 @@
+<!--
+  Three Kinds of Wrong
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 01-fundamentals-of-programming-in-java
+  Figure: 02
+  Type: Comparison panels (horizontal spectrum)
+  Generated: 2026-05-25
+  Source: pantry/01-fundamentals-of-programming-in-java-cajal.md
+-->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title-02">
+  <title id="fig-title-02">Three Kinds of Wrong</title>
+  <desc>Horizontal three-zone spectrum showing compilation error, runtime error, and silent wrong behavior. A detectability gradient at top decreases left to right; a consequence gradient at bottom increases left to right.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="01-fundamentals-of-programming-in-java"
+      figure-number="02"
+      figure-title="Three Kinds of Wrong"
+      figure-slug="three-kinds-of-wrong"
+      figure-type="comparison-panels"
+      priority="Critical"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/01-fundamentals-of-programming-in-java-cajal.md"
+    />
+  </metadata>
+  <rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">Three Kinds of Wrong</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">Errors land at different stages — the latest one is the costliest.</text>
+
+  <text x="350" y="92" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">DETECTABILITY (HOW EASILY THE ERROR SHOWS UP)</text>
+  <polygon points="80,108 620,116 620,120 80,128" fill="#2a1a0e"/>
+
+  <rect x="80" y="148" width="180" height="156" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="1"/>
+  <rect x="260" y="148" width="180" height="156" fill="#EAEAEA" stroke="#D4D4D4" stroke-width="1"/>
+  <rect x="440" y="148" width="180" height="156" fill="#C8C8C8" stroke="#D4D4D4" stroke-width="1"/>
+
+  <text x="170" y="170" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">STAGE 1</text>
+  <text x="350" y="170" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">STAGE 2</text>
+  <text x="530" y="170" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">STAGE 3</text>
+
+  <text x="170" y="200" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">Compilation</text>
+  <text x="170" y="218" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">error</text>
+
+  <text x="350" y="200" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">Runtime</text>
+  <text x="350" y="218" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">error</text>
+
+  <text x="530" y="200" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">Silent wrong</text>
+  <text x="530" y="218" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">behavior</text>
+
+  <text x="170" y="256" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">caught by the</text>
+  <text x="170" y="272" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">compiler</text>
+
+  <text x="350" y="256" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">caught when</text>
+  <text x="350" y="272" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">the program runs</text>
+
+  <text x="530" y="256" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">caught only by</text>
+  <text x="530" y="272" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">careful inspection</text>
+
+  <polygon points="80,338 620,330 620,346 80,342" fill="#2a1a0e"/>
+  <text x="350" y="364" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">CONSEQUENCE WHEN UNCAUGHT (HOW MUCH HARM IT DOES)</text>
+
+  <text x="350" y="396" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">The most dangerous wrong is the one the compiler cannot see.</text>
+</svg>

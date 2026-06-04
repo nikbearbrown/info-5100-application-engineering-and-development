@@ -1,0 +1,89 @@
+<!--
+  Screen-Centric vs State-Centric Mental Model
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 03-objects-and-classes
+  Figure: 01
+  Type: Comparison panels
+  Generated: 2026-05-25
+  Source: pantry/03-objects-and-classes-cajal.md
+-->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title">
+  <title id="fig-title">Screen-Centric vs State-Centric Mental Model</title>
+  <desc>The screen-centric view treats each screen as a separate world. The state-centric view follows one object as it persists across screens. The same Book object lives through search, result, checkout, and confirmation.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="03-objects-and-classes"
+      figure-number="01"
+      figure-title="Screen-Centric vs State-Centric Mental Model"
+      figure-slug="screen-centric-vs-state-centric"
+      figure-type="comparison-panels"
+      priority="Critical"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/03-objects-and-classes-cajal.md"
+    />
+  </metadata>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#2a1a0e"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">Screen-Centric vs State-Centric Mental Model</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">Either each screen owns its data, or one object persists across all of them.</text>
+
+  <line x1="350" y1="80" x2="350" y2="392" stroke="#2a1a0e" stroke-width="0.5"/>
+
+  <text x="190" y="104" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">SCREEN-CENTRIC</text>
+
+  <rect x="80" y="124" width="48" height="48" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1"/>
+  <rect x="144" y="124" width="48" height="48" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1"/>
+  <rect x="208" y="124" width="48" height="48" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1"/>
+  <text x="104" y="148" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="9" fill="#545454">search</text>
+  <text x="168" y="148" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="9" fill="#545454">result</text>
+  <text x="232" y="148" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="9" fill="#545454">checkout</text>
+
+  <circle cx="104" cy="200" r="10" fill="#2a1a0e"/>
+  <circle cx="168" cy="200" r="10" fill="#2a1a0e"/>
+  <circle cx="232" cy="200" r="10" fill="#2a1a0e"/>
+
+  <text x="190" y="240" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">each screen owns</text>
+  <text x="190" y="256" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">its own Book copy</text>
+
+  <text x="190" y="296" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="12" fill="#2a1a0e">three objects, three places</text>
+  <text x="190" y="316" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">edits in one screen do not</text>
+  <text x="190" y="332" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">reach the others</text>
+
+  <text x="510" y="104" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E" letter-spacing="0.08em">STATE-CENTRIC</text>
+
+  <rect x="400" y="124" width="48" height="48" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1"/>
+  <rect x="464" y="124" width="48" height="48" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1"/>
+  <rect x="528" y="124" width="48" height="48" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1"/>
+  <rect x="592" y="124" width="48" height="48" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1"/>
+  <text x="424" y="148" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="9" fill="#545454">search</text>
+  <text x="488" y="148" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="9" fill="#545454">result</text>
+  <text x="552" y="148" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="9" fill="#545454">checkout</text>
+  <text x="616" y="148" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="9" fill="#545454">confirm</text>
+
+  <circle cx="424" cy="200" r="10" fill="#C8102E"/>
+  <path d="M 436 200 L 476 200" stroke="#C8102E" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <circle cx="488" cy="200" r="10" fill="#C8102E"/>
+  <path d="M 500 200 L 540 200" stroke="#C8102E" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <circle cx="552" cy="200" r="10" fill="#C8102E"/>
+  <path d="M 564 200 L 604 200" stroke="#C8102E" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <circle cx="616" cy="200" r="10" fill="#C8102E"/>
+
+  <text x="510" y="240" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#C8102E">the same Book object</text>
+  <text x="510" y="256" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#C8102E">travels through every screen</text>
+
+  <text x="510" y="296" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="12" fill="#2a1a0e">one object, many displays</text>
+  <text x="510" y="316" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">edits anywhere reach</text>
+  <text x="510" y="332" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">every screen showing it</text>
+
+  <text x="350" y="384" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">The screens are views of a persistent object — not bags of their own data.</text>
+</svg>

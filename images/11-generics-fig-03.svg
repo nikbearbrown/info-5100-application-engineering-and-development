@@ -1,0 +1,70 @@
+<!--
+  Closet Handler vs Clean Handler
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 11-generics
+  Figure: 03
+  Type: Annotated example (paired)
+  Generated: 2026-05-25
+  Source: pantry/11-generics-cajal.md
+-->
+<svg viewBox="0 0 700 480" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title">
+  <title id="fig-title">Closet Handler vs Clean Handler</title>
+  <desc>The closet handler accumulates responsibilities until it does seven things in one method. The clean handler does the same task in four lines because the other six responsibilities live where they belong.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="11-generics"
+      figure-number="03"
+      figure-title="Closet Handler vs Clean Handler"
+      figure-slug="closet-vs-clean-handler"
+      figure-type="annotated-example"
+      priority="Critical"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/11-generics-cajal.md"
+    />
+  </metadata>
+  <rect x="0" y="0" width="700" height="480" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">Closet Handler vs Clean Handler</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">Same feature. One handler keeps growing; the other keeps its shape.</text>
+
+  <line x1="350" y1="80" x2="350" y2="456" stroke="#2a1a0e" stroke-width="0.5"/>
+
+  <text x="190" y="106" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">CLOSET HANDLER</text>
+
+  <rect x="48" y="124" width="284" height="320" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="64" y="148" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">checkoutBtn.setOnAction(e -&gt; {</text>
+  <text x="80" y="168" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#C8102E">// 1. fetch + parse</text>
+  <text x="80" y="184" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#C8102E">// 2. validate isbn shape</text>
+  <text x="80" y="200" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#C8102E">// 3. format the date</text>
+  <text x="80" y="216" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#C8102E">// 4. check overdue rules</text>
+  <text x="80" y="232" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#C8102E">// 5. compute new fees</text>
+  <text x="80" y="248" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#C8102E">// 6. write to log file</text>
+  <text x="80" y="264" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#C8102E">// 7. update label</text>
+  <text x="64" y="284" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">});</text>
+
+  <text x="190" y="332" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">seven jobs in one handler</text>
+  <text x="190" y="350" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">no test seam — UI must be running</text>
+  <text x="190" y="368" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">to verify any of it</text>
+  <text x="190" y="404" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">grows every sprint</text>
+  <text x="190" y="424" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">until no one understands it</text>
+
+  <text x="510" y="106" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E" letter-spacing="0.08em">CLEAN HANDLER</text>
+
+  <rect x="368" y="124" width="284" height="160" fill="#F5F5F5" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="384" y="148" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">checkoutBtn.setOnAction(e -&gt; {</text>
+  <text x="400" y="172" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">String isbn = isbnField.getText();</text>
+  <text x="400" y="196" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">Loan loan = checkout.run(isbn);</text>
+  <text x="400" y="220" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">view.show(loan);</text>
+  <text x="384" y="244" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">});</text>
+
+  <text x="510" y="316" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#C8102E">four lines, one job per line</text>
+  <text x="510" y="334" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">checkout.run() and view.show()</text>
+  <text x="510" y="352" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">each tested in isolation</text>
+  <text x="510" y="404" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">stays this shape</text>
+  <text x="510" y="424" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">when new rules land elsewhere</text>
+</svg>

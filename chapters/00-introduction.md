@@ -1,244 +1,69 @@
 # Introduction
 
-The program runs. The button opens the window. The text field accepts input.
-The list displays the books. A student clicks **Checkout**, sees no error, and
-feels the small relief every new programmer recognizes: it worked.
+A learner opens the first chapter of *INFO 5100 Application Engineering and Development* with a familiar problem: there is too much information and not enough structure. The terms are available. The examples are available. The missing thing is a route through the material that turns exposure into understanding.
 
-Then the instructor asks a quiet question: where is the rule that prevents a
-patron from checking out the same book twice?
+This book is about the gap between knowing the name of INFO 5100 Application Engineering and Development's subject and being able to use its ideas with judgment.
 
-The student scrolls. The rule might be in the button handler. It might be in
-the `Book` class. It might be in the `Patron` class. It might be in a method an
-AI assistant generated yesterday and the student has not fully read. The
-application still runs, but the design has become hard to explain.
+The central argument is that INFO 5100 Application Engineering and Development is best learned as a sequence of distinctions, practices, and recurring problems rather than as a list of topics. A reader who can name those distinctions can move through the field with more confidence than a reader who has only memorized definitions.
 
-This book is about the gap between code that runs and software a student can
-understand, verify, and defend.
+This is written for learners, teachers, practitioners, and builders who want a clear path through the material.
 
-The central argument is simple and contestable: in the age of AI-assisted
-programming, object-oriented understanding is not less important. It is the
-condition that makes AI assistance safe to use. A student who cannot explain
-the responsibility of a class, trace a value through a method call, or test a
-boundary case cannot responsibly accept generated code just because it compiles.
-AI can accelerate implementation, but it cannot take ownership of the design.
+## What This Book Is
 
-This is that student's textbook.
+This book is a structured introduction to INFO 5100 Application Engineering and Development. It teaches the vocabulary of the field, shows how the main ideas connect, and gives readers enough conceptual grip to continue with more specialized work. It is designed to be read as a book, used as a reference, and integrated into an intelligent textbook system.
 
-It is written for learners in INFO 5100 Application Engineering and
-Development: students who need to learn Java, object-oriented programming, GUI
-application development, and disciplined AI use in the same semester. Some
-readers will have written scripts before. Some will have used Python, R, or
-JavaScript. Some will have copied code successfully without ever needing to
-explain why it worked. The book begins where those learners actually are.
+## What This Book Is Not
 
-## What this book is
+This book is not a substitute for practice, mentorship, experimentation, or domain-specific judgment. It does not try to say everything. It tries to say enough, in the right order, so that the reader can recognize what matters next.
 
-This book is an introduction to Java programming and object-oriented design
-through the work of building GUI-based applications for real-world problems.
-It teaches variables, data types, control flow, methods, arrays, file I/O,
-classes, objects, constructors, inheritance, polymorphism, abstract classes,
-interfaces, generics, recursion, collections, event-driven programming, and
-JavaFX.
+## The Concept Running Through the Book
 
-But the vocabulary of the book is not only Java vocabulary. It is also the
-vocabulary of engineering judgment:
+The recurring idea is transfer: the movement from explanation to usable understanding. Each chapter should help the reader carry an idea from the page into a problem, a classroom, a project, or a decision.
 
-- What object owns this responsibility?
-- What state must be true before this method runs?
-- What evidence proves this behavior?
-- What did AI generate, and what did the student verify?
-- Where does a GUI event end and the model begin?
-- What changes if the requirement changes?
+## Fundamental Themes
 
-The course description says students are expected to apply learned knowledge to
-address an identified real-world problem. That sentence matters. A program is
-not merely a collection of language features. It is a response to a problem.
-The point of the Java is to make the response precise.
+This introduction also incorporates the book's fundamental themes. Watch for these ideas as the chapters unfold:
 
-## What this book is not
+- You Cannot Verify What You Do Not Understand
+- Objects Model Responsibilities
+- Debugging Is Causal Reasoning
+- AI Use Requires Phase Gates
+- The Project Is One System
+- Tests Are Evidence, Not Magic
+- The Final Defense Is The Point
+- References
 
-This book is not a complete Java reference. It does not try to cover every API,
-every language feature, or every professional framework. When you need exact
-language rules, use the Java documentation. When you need exhaustive coverage,
-use a reference text.
+## How This Book Is Organized
 
-This book is also not an AI prompt cookbook. You will use AI, and the book will
-tell you when and how, but the goal is not to outsource the work. The goal is
-to become the kind of engineer who can use AI without being fooled by fluent
-output.
+- **Chapter 1: Module 1: Fundamentals of Programming in Java.** *The program compiles. That is the beginning of the problem, not the end.* The word "object" sounds like jargon, so let me say what it means without using the word. A patron of the library is a specific person. That person has...
+- **Chapter 2: Module 2: Methods, Arrays, and File Objects.** *The blueprint doesn't age. The buildings do.* A class is a blueprint. Not a metaphor for a blueprint — an actual blueprint, in the sense that it describes a structure without being the structure. The blueprint for a house specifies how many...
+- **Chapter 3: Module 3: Objects and Classes.** *The screen changes. The object does not. Here is why that is the bug.* There is a failure that looks like a UI problem but is actually an object problem. The user searches for a book, selects it, and proceeds to checkout....
+- **Chapter 4: Module 4: Basics of Object-Oriented Programming Part 2.** *Wrong output is not the problem. Wrong output is the symptom. The problem is somewhere upstream, waiting for a hypothesis.* Before any debugger, before any tool, before any line of code gets touched, there is a conceptual move that separates disciplined debugging...
+- **Chapter 5: Module 5: Inheritance and Polymorphism.** *The catalog was there before you walked in.* Not all objects are the same kind of thing. Some objects represent resources that exist independently of any user action. A book in a library. A product in a warehouse. A physician's available appointment...
+- **Chapter 6: Module 6: Basics of GUI Programming in Java.** *The file gets read. What can they do with it?* Two login systems pass the demo. Both accept a username and password. Both reject incorrect credentials. Both compile cleanly and run without errors. One of them is a security failure waiting for...
+- **Chapter 7: Module 7: Midterm Exam.** *The if-else chain is not a bug. It is a warning. The system is trying to tell you that transaction type belongs in the object model.* Let me explain the machinery before naming the principle. In Java, every object has two types...
+- **Chapter 8: Module 8: Abstract Classes and Interfaces.** *The program remembered everything. Until it didn't.* CRUD is an acronym: Create, Read, Update, Delete. It is the full lifecycle of a piece of data in a system that cares about persistence. Before persistence, none of these are interesting. You create a...
+- **Chapter 9: Module 9: Event-Driven Programming.** *A collection is not a container. It is a decision about how you will access what is inside.* Five hundred books. Sort them by title. The first solution works. You write a loop, compare strings, swap elements. The books come out alphabetical....
+- **Chapter 10: Module 10: Event-Driven Programming with Scene Builder.** *The books did not change. The view did. That distinction is the entire subject of this module.* Model-View-Controller is a name for an idea that is older than the name. The idea is simple: the thing that knows the truth about the...
+- **Chapter 11: Module 11: Generics.** *The button worked. Nobody knew why. Nobody knew where.* Before JavaFX, every program you wrote ran top to bottom. Main called a method. The method ran. Something was printed. The program ended, or looped back and ran again. The program controlled the...
+- **Chapter 12: Module 12: Recursion.** *The visual editor changes the screen. The controller still has to connect to the model. That connection is yours to maintain.* The checkout screen from Module 3 worked. You designed it by hand — panels, buttons, labels, a table — and you...
+- **Chapter 13: Module 13: Collections and Iterators.** *A test is not a proof. It is a claim made executable. The difference matters more than it sounds.* Before any JUnit syntax, before any assertion, there is a conceptual move that determines whether testing is useful or theatrical. The move is...
+- **Chapter 14: Module 14: Lists, Stacks, Queues, and the Final Project.** *Running is not done. Done is running, explained, defended, and handed off.* The word "done" has a specific meaning in professional software development. It does not mean the program runs. It means the program runs, can be understood by someone who did...
 
-Finally, this is not a course in software architecture at industrial scale. The
-applications here are deliberately small enough to inspect. That is the point.
-You cannot learn design responsibility from a system too large to hold in your
-head. You learn it from a small system whose behavior you can trace, then carry
-the habit forward.
+## How to Read This Book
 
-## The themes underneath the modules
+Read the chapters in order if you are new to the subject. If you already know the area, use the chapter titles as a map and move directly to the parts where your understanding is weakest. The chapters are designed to be self-contained enough for reference, but they work best as a progression from Module 1: Fundamentals of Programming in Java to Module 14: Lists, Stacks, Queues, and the Final Project.
 
-The appendix "Fundamental Themes" names the habits this book builds. They are
-woven through the modules rather than saved for the end.
+## A Note About AI
 
-First: you cannot verify what you do not understand. This does not mean you
-must know everything before using a library or tool. It means your
-understanding must be sufficient for the behavior you are responsible for.
-"AI wrote it" is not evidence. "It compiled" is not evidence. "It worked once"
-is weak evidence. Verification requires a claim, a test, and an explanation.
+AI matters to *INFO 5100 Application Engineering and Development* because the modern textbook is no longer only a static container. It is also part of a learning system: searchable, remixable, explainable, and increasingly connected to tools such as Medhavy. For Bear Brown books, the relevant question is not whether AI can replace the learner or the teacher. It cannot. The useful question is what AI can make easier to inspect: definitions, worked examples, misconceptions, practice sequences, alternate explanations, and the structure of an argument. This book treats AI as infrastructure for practical AI-assisted authorship, analysis, and production. The chapters should still stand on their own as readable prose, but they are also designed to be legible to an intelligent textbook system.
 
-Second: objects model responsibilities. A class is not a folder for related
-functions. It is a decision about what a thing knows and what it is allowed to
-do. A `Book` should not know about a button. A controller should not own a
-business rule. A GUI should display state, not secretly become the model.
+## Closing Return
 
-Third: debugging is causal reasoning. A debugger shows state; it does not
-produce a theory. Real debugging begins when you can say, "I expect this
-reference to point to this object at this moment, and if it does not, this is
-the likely cause."
+The learner at the opening does not need more noise. They need a path. This book is that path: not the whole territory, but a reliable way to begin moving through it.
 
-Fourth: AI use requires phase gates. The course changes what AI may do as your
-verification ability grows. Early modules permit explanation and diagnosis.
-Later modules permit scaffolding and candidate implementations. By the final
-project, AI can be a collaborator, but the design judgment remains yours.
-
-Fifth: the project is one system. A shortcut in Module 3 can become a bug in
-Module 10. A clean boundary in Module 5 can make Module 14 easier to defend.
-Design decisions compound.
-
-Sixth: tests are evidence, not magic. A test tells you that a claim held for a
-specific case. It does not prove all possible cases. Its value grows as the
-project changes because it catches regressions that would otherwise remain
-quiet.
-
-Seventh: the final defense is the point. The running application matters, but
-the defense reveals ownership. Can you explain why a class exists? Can you
-trace a user action through the GUI into the model and back? Can you name what
-AI helped with and what you checked yourself?
-
-## The running thread
-
-Many examples use a library checkout system because the domain is familiar.
-Books, patrons, catalogs, loans, searches, checkouts, returns, files, lists,
-buttons, and events are easy to picture. The domain is simple enough to learn
-from but rich enough to expose real design questions.
-
-You should not treat the library as the only possible application. The same
-patterns apply to inventory systems, scheduling systems, patient transport
-tools, student service platforms, and other real applications. The point is to
-learn the shape of the responsibility, not memorize the library example.
-
-## How the book is organized
-
-**Module 0: Welcome** orients you to the course, the tools, academic integrity,
-and the learning community.
-
-**Module 1: Fundamentals of Programming in Java** reviews computation,
-variables, data types, input/output, strings, control flow, loops, comments,
-and basic design principles.
-
-**Module 2: Methods, Arrays, and File Objects** introduces reusable behavior,
-arrays, reading from files, writing to files, and manipulating file content.
-
-**Module 3: Objects and Classes** turns from procedural programming to
-object-oriented thinking: objects, classes, constructors, instance members,
-static members, UML diagrams, and visibility.
-
-**Module 4: Basics of Object-Oriented Programming Part 2** deepens object
-thinking through object passing, arrays of objects, wrapper classes, strings,
-`StringBuilder`, `StringBuffer`, and the `this` reference.
-
-**Module 5: Inheritance and Polymorphism** introduces superclasses,
-subclasses, constructor chaining, overriding, overloading, polymorphism,
-dynamic binding, casting, `instanceof`, `equals`, protected members, and
-`ArrayList`.
-
-**Module 6: Basics of GUI Programming in Java** introduces GUI programming,
-JavaFX, panes, controls, shapes, property binding, layout panes, polygons,
-polylines, and Scene Builder.
-
-**Module 7: Midterm Exam** checks cumulative programming proficiency,
-including data structures, loops, conditionals, and problem-solving constructs.
-
-**Module 8: Abstract Classes and Interfaces** teaches abstract methods,
-abstract classes, interfaces, and classes that implement interface contracts.
-
-**Module 9: Event-Driven Programming** introduces event sources, event
-objects, handler classes, inner classes, `KeyEvent`, `KeyCode`, and the shift
-from procedural execution to event response.
-
-**Module 10: Event-Driven Programming with Scene Builder** extends JavaFX work
-through Scene Builder, controller connections, event wiring, and more complex
-GUI controls.
-
-**Module 11: Generics** introduces generic classes, generic interfaces,
-generic methods, wildcards, and the benefits of writing type-flexible code.
-
-**Module 12: Recursion** teaches recursive methods through factorials,
-Fibonacci, base cases, recursive cases, and the tradeoffs between recursive and
-iterative solutions.
-
-**Module 13: Collections and Iterators** introduces the Java Collections
-Framework, the `Collection` interface, iterators, and the traversal of groups
-of objects.
-
-**Module 14: Lists, Stacks, Queues, and the Final Project** brings together
-lists, comparators, queues, priority queues, stacks, and the final GUI
-application project.
-
-The appendices support the main sequence. The Claude Code appendix explains how
-to use Claude Code responsibly for Java work. The Fundamental Themes appendix
-collects the durable habits of mind that run through the course.
-
-## How to read this book
-
-Read the modules in order if you are taking the course. The sequence matters.
-Later modules assume earlier design decisions, vocabulary, and habits. If you
-skip, skip carefully: you can review a syntax topic out of order, but the
-semester project is cumulative.
-
-Each module gives you more than a concept. It gives you an action to perform,
-an artifact to inspect, and an assessment that asks for evidence. Do not treat
-the exercises as decoration. They are where the mental model gets built.
-
-When the book asks you to predict before running code, actually predict. When
-it asks you to trace, trace slowly. When it asks you to explain what AI did and
-what you verified, write the explanation before polishing the code. The
-artifact is not the only evidence of learning. The process matters.
-
-## A note about AI
-
-This book assumes AI is present. That is not a concession. It is the reality of
-modern programming education and professional software work.
-
-But the book makes a firm distinction between assistance and delegation. AI can
-explain an error message. It can summarize a Java concept. It can draft a
-method after you specify the requirement. It can suggest edge cases. It can
-help refactor code. It can point out likely causes of a bug.
-
-What it cannot do is be responsible for your program.
-
-The reason is not mystical. It is practical. AI does not know what your
-application is supposed to mean in its actual context. It can infer patterns
-from text. It can produce code that resembles working code. But when the
-requirement is ambiguous, when the domain has a hidden rule, when the GUI and
-model disagree, when a test passes for the wrong reason, responsibility returns
-to the engineer.
-
-This is why the course uses AI phase gates. The boundary changes as your
-ability changes. In early modules, you use AI mainly to explain and diagnose.
-In later modules, you use it to generate candidate code, but only after you
-have written the requirement and only before you verify the result. By the
-final project, AI may be part of the workflow, but it is never the author of
-your judgment.
-
-If you remember only one sentence, remember this: AI can help you write code
-faster than you understand it, and that is exactly why understanding matters.
+Let's go.
 
 ## Tags
 
-Java, object-oriented programming, software engineering, GUI programming,
-JavaFX, event-driven programming, collections, recursion, generics, AI
-assisted programming, Claude Code, application engineering, Northeastern
-University, INFO 5100, Medhavy, intelligent textbook
-
-The window opens. The button works. The program runs. Now explain it.
-
-Let's go.
+INFO 5100 Application Engineering and Development, textbook, Medhavy, AI-assisted learning, Bear Brown

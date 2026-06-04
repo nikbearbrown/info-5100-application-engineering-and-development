@@ -1,0 +1,62 @@
+<!--
+  Symptom / Proximate / Root Diagnostic Hierarchy
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 04-basics-of-object-oriented-programming-part-2
+  Figure: 01
+  Type: Hierarchy
+  Generated: 2026-05-25
+  Source: pantry/04-basics-of-object-oriented-programming-part-2-cajal.md
+-->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title">
+  <title id="fig-title">Symptom / Proximate / Root Diagnostic Hierarchy</title>
+  <desc>Three levels of cause. The symptom is what the user sees. The proximate cause is the immediate code path that produced it. The root cause is the upstream design or assumption that made the proximate path inevitable.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="04-basics-of-object-oriented-programming-part-2"
+      figure-number="01"
+      figure-title="Symptom / Proximate / Root Diagnostic Hierarchy"
+      figure-slug="symptom-proximate-root-hierarchy"
+      figure-type="hierarchy"
+      priority="Critical"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/04-basics-of-object-oriented-programming-part-2-cajal.md"
+    />
+  </metadata>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#2a1a0e"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">Symptom / Proximate / Root Diagnostic Hierarchy</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">Fix the symptom and the bug returns. Fix the root and the class of bugs disappears.</text>
+
+  <rect x="100" y="100" width="500" height="68" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1"/>
+  <text x="350" y="124" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">SYMPTOM — WHAT THE USER SEES</text>
+  <text x="350" y="146" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">"the checkout button does nothing"</text>
+  <text x="350" y="162" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">visible failure, surface report</text>
+
+  <path d="M 350 168 L 350 188" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <text x="370" y="184" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">caused by</text>
+
+  <rect x="100" y="194" width="500" height="68" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1"/>
+  <text x="350" y="218" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">PROXIMATE CAUSE — IMMEDIATE CODE PATH</text>
+  <text x="350" y="240" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">the listener was never registered</text>
+  <text x="350" y="256" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">one line missing in the call chain</text>
+
+  <path d="M 350 262 L 350 282" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <text x="370" y="278" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">caused by</text>
+
+  <rect x="100" y="288" width="500" height="68" fill="#C8102E" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="350" y="312" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#FFFFFF" letter-spacing="0.08em">ROOT CAUSE — UPSTREAM ASSUMPTION</text>
+  <text x="350" y="334" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#FFFFFF">screens are built before their wiring is complete</text>
+  <text x="350" y="350" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#FFFFFF">the design choice that made the proximate inevitable</text>
+
+  <text x="350" y="392" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">If you stop at the proximate, the next screen will repeat the bug. The root is where you spend your minute.</text>
+</svg>

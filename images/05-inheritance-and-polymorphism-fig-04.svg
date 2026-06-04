@@ -1,0 +1,57 @@
+<!--
+  Annotated main() with Supply / Demand Divider
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 05-inheritance-and-polymorphism
+  Figure: 04
+  Type: Annotated example
+  Generated: 2026-05-25
+  Source: pantry/05-inheritance-and-polymorphism-cajal.md
+-->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title">
+  <title id="fig-title">Annotated main() with Supply / Demand Divider</title>
+  <desc>A main() method with a horizontal divider splitting it into two zones: supply (one-time setup that builds the Catalog and Authors) above; demand (per-event transactions that look up and record) below. The divider is the architectural commitment the chapter makes visible.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="05-inheritance-and-polymorphism"
+      figure-number="04"
+      figure-title="Annotated main() with Supply / Demand Divider"
+      figure-slug="annotated-main-supply-demand"
+      figure-type="annotated-example"
+      priority="Important"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/05-inheritance-and-polymorphism-cajal.md"
+    />
+  </metadata>
+  <rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">Annotated main() with Supply / Demand Divider</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">One method, two zones. Everything above the divider runs once. Everything below runs per event.</text>
+
+  <rect x="80" y="100" width="540" height="260" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1"/>
+
+  <!-- Supply zone -->
+  <text x="100" y="124" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">SUPPLY — RUNS ONCE AT STARTUP</text>
+  <text x="100" y="146" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">public static void main(String[] args) {</text>
+  <text x="120" y="166" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">Catalog catalog = new Catalog();</text>
+  <text x="120" y="186" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">catalog.add(new Book("Dune", herbert));</text>
+  <text x="120" y="206" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">catalog.add(new Book("Foundation", asimov));</text>
+
+  <!-- Divider — the architectural commitment -->
+  <line x1="80" y1="226" x2="620" y2="226" stroke="#C8102E" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="350" y="220" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E" letter-spacing="0.08em">— ARCHITECTURAL DIVIDER —</text>
+
+  <!-- Demand zone -->
+  <text x="100" y="250" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">DEMAND — RUNS PER EVENT</text>
+  <text x="120" y="272" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">checkoutBtn.addActionListener(e -&gt; {</text>
+  <text x="140" y="292" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">Book b = catalog.findBook(isbnField.getText());</text>
+  <text x="140" y="312" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">loans.record(currentPatron, b);</text>
+  <text x="120" y="332" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">});</text>
+  <text x="100" y="352" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">}</text>
+
+  <text x="350" y="392" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">No "new Book(...)" lives below the divider. The boundary is the discipline.</text>
+</svg>

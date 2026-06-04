@@ -1,0 +1,72 @@
+<!--
+  Object → File → Object Lifecycle
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 08-abstract-classes-and-interfaces
+  Figure: 02
+  Type: Process flowchart
+  Generated: 2026-05-25
+  Source: pantry/08-abstract-classes-and-interfaces-cajal.md
+-->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title">
+  <title id="fig-title">Object → File → Object Lifecycle</title>
+  <desc>The object is created, mutated, serialized to a file, then later read back into a new object. The reconstructed object is structurally equal but not the same reference — a fact every persistence-aware design must accept.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="08-abstract-classes-and-interfaces"
+      figure-number="02"
+      figure-title="Object → File → Object Lifecycle"
+      figure-slug="object-file-object-lifecycle"
+      figure-type="process-flowchart"
+      priority="Critical"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/08-abstract-classes-and-interfaces-cajal.md"
+    />
+  </metadata>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#2a1a0e"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">Object → File → Object Lifecycle</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">A round trip through the file system produces a structurally equal object — not the same reference.</text>
+
+  <rect x="40" y="140" width="120" height="64" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="100" y="162" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">CONSTRUCT</text>
+  <text x="100" y="184" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">new Book(…)</text>
+  <text x="100" y="198" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">on the heap</text>
+
+  <path d="M 164 172 L 184 172" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <rect x="188" y="140" width="120" height="64" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="248" y="162" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">MUTATE</text>
+  <text x="248" y="184" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">b.checkOut()</text>
+  <text x="248" y="198" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">in memory only</text>
+
+  <path d="M 312 172 L 332 172" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <rect x="336" y="140" width="120" height="64" fill="#C8102E" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="396" y="162" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#FFFFFF" letter-spacing="0.08em">PERSIST</text>
+  <text x="396" y="184" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#FFFFFF">save(b, file)</text>
+  <text x="396" y="198" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#FFFFFF">crosses the boundary</text>
+
+  <path d="M 460 172 L 480 172" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <rect x="484" y="140" width="120" height="64" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="544" y="162" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">LATER</text>
+  <text x="544" y="184" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">load(file)</text>
+  <text x="544" y="198" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">→ Book b2</text>
+
+  <rect x="240" y="260" width="220" height="80" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="350" y="284" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">KEY CONSEQUENCE</text>
+  <text x="350" y="308" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">b2.equals(b) is true</text>
+  <text x="350" y="328" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#C8102E">b2 == b is false</text>
+
+  <text x="350" y="380" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">Persistence preserves data, not identity. Code that relied on reference equality must change.</text>
+</svg>

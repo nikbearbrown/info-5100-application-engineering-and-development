@@ -1,0 +1,74 @@
+<!--
+  Test Anatomy — Setup / Execution / Assertion
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 13-collections-and-iterators
+  Figure: 02
+  Type: Annotated example
+  Generated: 2026-05-25
+  Source: pantry/13-collections-and-iterators-cajal.md
+-->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title">
+  <title id="fig-title">Test Anatomy — Setup, Execution, Assertion</title>
+  <desc>Every test has the same three sections. Setup arranges the inputs. Execution runs the code under test. Assertion compares the result to the expectation. A failure in each section means a different thing about your code.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="13-collections-and-iterators"
+      figure-number="02"
+      figure-title="Test Anatomy — Setup, Execution, Assertion"
+      figure-slug="test-anatomy"
+      figure-type="annotated-example"
+      priority="Critical"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/13-collections-and-iterators-cajal.md"
+    />
+  </metadata>
+  <rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">Test Anatomy — Setup, Execution, Assertion</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">Three sections. A failure in each section names a different thing about your code.</text>
+
+  <!-- Test method body -->
+  <rect x="40" y="96" width="380" height="280" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="56" y="120" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">@Test</text>
+  <text x="56" y="138" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">void checkoutMarksBookBorrowed() {</text>
+
+  <!-- Setup band -->
+  <rect x="56" y="148" width="348" height="68" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="0.75"/>
+  <text x="72" y="168" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">SETUP</text>
+  <text x="72" y="188" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">Catalog c = new Catalog();</text>
+  <text x="72" y="206" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">Book b = c.add("Dune");</text>
+
+  <!-- Execution band -->
+  <rect x="56" y="224" width="348" height="48" fill="#FFFFFF" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="72" y="244" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E" letter-spacing="0.08em">EXECUTION</text>
+  <text x="72" y="262" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">c.checkOut(b);</text>
+
+  <!-- Assertion band -->
+  <rect x="56" y="280" width="348" height="48" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="0.75"/>
+  <text x="72" y="300" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">ASSERTION</text>
+  <text x="72" y="318" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">assertTrue(b.isBorrowed());</text>
+
+  <text x="56" y="356" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">}</text>
+
+  <!-- Right side: what each failure means -->
+  <text x="440" y="120" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">WHAT A FAILURE MEANS</text>
+
+  <text x="440" y="170" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="12" fill="#2a1a0e">setup fails →</text>
+  <text x="440" y="188" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">your constructor or factory</text>
+  <text x="440" y="204" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">is broken — not the feature</text>
+
+  <text x="440" y="244" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="12" fill="#C8102E">execution fails →</text>
+  <text x="440" y="262" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">the method under test crashed,</text>
+  <text x="440" y="278" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">stack trace points at the bug</text>
+
+  <text x="440" y="318" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="12" fill="#2a1a0e">assertion fails →</text>
+  <text x="440" y="336" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">it ran, but produced the wrong</text>
+  <text x="440" y="352" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">result — read the diff carefully</text>
+
+  <text x="350" y="402" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">Three sections. Three diagnoses. Test failure is information — not a defect.</text>
+</svg>

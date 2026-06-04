@@ -1,0 +1,60 @@
+<!--
+  The Verification Loop
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 01-fundamentals-of-programming-in-java
+  Figure: 03
+  Type: Cycle diagram
+  Generated: 2026-05-25
+  Source: pantry/01-fundamentals-of-programming-in-java-cajal.md
+-->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title-03">
+  <title id="fig-title-03">The Verification Loop</title>
+  <desc>Three nodes arranged in a triangle representing the recurring craft of verification: the business-behavior question, the Java-artifact question, and the evidence question, connected by clockwise arrows around a centered VERIFY label.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="01-fundamentals-of-programming-in-java"
+      figure-number="03"
+      figure-title="The Verification Loop"
+      figure-slug="verification-loop"
+      figure-type="cycle-diagram"
+      priority="Important"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/01-fundamentals-of-programming-in-java-cajal.md"
+    />
+  </metadata>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#2a1a0e"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">The Verification Loop</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">Three questions you keep asking until the answers cohere.</text>
+
+  <rect x="280" y="96" width="140" height="60" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="350" y="116" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">BUSINESS BEHAVIOR</text>
+  <text x="350" y="140" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">What should it do?</text>
+
+  <rect x="110" y="296" width="140" height="60" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="180" y="316" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">JAVA ARTIFACT</text>
+  <text x="180" y="340" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">What did you write?</text>
+
+  <rect x="450" y="296" width="140" height="60" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="520" y="316" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">EVIDENCE</text>
+  <text x="520" y="340" text-anchor="middle" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">How do you know?</text>
+
+  <path d="M 416 156 Q 500 220 524 290" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path d="M 450 326 L 256 326" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path d="M 176 296 Q 200 220 284 156" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <text x="350" y="228" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#C8102E" letter-spacing="0.18em">VERIFY</text>
+  <text x="350" y="248" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">repeat until all three answers cohere</text>
+
+  <text x="350" y="392" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">The cycle is the practice. Skip a node and you stop verifying.</text>
+</svg>

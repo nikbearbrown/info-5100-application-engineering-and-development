@@ -1,0 +1,77 @@
+<!--
+  Java Toolchain Pipeline
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 00-welcome
+  Figure: 02
+  Type: Process flowchart
+  Generated: 2026-05-25
+  Source: pantry/00-welcome-cajal.md
+-->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title">
+  <title id="fig-title">Java Toolchain Pipeline</title>
+  <desc>Source code compiles to bytecode, which the JVM executes on any operating system. The bytecode artifact is what makes Java portable.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="00-welcome"
+      figure-number="02"
+      figure-title="Java Toolchain Pipeline"
+      figure-slug="java-toolchain-pipeline"
+      figure-type="process-flowchart"
+      priority="Critical"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/00-welcome-cajal.md"
+    />
+  </metadata>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#2a1a0e"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">Java Toolchain Pipeline</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">One bytecode artifact runs on every operating system — that is what makes Java portable.</text>
+
+  <!-- Source node -->
+  <rect x="56" y="160" width="140" height="80" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="126" y="190" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">SOURCE</text>
+  <text x="126" y="212" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="12" fill="#2a1a0e">HelloWorld.java</text>
+  <text x="126" y="228" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">human-readable</text>
+
+  <!-- Arrow with javac label -->
+  <text x="227" y="184" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">javac</text>
+  <path d="M 198 200 L 256 200" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <!-- Bytecode node — highlighted as the portable artifact -->
+  <rect x="262" y="160" width="148" height="80" fill="#C8102E" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="336" y="190" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#FFFFFF" letter-spacing="0.08em">BYTECODE</text>
+  <text x="336" y="212" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="12" fill="#FFFFFF">HelloWorld.class</text>
+  <text x="336" y="228" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#FFFFFF">portable</text>
+
+  <!-- Arrow with JVM label -->
+  <text x="437" y="184" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">JVM</text>
+  <path d="M 412 200 L 470 200" stroke="#2a1a0e" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <!-- Execution node with OS sub-bands -->
+  <rect x="476" y="160" width="168" height="80" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+  <text x="560" y="178" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454" letter-spacing="0.08em">EXECUTION</text>
+  <line x1="476" y1="184" x2="644" y2="184" stroke="#D4D4D4" stroke-width="0.5"/>
+  <rect x="476" y="184" width="168" height="18" fill="#F5F5F5"/>
+  <text x="560" y="197" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">Linux</text>
+  <rect x="476" y="202" width="168" height="18" fill="#FFFFFF"/>
+  <text x="560" y="215" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">macOS</text>
+  <rect x="476" y="220" width="168" height="18" fill="#F5F5F5"/>
+  <text x="560" y="233" text-anchor="middle" font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="11" fill="#2a1a0e">Windows</text>
+
+  <!-- Portability bracket beneath execution -->
+  <path d="M 476 268 L 476 280 L 644 280 L 644 268" stroke="#C8102E" stroke-width="1" stroke-dasharray="4 3" fill="none"/>
+  <text x="560" y="302" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#C8102E">same .class runs on each</text>
+
+  <!-- Footer -->
+  <text x="350" y="392" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">Write once. Compile once. Run on any JVM.</text>
+</svg>

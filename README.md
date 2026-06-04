@@ -1,91 +1,40 @@
 # INFO 5100 Application Engineering and Development
 
-**Authors:** Nik Bear Brown and Khaled Bugrara  
+**Author:** Nik Bear Brown and Khaled Bugrara  
 **Publisher:** Bear Brown, LLC  
 **Copyright:** Copyright © 2026 Nik Bear Brown and Khaled Bugrara. All rights reserved.  
-**Status:** Draft textbook for Kindle, online reading, and Medhavy integration
+**Edition:** 2026
 
-This book is an introduction to Java programming, object-oriented design, and
-GUI-based application development for INFO 5100 Application Engineering and
-Development. It teaches Java as an applied engineering practice: students learn
-syntax and concepts, but also learn how to assign responsibility to objects,
-trace program behavior, verify correctness, use AI tools responsibly, and
-defend a real application.
+## Summary
 
-The central claim is that AI-assisted programming makes object-oriented
-understanding more important, not less. A student who cannot explain and verify
-generated code cannot safely accept it. The book therefore pairs Java topics
-with AI phase gates, verification habits, and project evidence.
+*INFO 5100 Application Engineering and Development* is a structured textbook for readers who need a clear path through the subject rather than a loose collection of explanations. It begins with Module 1: Fundamentals of Programming in Java, moves through 14 core chapters, and ends with Module 14: Lists, Stacks, Queues, and the Final Project.
+
+AI matters to *INFO 5100 Application Engineering and Development* because the modern textbook is no longer only a static container. It is also part of a learning system: searchable, remixable, explainable, and increasingly connected to tools such as Medhavy. For Bear Brown books, the relevant question is not whether AI can replace the learner or the teacher. It cannot. The useful question is what AI can make easier to inspect: definitions, worked examples, misconceptions, practice sequences, alternate explanations, and the structure of an argument. This book treats AI as infrastructure for practical AI-assisted authorship, analysis, and production. The chapters should still stand on their own as readable prose, but they are also designed to be legible to an intelligent textbook system.
 
 ## Table of Contents
 
-| File | Title |
-| --- | --- |
-| `chapters/00-frontmatter.md` | Front Matter |
-| `chapters/00-introduction.md` | Introduction |
-| `chapters/00-welcome.md` | Module 0: Welcome |
-| `chapters/01-fundamentals-of-programming-in-java.md` | Module 1: Fundamentals of Programming in Java |
-| `chapters/02-methods-arrays-and-file-objects.md` | Module 2: Methods, Arrays, and File Objects |
-| `chapters/03-objects-and-classes.md` | Module 3: Objects and Classes |
-| `chapters/04-basics-of-object-oriented-programming-part-2.md` | Module 4: Basics of Object-Oriented Programming Part 2 |
-| `chapters/05-inheritance-and-polymorphism.md` | Module 5: Inheritance and Polymorphism |
-| `chapters/06-basics-of-gui-programming-in-java.md` | Module 6: Basics of GUI Programming in Java |
-| `chapters/07-midterm-exam.md` | Module 7: Midterm Exam |
-| `chapters/08-abstract-classes-and-interfaces.md` | Module 8: Abstract Classes and Interfaces |
-| `chapters/09-event-driven-programming.md` | Module 9: Event-Driven Programming |
-| `chapters/10-event-driven-programming-with-scene-builder.md` | Module 10: Event-Driven Programming with Scene Builder |
-| `chapters/11-generics.md` | Module 11: Generics |
-| `chapters/12-recursion.md` | Module 12: Recursion |
-| `chapters/13-collections-and-iterators.md` | Module 13: Collections and Iterators |
-| `chapters/14-lists-stacks-queues-and-the-final-project.md` | Module 14: Lists, Stacks, Queues, and the Final Project |
-| `chapters/95-claude-code.md` | Appendix: Claude Code for Java |
-| `chapters/97-fundamental-themes.md` | Appendix: Fundamental Themes |
-| `chapters/99-back-matter.md` | Back Matter |
+- **Chapter 1: Module 1: Fundamentals of Programming in Java.** *The program compiles. That is the beginning of the problem, not the end.* The word "object" sounds like jargon, so let me say what it means without using the word. A patron of the library is a specific person. That person has...
+- **Chapter 2: Module 2: Methods, Arrays, and File Objects.** *The blueprint doesn't age. The buildings do.* A class is a blueprint. Not a metaphor for a blueprint — an actual blueprint, in the sense that it describes a structure without being the structure. The blueprint for a house specifies how many...
+- **Chapter 3: Module 3: Objects and Classes.** *The screen changes. The object does not. Here is why that is the bug.* There is a failure that looks like a UI problem but is actually an object problem. The user searches for a book, selects it, and proceeds to checkout....
+- **Chapter 4: Module 4: Basics of Object-Oriented Programming Part 2.** *Wrong output is not the problem. Wrong output is the symptom. The problem is somewhere upstream, waiting for a hypothesis.* Before any debugger, before any tool, before any line of code gets touched, there is a conceptual move that separates disciplined debugging...
+- **Chapter 5: Module 5: Inheritance and Polymorphism.** *The catalog was there before you walked in.* Not all objects are the same kind of thing. Some objects represent resources that exist independently of any user action. A book in a library. A product in a warehouse. A physician's available appointment...
+- **Chapter 6: Module 6: Basics of GUI Programming in Java.** *The file gets read. What can they do with it?* Two login systems pass the demo. Both accept a username and password. Both reject incorrect credentials. Both compile cleanly and run without errors. One of them is a security failure waiting for...
+- **Chapter 7: Module 7: Midterm Exam.** *The if-else chain is not a bug. It is a warning. The system is trying to tell you that transaction type belongs in the object model.* Let me explain the machinery before naming the principle. In Java, every object has two types...
+- **Chapter 8: Module 8: Abstract Classes and Interfaces.** *The program remembered everything. Until it didn't.* CRUD is an acronym: Create, Read, Update, Delete. It is the full lifecycle of a piece of data in a system that cares about persistence. Before persistence, none of these are interesting. You create a...
+- **Chapter 9: Module 9: Event-Driven Programming.** *A collection is not a container. It is a decision about how you will access what is inside.* Five hundred books. Sort them by title. The first solution works. You write a loop, compare strings, swap elements. The books come out alphabetical....
+- **Chapter 10: Module 10: Event-Driven Programming with Scene Builder.** *The books did not change. The view did. That distinction is the entire subject of this module.* Model-View-Controller is a name for an idea that is older than the name. The idea is simple: the thing that knows the truth about the...
+- **Chapter 11: Module 11: Generics.** *The button worked. Nobody knew why. Nobody knew where.* Before JavaFX, every program you wrote ran top to bottom. Main called a method. The method ran. Something was printed. The program ended, or looped back and ran again. The program controlled the...
+- **Chapter 12: Module 12: Recursion.** *The visual editor changes the screen. The controller still has to connect to the model. That connection is yours to maintain.* The checkout screen from Module 3 worked. You designed it by hand — panels, buttons, labels, a table — and you...
+- **Chapter 13: Module 13: Collections and Iterators.** *A test is not a proof. It is a claim made executable. The difference matters more than it sounds.* Before any JUnit syntax, before any assertion, there is a conceptual move that determines whether testing is useful or theatrical. The move is...
+- **Chapter 14: Module 14: Lists, Stacks, Queues, and the Final Project.** *Running is not done. Done is running, explained, defended, and handed off.* The word "done" has a specific meaning in professional software development. It does not mean the program runs. It means the program runs, can be understood by someone who did...
 
-## Core Themes
+## Files
 
-- You cannot verify what you do not understand.
-- Objects model responsibilities.
-- Debugging is causal reasoning.
-- AI use requires phase gates.
-- The project is one system.
-- Tests are evidence, not magic.
-- The final defense demonstrates ownership.
+- `chapters/00-frontmatter.md` — title page, copyright, dedication, and preface
+- `chapters/00-introduction.md` — roadmap and book-level AI note
+- `chapters/99-back-matter.md` — acknowledgments, author note, references placeholder, and Medhavy note
+- `LICENSE.md` — rights and reuse terms
 
-## Medhavy Integration
+## Medhavy
 
-This book is intended for Kindle, online reading, and Medhavy integration.
-Medhavy, also written Medhavi, takes its name from मेधावी, meaning
-"intelligent" or "intellectually brilliant." In Medhavy, the book can become an
-intelligent textbook: searchable, adaptive, and connected to hints, examples,
-practice, feedback, and review questions.
-
-## Repository Structure
-
-```text
-book.md                 Book description and high-level planning notes
-TIKTOC.md               Course and chapter planning document
-chapters/               Markdown source chapters
-images/                 Static SVG/PNG figures for EPUB and web output
-d3/                     Interactive D3 figure implementations
-pantry/                 Research and drafting notes
-SCRIPTS/                Build and conversion utilities
-output/                 Generated build output
-```
-
-## Build
-
-```bash
-npm install
-./build.sh
-```
-
-SVG figures can be converted to PNG with:
-
-```bash
-node SCRIPTS/svg-to-png.mjs
-```
-
-## Rights
-
-All rights reserved. See `LICENSE.md` for the full copyright and reuse notice.
+This book is prepared for Kindle, online publication, and integration with Medhavy: https://www.medhavy.com/

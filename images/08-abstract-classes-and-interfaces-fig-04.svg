@@ -1,0 +1,51 @@
+<!--
+  Three-Question Persistence Design Form
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 08-abstract-classes-and-interfaces
+  Figure: 04
+  Type: Annotated example / decision form
+  Generated: 2026-05-25
+  Source: pantry/08-abstract-classes-and-interfaces-cajal.md
+-->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title">
+  <title id="fig-title">Three-Question Persistence Design Form</title>
+  <desc>Before adding persistence, answer three questions in writing. What gets saved? When does it save? Where does it live? Each question commits to a specific durability decision and rules out classes of bugs.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="08-abstract-classes-and-interfaces"
+      figure-number="04"
+      figure-title="Three-Question Persistence Design Form"
+      figure-slug="three-question-persistence-form"
+      figure-type="annotated-example"
+      priority="Important"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/08-abstract-classes-and-interfaces-cajal.md"
+    />
+  </metadata>
+  <rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">Three-Question Persistence Design Form</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">Answer all three before you write a save() call. If you can't answer one, you aren't ready.</text>
+
+  <rect x="80" y="100" width="540" height="76" fill="#FFFFFF" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="100" y="124" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E" letter-spacing="0.08em">QUESTION 1 — WHAT GETS SAVED?</text>
+  <text x="100" y="146" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">name the exact fields you write to disk</text>
+  <text x="100" y="164" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">excluded fields are tomorrow's silent data loss</text>
+
+  <rect x="80" y="190" width="540" height="76" fill="#FFFFFF" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="100" y="214" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E" letter-spacing="0.08em">QUESTION 2 — WHEN DOES IT SAVE?</text>
+  <text x="100" y="236" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">on every mutation, on a timer, on shutdown, never automatic</text>
+  <text x="100" y="254" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">this answer sets the size of the data-loss window</text>
+
+  <rect x="80" y="280" width="540" height="76" fill="#FFFFFF" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="100" y="304" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#C8102E" letter-spacing="0.08em">QUESTION 3 — WHERE DOES IT LIVE?</text>
+  <text x="100" y="326" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="13" fill="#2a1a0e">a file path, a directory, a remote URL, a database table</text>
+  <text x="100" y="344" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">"somewhere on the user's machine" is not an answer</text>
+
+  <text x="350" y="392" text-anchor="middle" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">Vague answers here become production incidents later.</text>
+</svg>

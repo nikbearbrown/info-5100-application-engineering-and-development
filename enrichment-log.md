@@ -23,3 +23,40 @@ Total chapters processed: 19
 Total tables rendered: 51
 Total SVG+PNG pairs generated: 45
 Total D3 HTML files generated: 61
+
+00-frontmatter.md — 0 tables rendered, 0 SVGs generated, 0 D3 HTML files generated, 0 CAJAL PNGs inserted
+00-introduction.md — 0 tables rendered, 0 SVGs generated, 0 D3 HTML files generated, 1 CAJAL PNGs inserted
+00-welcome.md — 0 tables rendered, 0 SVGs generated, 0 D3 HTML files generated, 5 CAJAL PNGs inserted
+01-fundamentals-of-programming-in-java.md — 0 tables rendered, 0 SVGs generated, 0 D3 HTML files generated, 3 CAJAL PNGs inserted
+02-methods-arrays-and-file-objects.md — 0 tables rendered, 0 SVGs generated, 0 D3 HTML files generated, 5 CAJAL PNGs inserted
+03-objects-and-classes.md — 0 tables rendered, 0 SVGs generated, 0 D3 HTML files generated, 3 CAJAL PNGs inserted
+04-basics-of-object-oriented-programming-part-2.md — 0 tables rendered, 0 SVGs generated, 0 D3 HTML files generated, 2 CAJAL PNGs inserted
+05-inheritance-and-polymorphism.md — 0 tables rendered, 0 SVGs generated, 0 D3 HTML files generated, 5 CAJAL PNGs inserted
+06-basics-of-gui-programming-in-java.md — 0 tables rendered, 0 SVGs generated, 0 D3 HTML files generated, 4 CAJAL PNGs inserted
+07-midterm-exam.md — 0 tables rendered, 0 SVGs generated, 0 D3 HTML files generated, 3 CAJAL PNGs inserted
+08-abstract-classes-and-interfaces.md — 0 tables rendered, 0 SVGs generated, 0 D3 HTML files generated, 4 CAJAL PNGs inserted
+09-event-driven-programming.md — 0 tables rendered, 0 SVGs generated, 0 D3 HTML files generated, 2 CAJAL PNGs inserted
+10-event-driven-programming-with-scene-builder.md — 0 tables rendered, 0 SVGs generated, 0 D3 HTML files generated, 3 CAJAL PNGs inserted
+11-generics.md — 0 tables rendered, 0 SVGs generated, 0 D3 HTML files generated, 6 CAJAL PNGs inserted
+12-recursion.md — 0 tables rendered, 0 SVGs generated, 0 D3 HTML files generated, 4 CAJAL PNGs inserted
+13-collections-and-iterators.md — 0 tables rendered, 0 SVGs generated, 0 D3 HTML files generated, 2 CAJAL PNGs inserted
+14-lists-stacks-queues-and-the-final-project.md — 0 tables rendered, 0 SVGs generated, 0 D3 HTML files generated, 4 CAJAL PNGs inserted
+95-claude-code.md — 0 tables rendered, 0 SVGs generated, 0 D3 HTML files generated, 0 CAJAL PNGs inserted
+97-fundamental-themes.md — 0 tables rendered, 0 SVGs generated, 0 D3 HTML files generated, 0 CAJAL PNGs inserted
+99-back-matter.md — 0 tables rendered, 0 SVGs generated, 0 D3 HTML files generated, 0 CAJAL PNGs inserted
+
+## Summary
+Total chapters processed: 20
+Total tables rendered: 0
+Total SVG+PNG pairs generated: 0
+Total D3 HTML files generated: 0
+Total CAJAL PNGs inserted: 56
+
+95-claude-code.md — 0 tables rendered, 0 SVGs generated, 0 D3 HTML files generated, 1 CAJAL PNGs inserted
+
+## Summary
+Total chapters processed: 1
+Total tables rendered: 0
+Total SVG+PNG pairs generated: 0
+Total D3 HTML files generated: 0
+Total CAJAL PNGs inserted: 1
