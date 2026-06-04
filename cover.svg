@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 2560" width="1600" height="2560" preserveAspectRatio="xMidYMid meet" shape-rendering="geometricPrecision">
+  <g id="background"><rect x="0" y="0" width="1600" height="2560" fill="#F4EFEB"/></g>
+  <g id="symbol-fragments" transform="rotate(-12, 800, 840)">
+    <rect x="257" y="170" width="36" height="241" fill="#111111"/>
+    <rect x="394" y="233" width="58" height="278" fill="#111111"/>
+    <rect x="282" y="209" width="80" height="315" fill="#111111"/>
+    <rect x="446" y="208" width="102" height="352" fill="#D32F2F"/>
+    <rect x="439" y="208" width="36" height="389" fill="#111111"/>
+    <rect x="218" y="171" width="58" height="426" fill="#111111"/>
+    <rect x="298" y="194" width="80" height="463" fill="#111111"/>
+    <rect x="548" y="236" width="102" height="140" fill="#111111"/>
+    <rect x="224" y="235" width="36" height="177" fill="#111111"/>
+    <rect x="233" y="236" width="58" height="214" fill="#111111"/>
+    <rect x="562" y="497" width="80" height="251" fill="#111111"/>
+  </g>
+  <g id="title-letterforms">
+    <text x="120" y="1370" font-family="Arial Black, Arial, sans-serif" font-size="170" font-weight="900" letter-spacing="0" fill="#111111" textLength="1300" lengthAdjust="spacingAndGlyphs">INFO 5100</text>
+    <text x="120" y="1545" font-family="Arial Black, Arial, sans-serif" font-size="170" font-weight="900" letter-spacing="0" fill="#D32F2F" textLength="1300" lengthAdjust="spacingAndGlyphs">APPLICATION</text>
+    <text x="120" y="1720" font-family="Arial Black, Arial, sans-serif" font-size="170" font-weight="900" letter-spacing="0" fill="#111111" textLength="1300" lengthAdjust="spacingAndGlyphs">ENGINEERING</text>
+    <text x="120" y="1895" font-family="Arial Black, Arial, sans-serif" font-size="170" font-weight="900" letter-spacing="0" fill="#111111">AND</text>
+    <text x="120" y="2070" font-family="Arial Black, Arial, sans-serif" font-size="170" font-weight="900" letter-spacing="0" fill="#111111" textLength="1300" lengthAdjust="spacingAndGlyphs">DEVELOPMENT</text>
+  </g>
+</svg>

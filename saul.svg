@@ -1,0 +1,232 @@
+<!--
+  Book Map: Themes Across Modules
+  Book: INFO 5100 Application Engineering and Development
+  Chapter: 00-introduction
+  Figure: 01
+  Type: Systems diagram (grid pattern)
+  Generated: 2026-05-25
+  Source: pantry/00-introduction-cajal.md
+-->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-labelledby="fig-title">
+  <title id="fig-title">Book Map: Themes Across Modules</title>
+  <desc>A 7-row by 14-column grid showing where each of the book's seven recurring themes appears across the fourteen modules. Filled marks indicate the theme is prominent in that module; open marks indicate background presence.</desc>
+  <metadata>
+    <cajal:figure
+      xmlns:cajal="https://bearbrown.ai/cajal/1.0"
+      book="INFO 5100 Application Engineering and Development"
+      book-slug="info-5100-application-engineering-and-development"
+      chapter="00-introduction"
+      figure-number="01"
+      figure-title="Book Map: Themes Across Modules"
+      figure-slug="book-map-themes-across-modules"
+      figure-type="systems-diagram"
+      priority="Important"
+      author="Nik Bear Brown"
+      date-generated="2026-05-25"
+      source-file="pantry/00-introduction-cajal.md"
+    />
+  </metadata>
+  <rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+
+  <text x="32" y="36" font-family="'EB Garamond', 'Garamond', Georgia, serif" font-size="14" fill="#2a1a0e">Book Map: Themes Across Modules</text>
+  <text x="32" y="56" font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#545454">Seven recurring themes traced across the fourteen modules.</text>
+
+  <!-- Module column headers -->
+  <g font-family="'JetBrains Mono', 'Fira Code', 'Courier New', monospace" font-size="10" fill="#545454" text-anchor="middle">
+    <text x="227" y="98">M1</text>
+    <text x="257" y="98">M2</text>
+    <text x="287" y="98">M3</text>
+    <text x="317" y="98">M4</text>
+    <text x="347" y="98">M5</text>
+    <text x="377" y="98">M6</text>
+    <text x="407" y="98">M7</text>
+    <text x="437" y="98">M8</text>
+    <text x="467" y="98">M9</text>
+    <text x="497" y="98">M10</text>
+    <text x="527" y="98">M11</text>
+    <text x="557" y="98">M12</text>
+    <text x="587" y="98">M13</text>
+    <text x="617" y="98">M14</text>
+  </g>
+
+  <!-- Grid background -->
+  <rect x="212" y="108" width="420" height="252" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="0.75"/>
+
+  <!-- Vertical grid lines -->
+  <g stroke="#D4D4D4" stroke-width="0.5">
+    <line x1="242" y1="108" x2="242" y2="360"/>
+    <line x1="272" y1="108" x2="272" y2="360"/>
+    <line x1="302" y1="108" x2="302" y2="360"/>
+    <line x1="332" y1="108" x2="332" y2="360"/>
+    <line x1="362" y1="108" x2="362" y2="360"/>
+    <line x1="392" y1="108" x2="392" y2="360"/>
+    <line x1="422" y1="108" x2="422" y2="360"/>
+    <line x1="452" y1="108" x2="452" y2="360"/>
+    <line x1="482" y1="108" x2="482" y2="360"/>
+    <line x1="512" y1="108" x2="512" y2="360"/>
+    <line x1="542" y1="108" x2="542" y2="360"/>
+    <line x1="572" y1="108" x2="572" y2="360"/>
+    <line x1="602" y1="108" x2="602" y2="360"/>
+  </g>
+  <!-- Horizontal grid lines -->
+  <g stroke="#D4D4D4" stroke-width="0.5">
+    <line x1="212" y1="144" x2="632" y2="144"/>
+    <line x1="212" y1="180" x2="632" y2="180"/>
+    <line x1="212" y1="216" x2="632" y2="216"/>
+    <line x1="212" y1="252" x2="632" y2="252"/>
+    <line x1="212" y1="288" x2="632" y2="288"/>
+    <line x1="212" y1="324" x2="632" y2="324"/>
+  </g>
+
+  <!-- Theme row labels -->
+  <g font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="11" fill="#2a1a0e" text-anchor="end">
+    <text x="200" y="130">verification</text>
+    <text x="200" y="166">responsibility</text>
+    <text x="200" y="202">debugging as cause</text>
+    <text x="200" y="238">AI phase gates</text>
+    <text x="200" y="274">project as one system</text>
+    <text x="200" y="310">tests as evidence</text>
+    <text x="200" y="346">defense as the point</text>
+  </g>
+
+  <!-- Theme presence dots
+       Filled circles (r=5) #2a1a0e = prominent
+       Open circles (stroke #2a1a0e, fill #FFFFFF, r=4) = background
+       Row Y centers: 126, 162, 198, 234, 270, 306, 342
+       Column X centers: 227, 257, 287, 317, 347, 377, 407, 437, 467, 497, 527, 557, 587, 617 -->
+
+  <!-- verification: prominent across all modules (the book's central craft) -->
+  <g fill="#2a1a0e">
+    <circle cx="227" cy="126" r="5"/>
+    <circle cx="257" cy="126" r="5"/>
+    <circle cx="287" cy="126" r="5"/>
+    <circle cx="317" cy="126" r="5"/>
+    <circle cx="347" cy="126" r="5"/>
+    <circle cx="377" cy="126" r="5"/>
+    <circle cx="407" cy="126" r="5"/>
+    <circle cx="437" cy="126" r="5"/>
+    <circle cx="467" cy="126" r="5"/>
+    <circle cx="497" cy="126" r="5"/>
+    <circle cx="527" cy="126" r="5"/>
+    <circle cx="557" cy="126" r="5"/>
+    <circle cx="587" cy="126" r="5"/>
+    <circle cx="617" cy="126" r="5"/>
+  </g>
+
+  <!-- responsibility: background M1-M2, prominent M3 onward -->
+  <g>
+    <circle cx="227" cy="162" r="4" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+    <circle cx="257" cy="162" r="4" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+    <circle cx="287" cy="162" r="5" fill="#2a1a0e"/>
+    <circle cx="317" cy="162" r="5" fill="#2a1a0e"/>
+    <circle cx="347" cy="162" r="5" fill="#2a1a0e"/>
+    <circle cx="377" cy="162" r="5" fill="#2a1a0e"/>
+    <circle cx="407" cy="162" r="4" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+    <circle cx="437" cy="162" r="5" fill="#2a1a0e"/>
+    <circle cx="467" cy="162" r="5" fill="#2a1a0e"/>
+    <circle cx="497" cy="162" r="5" fill="#2a1a0e"/>
+    <circle cx="527" cy="162" r="5" fill="#2a1a0e"/>
+    <circle cx="557" cy="162" r="4" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+    <circle cx="587" cy="162" r="5" fill="#2a1a0e"/>
+    <circle cx="617" cy="162" r="5" fill="#2a1a0e"/>
+  </g>
+
+  <!-- debugging as cause: prominent early M1-M5, background later -->
+  <g>
+    <circle cx="227" cy="198" r="5" fill="#2a1a0e"/>
+    <circle cx="257" cy="198" r="5" fill="#2a1a0e"/>
+    <circle cx="287" cy="198" r="5" fill="#2a1a0e"/>
+    <circle cx="317" cy="198" r="5" fill="#2a1a0e"/>
+    <circle cx="347" cy="198" r="5" fill="#2a1a0e"/>
+    <circle cx="377" cy="198" r="4" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+    <circle cx="407" cy="198" r="4" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+    <circle cx="437" cy="198" r="4" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+    <circle cx="467" cy="198" r="5" fill="#2a1a0e"/>
+    <circle cx="497" cy="198" r="4" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+    <circle cx="527" cy="198" r="4" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+    <circle cx="557" cy="198" r="4" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+    <circle cx="587" cy="198" r="4" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+    <circle cx="617" cy="198" r="4" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+  </g>
+
+  <!-- AI phase gates: ramp up across the book -->
+  <g>
+    <circle cx="227" cy="234" r="4" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+    <circle cx="257" cy="234" r="4" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+    <circle cx="287" cy="234" r="4" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+    <circle cx="317" cy="234" r="5" fill="#2a1a0e"/>
+    <circle cx="347" cy="234" r="5" fill="#2a1a0e"/>
+    <circle cx="377" cy="234" r="5" fill="#2a1a0e"/>
+    <circle cx="407" cy="234" r="4" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+    <circle cx="437" cy="234" r="5" fill="#2a1a0e"/>
+    <circle cx="467" cy="234" r="5" fill="#2a1a0e"/>
+    <circle cx="497" cy="234" r="5" fill="#2a1a0e"/>
+    <circle cx="527" cy="234" r="5" fill="#2a1a0e"/>
+    <circle cx="557" cy="234" r="5" fill="#2a1a0e"/>
+    <circle cx="587" cy="234" r="5" fill="#2a1a0e"/>
+    <circle cx="617" cy="234" r="5" fill="#2a1a0e"/>
+  </g>
+
+  <!-- project as one system: background early, prominent M11+ -->
+  <g>
+    <circle cx="227" cy="270" r="4" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+    <circle cx="257" cy="270" r="4" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+    <circle cx="287" cy="270" r="4" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+    <circle cx="317" cy="270" r="4" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+    <circle cx="347" cy="270" r="4" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+    <circle cx="377" cy="270" r="4" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+    <circle cx="407" cy="270" r="4" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+    <circle cx="437" cy="270" r="4" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+    <circle cx="467" cy="270" r="4" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+    <circle cx="497" cy="270" r="5" fill="#2a1a0e"/>
+    <circle cx="527" cy="270" r="5" fill="#2a1a0e"/>
+    <circle cx="557" cy="270" r="5" fill="#2a1a0e"/>
+    <circle cx="587" cy="270" r="5" fill="#2a1a0e"/>
+    <circle cx="617" cy="270" r="5" fill="#2a1a0e"/>
+  </g>
+
+  <!-- tests as evidence: continuous from M2 -->
+  <g>
+    <circle cx="227" cy="306" r="4" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+    <circle cx="257" cy="306" r="5" fill="#2a1a0e"/>
+    <circle cx="287" cy="306" r="5" fill="#2a1a0e"/>
+    <circle cx="317" cy="306" r="5" fill="#2a1a0e"/>
+    <circle cx="347" cy="306" r="5" fill="#2a1a0e"/>
+    <circle cx="377" cy="306" r="5" fill="#2a1a0e"/>
+    <circle cx="407" cy="306" r="5" fill="#2a1a0e"/>
+    <circle cx="437" cy="306" r="5" fill="#2a1a0e"/>
+    <circle cx="467" cy="306" r="5" fill="#2a1a0e"/>
+    <circle cx="497" cy="306" r="5" fill="#2a1a0e"/>
+    <circle cx="527" cy="306" r="5" fill="#2a1a0e"/>
+    <circle cx="557" cy="306" r="5" fill="#2a1a0e"/>
+    <circle cx="587" cy="306" r="5" fill="#2a1a0e"/>
+    <circle cx="617" cy="306" r="5" fill="#2a1a0e"/>
+  </g>
+
+  <!-- defense as the point: dense late M11-14 -->
+  <g>
+    <circle cx="227" cy="342" r="4" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+    <circle cx="257" cy="342" r="4" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+    <circle cx="287" cy="342" r="4" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+    <circle cx="317" cy="342" r="4" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+    <circle cx="347" cy="342" r="4" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+    <circle cx="377" cy="342" r="4" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+    <circle cx="407" cy="342" r="5" fill="#2a1a0e"/>
+    <circle cx="437" cy="342" r="4" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+    <circle cx="467" cy="342" r="4" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+    <circle cx="497" cy="342" r="4" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+    <circle cx="527" cy="342" r="5" fill="#2a1a0e"/>
+    <circle cx="557" cy="342" r="5" fill="#2a1a0e"/>
+    <circle cx="587" cy="342" r="5" fill="#2a1a0e"/>
+    <circle cx="617" cy="342" r="5" fill="#2a1a0e"/>
+  </g>
+
+  <!-- Legend -->
+  <g font-family="'Inter', -apple-system, 'Helvetica Neue', sans-serif" font-size="10" fill="#545454">
+    <circle cx="232" cy="390" r="5" fill="#2a1a0e"/>
+    <text x="244" y="394">prominent</text>
+    <circle cx="332" cy="390" r="4" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+    <text x="344" y="394">background</text>
+  </g>
+</svg>
