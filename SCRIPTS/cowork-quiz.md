@@ -5,8 +5,8 @@
 ## ROLE & CONTEXT
 
 You are working on a university-level textbook. You have access to all chapter
-files in `chapters/`. Your job is to generate a quiz file for each chapter
-and write it to `quizzes/`.
+files in `chapters/`. Your job is to generate a quiz file for each relevant
+instructional module and write it to `quiz/`.
 
 This is a generation pass, not an extraction pass. You are writing new quiz
 content derived from each chapter's concepts, vocabulary, and learning
@@ -19,13 +19,18 @@ teach through testing.
 
 ---
 
-## STEP 1 — IDENTIFY CHAPTERS TO PROCESS
+## STEP 1 - IDENTIFY MODULES TO PROCESS
 
-Read the `chapters/` directory. Process every `.md` file except:
+Read the `chapters/` directory. Process only instructional course modules.
+Skip files that are front matter, introduction-only material, appendices,
+back matter, or exams. Process every relevant `.md` file except:
 
 - `00-frontmatter.md`
+- `00-introduction.md`
 - `99-back-matter.md`
-- Any file whose name contains `exam`, `midterm`, or `back-matter`
+- Any file whose name contains `exam`, `midterm`, `appendix`, or
+  `back-matter`
+- Any appendix-style file starting with `95-`, `96-`, `97-`, `98-`, or `99-`
 
 For each chapter file, extract before writing:
 
@@ -35,9 +40,38 @@ For each chapter file, extract before writing:
 - Core concepts (the main ideas the chapter teaches)
 - Key vocabulary (any terms defined, bolded, or introduced in the chapter)
 - Named examples, cases, datasets, or primary sources used in the chapter
+- The lab, exercise, assignment, CLI task, evidence packet, or project
+  artifact students are asked to produce
+- Concrete Java artifacts, commands, files, code snippets, GUI components,
+  tests, data records, or workflows used in the chapter
+- Named failure modes, bugs, setup errors, design risks, or debugging
+  moments the chapter teaches students to prevent
 - Common misconceptions the chapter explicitly addresses or that are
   predictable from the content
 - What the student can do after this chapter that they couldn't before
+
+Before generating questions, write a private extraction table for each
+chapter with these columns:
+
+| Field | Extraction |
+|---|---|
+| Chapter file | |
+| Chapter heading | |
+| Stated learning objectives | |
+| Actual body topic | |
+| Filename/objective/body mismatch? | Yes/No, with note |
+| Core concepts | |
+| Exact vocabulary to reinforce | |
+| Named examples/labs/project artifacts | |
+| Concrete Java or workflow artifacts | |
+| Common misconceptions/failure modes | |
+| What students can do afterward | |
+
+If the filename or stated learning objectives do not match the chapter body,
+do not blindly follow the filename. Use the chapter's `#` heading and actual
+body content as the source of truth, and note the mismatch in the generation
+report. If the mismatch is severe enough that a quiz would misrepresent the
+module, stop and flag it instead of generating a misleading quiz.
 
 **Do not begin writing quiz items until you have completed this extraction.**
 Generic quiz items that could belong to any textbook are a generation failure.
@@ -53,11 +87,11 @@ the `.md` extension.
 
 Examples:
 - `chapters/04-literacy-narrative.md`
-  → `quizzes/04-literacy-narrative-quiz.md`
+  → `quiz/04-literacy-narrative-quiz.md`
 - `chapters/01-fundamentals-of-programming-in-java.md`
-  → `quizzes/01-fundamentals-of-programming-in-java-quiz.md`
+  → `quiz/01-fundamentals-of-programming-in-java-quiz.md`
 
-**Write to:** `quizzes/` directory alongside `chapters/`.
+**Write to:** `quiz/` directory alongside `chapters/`.
 Create the directory if it does not exist.
 
 ---
@@ -429,6 +463,45 @@ be grounded in the chapter's actual content — named examples, specific
 vocabulary, the chapter's anchor concepts. Items that could appear in any
 textbook on this subject are a generation failure.
 
+**Do not use universal question templates.** A question stem may not be a
+generic sentence with only one chapter term swapped in. Ban repeated stems
+such as:
+
+- "What is the main role of [term] in this chapter's account of application
+  engineering?"
+- "Why does the chapter connect [term] to the semester project rather than
+  treating it as an isolated fact?"
+- "A student is building the course project and reaches the part connected
+  to [term]..."
+- Any stem that would still make sense if moved unchanged into three or more
+  other chapter quizzes.
+
+Every question must be anchored in at least one chapter-specific element:
+a named lab, setup command, code artifact, object relationship, GUI flow,
+CSV record, event handler, FXML mapping, JUnit test, data-structure choice,
+handoff artifact, or named failure mode.
+
+**Use concrete artifacts.** Each quiz must include at least two questions
+that ask students to interpret or reason about a concrete artifact from the
+chapter. Examples include command output, Java code, object state, an array
+or collection, a file row, a screen transition, a controller method, an
+event chain, an FXML `fx:id`, a test case, a sort/filter result, or a final
+project handoff checklist.
+
+**Target the chapter's real misconceptions.** Distractors and True/False
+items should target likely errors from this module, such as JRE vs JDK,
+compilation error vs runtime error, class vs object, reference vs object,
+symptom vs root cause, authentication vs authorization, Comparator vs
+Comparable, model vs view, handler registration vs handler execution,
+`fx:id` mismatch, passing test vs complete proof, or working code vs
+defensible handoff. Choose misconceptions that fit the chapter being
+processed; do not reuse this list mechanically.
+
+**Limit course-wide AI/verification questions.** AI boundaries, verification,
+evidence, and responsibility are recurring course themes, but they must not
+crowd out the module topic. Use these themes only when they are tied to a
+specific chapter artifact or decision.
+
 **Distractors must reflect real misconceptions.** Every wrong answer option
 must represent a misunderstanding that a student who read the chapter
 carelessly or incompletely would plausibly hold. Do not invent arbitrary
@@ -490,6 +563,24 @@ If the chapter defines *retrieval strength*, the quiz uses that term, not
 
 ## STEP 4 — REPORT
 
+Before writing the final report, perform this QA gate on every quiz:
+
+- No question stem is reused across more than two quiz files.
+- Every question names or depends on a chapter-specific concept, artifact,
+  lab, example, workflow, failure mode, or misconception.
+- At least two questions require interpreting a concrete artifact from the
+  chapter rather than only explaining a term.
+- At least one Section 2 question is a realistic scenario grounded in the
+  chapter's lab, project shape, Java mechanism, or workflow.
+- Section 3 asks for judgment, critique, transfer, or failure analysis; it
+  is not a generic "apply this idea to another domain" question unless the
+  deep structure is clearly tied to the chapter.
+- Answer-key rationales mention the actual mechanism or misconception, not
+  only broad ideas such as "responsibility," "evidence," or "verification."
+- If the chapter title/objectives and body content conflict, the report
+  states how the quiz handled the mismatch.
+- If a quiz fails any gate, revise it before reporting completion.
+
 After writing all files, produce a brief generation report:
 
 ```
@@ -505,7 +596,7 @@ Files written: [N]
 | Ch 05: [title] | 05-...-quiz.md | 1 2 | 9 | Bridge chapter |
 | ...
 
-Files written to: quizzes/
+Files written to: quiz/
 ```
 
 ---
@@ -537,4 +628,4 @@ questions in Section 1, 4 in Section 2, and 3 in Section 3, producing a
 generation report.
 
 **On running this again:** Safe to re-run at any time. Existing files in
-`quizzes/` are overwritten. Chapter files are never modified.
+the `quiz/` directory are overwritten. Chapter files are never modified.
