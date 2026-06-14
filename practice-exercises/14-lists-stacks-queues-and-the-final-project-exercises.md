@@ -11,6 +11,26 @@
 
 ---
 
+## Worked Example
+
+*Study this example before attempting Tier 1. After reading it, close it and try to recall the key steps from memory before moving on.*
+
+**Problem:** A student is asked: *"Why did you use a `HashMap` for your catalog?"* They answer: *"Because it's fast and I learned it in this class."*
+
+A reviewer says this is a weak design defense. Apply the design defense framework to identify what is missing and write a strong version.
+
+**Approach:**
+1. **Identify the weakness.** The answer names a benefit ("fast") but does not say: what alternatives were considered, what makes `HashMap` the right choice for this specific use case, or what requirement drove the decision.
+2. **Write the operation profile.** The dominant operation on the catalog is `findByIsbn()` — called on every checkout, return, and availability check. The performance requirement is O(1) average.
+3. **Name alternatives and explain rejection.** `ArrayList`: O(n) lookup — too slow as catalog grows. `TreeMap`: O(log n) lookup, maintains sorted order — sorted order is not needed here; display is sorted separately.
+4. **State the requirement and the trade-off.** `HashMap` gives O(1) average ISBN lookup at the cost of unordered iteration. The display requirement (sorted list) is satisfied separately, so the cost does not matter.
+
+**Answer — strong defense:** "I considered an `ArrayList` (O(n) lookup — too slow for checkout-frequency use) and a `TreeMap` (O(log n), sorted — sorted order not needed here). I chose `HashMap` because ISBN lookup is called on every checkout and return; O(1) average is the right fit. If sorted display were a primary operation rather than a secondary one, I would switch to `TreeMap` or maintain a parallel sorted list."
+
+**What to notice:** A strong defense names what was rejected and why. Without alternatives, you are describing what you chose, not defending it.
+
+---
+
 ## Tier 1 — Warm-Up
 
 *(Tests: recall, conceptual identification, true/false with explanation)*
@@ -33,6 +53,20 @@ What is the difference between a weak defense and a strong defense? Give a concr
 True or False — then explain your answer in 2–3 sentences:
 
 > "A project is complete when the code runs and produces correct output."
+
+---
+
+**Exercise 5b.** (Tests: five-layer architecture — contrastive classification)
+
+Classify each component below as belonging to the **supply layer**, **transaction layer**, **persistence layer**, **view layer**, or **event layer**. Write one sentence justifying each classification.
+
+- (a) A `ReturnRecord` that captures the date a book was returned
+- (b) `CatalogRepository.loadFromCSV()` that reads books from a file at startup
+- (c) The `TableView<Book>` that displays the catalog to the librarian
+- (d) A `BookCatalog` holding all `Book` entities loaded at startup
+- (e) The click handler that calls `model.returnBook(isbn)` when the user clicks "Return"
+
+*(Why this is tempting to get wrong: (b) is tempting to classify as "supply layer" because it populates the catalog. But its responsibility is I/O — reading and writing to storage. It belongs in the persistence layer regardless of what it populates.)*
 
 ---
 
@@ -69,6 +103,19 @@ A student preparing their final defense asks an AI: *"Review my code and tell me
 
 - Identify what the student has and has not established.
 - Write a one-paragraph explanation (4–6 sentences) of why AI approval is not a substitute for a human design defense.
+- **(d)** State the specific question a human reviewer would ask that an AI cannot answer about the `LoginManager` design — something that requires knowing the project's requirements or constraints.
+
+**Exercise 9b — Self-Explanation** (Tests: strong vs. weak defense — why alternatives must be named)
+
+In this chapter, a strong design defense requires naming at least one alternative that was considered and rejected. Explain in 2–3 sentences why naming alternatives is essential to the defense. Your explanation must use the term **"trade-off"** correctly and explain what a reviewer learns from a rejected alternative that they cannot learn from the chosen solution alone.
+
+**Exercise 9c — Cumulative** (Tests: design defense + threat model from Ch 6)
+
+In Ch 6, you analyzed the threat model for a `LoginManager` — identifying what an attacker could exploit and what your design prevents. In Ch 14, a strong design defense requires naming alternatives and trade-offs explicitly.
+
+(a) Name two alternative designs you could have used for `LoginManager` authentication instead of SHA-256 hashing.
+(b) For each alternative, state one thing it protects against and one thing it leaves exposed.
+(c) Write two sentences explaining what requirement drove your final choice — connecting the threat model from Ch 6 to the design defense structure from Ch 14.
 
 **Exercise 10.** (Tests: reflection — weak vs. strong, explicit counterfactual)
 Answer this reflection question as a student who has completed a library checkout system: *"What is one design decision you would change if you were starting over, and why?"*
@@ -105,6 +152,8 @@ Write a strong defense of your `LoginManager` design:
 - (d) State what new requirement would cause you to reconsider your current design
 
 A surface answer describes the LoginManager. A strong answer names real security alternatives, applies threat-model vocabulary from Ch 6, connects the final choice to a stated requirement, and frames the design as a reasoned decision under constraints — not the only correct answer.
+
+> **Common error:** A surface answer describes what the `LoginManager` does. A strong answer names two alternatives with trade-offs (e.g., plaintext — simple but catastrophic on file read; OAuth — eliminates storage risk but requires network), connects the final choice to a specific stated requirement (standalone desktop, no network), and names what would change the decision.
 
 ---
 
@@ -212,11 +261,16 @@ I stored books in an `ArrayList<Book>` because it was the first data structure I
 **What makes the strong answer strong:** It names the specific decision, the specific consequence, the specific alternative, and the specific lesson — with enough detail that a reader learns something. The weak answer names a regret without explaining it.
 
 ### Exercise 11
+
+> **Common error note appears after the full answer below.**
+
 (a) Tests in a professional handoff serve as documentation of intent: they show what behaviors were considered important enough to verify explicitly. This tells a future maintainer what the original developer expected the system to do — not just what it currently does. Tests also function as a safety net for future changes, communicating "this worked before your change; if it breaks now, you introduced a regression."
 
 (b) A regression test from Ch 13 demonstrates that a specific bug was found, understood, and fixed — and that the system is now protected against that failure recurring. A coverage count ("I wrote 20 tests") only shows quantity. A reviewer cannot tell from the count whether the tests cover the cases that actually fail in production, or whether they all test the same happy path 20 times.
 
 (c) "Verifies that a patron who has already been suspended cannot check out a new book — this test was written after a live bug where suspended patrons were not blocked during concurrent checkouts."
+
+> **Common error:** A surface answer says "tests show the code works." A strong answer frames tests as documentation of intent and protection against regression — not proof of correctness. Uses Ch 13 vocabulary: regression test = documentation of a specific failure mode that was found, understood, and protected against.
 
 ### Exercise 12
 Sample strong LoginManager defense:
@@ -244,6 +298,17 @@ Sample strong LoginManager defense:
 2. **AI audit without verification evidence:** Students write "I tested it" in the audit but cannot specify what test, with what inputs, and what the output was. Exercise 7 targets this specifically. The framing: if you cannot describe your verification specifically, you did not verify — you assumed.
 
 3. **Conflating "AI approved" with "reviewed":** Exercise 9 targets the increasingly common pattern of using AI praise as a defense. The corrective: an AI does not know the requirements, the constraints, or the rubric. Its praise is not evidence of quality relative to any of those.
+
+**Point distribution:** T1 = 5 pts each · T2 = 10 pts each · T3 = 15 pts each · T4 = 20 pts (rubric-graded)
+
+**Bloom's distribution:**
+
+| Tier | Bloom's Level | % of exercises |
+|------|--------------|----------------|
+| Tier 1 | Remember / Understand | ~25% |
+| Tier 2 | Apply / Analyze | ~55% |
+| Tier 3 | Analyze / Evaluate | ~12% |
+| Tier 4 | Evaluate / Create | ~8% |
 
 **Sequencing recommendation:** Run Exercise 10 (reflection) before students submit their projects — as a pre-submission reflection. Students who answer it honestly often identify an improvement they can still make. Students who give a weak answer in the exercise tend to give weak defenses in the presentation.
 

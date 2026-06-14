@@ -1,11 +1,33 @@
 # Module 9 — Event-Driven Programming: Java Collections Framework
 ## Exercise Set
 
+> **Content note:** Despite the module title "Event-Driven Programming," this chapter's exercises cover the **Java Collections Framework** — `List`, `Map`, `Set`, operation profiles, `Comparator` chains, and stream pipelines. Event-driven programming is addressed in Module 11.
+
 **Learning Objectives**
 1. Choose collection types based on operation patterns (operation profiles)
 2. Design and verify `Comparator` chains, including null handling
 3. Use the stream API for filter/sort/collect pipelines
 4. Specify operation profiles before choosing a collection type
+
+---
+
+## Worked Example
+
+*Study this example before attempting Tier 1. After reading it, close it and try to recall the key steps from memory before moving on.*
+
+**Problem:** A student needs a collection of `Student` objects in an enrollment system. They use `ArrayList<Student>` for everything. During testing with 5,000 students, they notice that checking "is this student already enrolled?" is extremely slow — it takes several seconds for each check.
+
+Apply the operation profile framework to diagnose the problem and choose the correct collection.
+
+**Approach:**
+1. **Write the operation profile.** The primary operation is membership testing: "Is student with ID `S1042` already in this collection?" The performance requirement is O(1) — this check runs on every enrollment attempt.
+2. **Evaluate the current choice.** `ArrayList` stores elements in order of insertion. The only way to check membership is to scan every element: O(n). With 5,000 students, each check scans up to 5,000 entries.
+3. **Choose by operation profile.** Membership testing in O(1) requires a `HashSet`. For a `HashSet<String>` of student IDs, `set.contains("S1042")` runs in O(1) average time regardless of collection size.
+4. **Verify the fix.** Replace `ArrayList<Student>` with `HashSet<String>` (storing IDs only) for the membership check. Keep the `ArrayList` or `HashMap` if you also need to retrieve the full `Student` object.
+
+**Answer:** The `ArrayList` performs O(n) membership testing. The operation profile — "check membership in O(1)" — points to `HashSet`. The fix is to maintain a separate `HashSet<String>` of enrolled IDs for fast membership testing, in addition to whatever collection holds the full `Student` objects.
+
+**What to notice:** The fix requires two collections serving two different purposes. No single Java collection excels at all operations. Writing the operation profile before choosing forces you to see that one collection cannot satisfy both "fast lookup by ID" and "fast membership testing" without tradeoffs.
 
 ---
 
@@ -46,6 +68,20 @@ What is the difference between `Comparable` and `Comparator` in Java? Give a con
 **True or False:** "You can use the same `ArrayList` for both O(1) lookup by student ID and O(1) membership testing."
 
 State whether the claim is true or false, then write two to three sentences explaining what data structure would be required for each operation and why a single `ArrayList` cannot serve both.
+
+---
+
+**Exercise 5b** (Tests: List vs. Map vs. Set — contrastive classification)
+
+Classify each collection use below as best served by a **List**, a **Map**, or a **Set**. Write one sentence justifying each classification.
+
+- (a) Storing the sequence of books a patron has checked out, in the order they were checked out
+- (b) Looking up a `Doctor` object by their employee ID string in O(1) time
+- (c) Tracking which book ISBNs are currently checked out — only membership testing needed
+- (d) Displaying all appointments in order from earliest to latest date
+- (e) Mapping each student's name to their current GPA
+
+*(Why this is tempting to get wrong: (a) and (d) both involve ordering, but (a) requires insertion-order preservation while (d) requires sorted order by a comparator — these are different requirements that both point to `List`, but for different reasons.)*
 
 ---
 
@@ -122,6 +158,24 @@ Answer the following:
 **(b)** Identify the performance problem for a university enrollment system with thousands of students.
 
 **(c)** Write a corrected recommendation using the operation profile framework: state the operation profile first, then recommend a collection type, then show the lookup code.
+
+**(d)** State the specific test you would run to verify that your `HashMap`-based lookup is actually faster than the AI's `ArrayList` suggestion for a large dataset — describe what you would measure and what result would confirm the improvement.
+
+---
+
+**Exercise 9b — Self-Explanation** (Tests: operation profile — why writing it before choosing a collection matters)
+
+In this chapter, the recommended practice is to write an operation profile before choosing a collection type — not after. Explain in 2–3 sentences why the ordering matters. Your explanation must use the term **"operation profile"** correctly and describe what a developer risks if they choose a collection type first and write the profile afterward.
+
+---
+
+**Exercise 9c — Cumulative** (Tests: collection choice + supply-side catalog from Ch 5)
+
+In Ch 5, the supply-side catalog stored `Book` and `Patron` entities in arrays and supported `findByIsbn()` and `findById()` lookup methods. At the time, the implementation used a linear scan.
+
+(a) Write the operation profile for `findByIsbn()` as it was used in Ch 5. What is its required performance?
+(b) Using Ch 9's collection framework, identify which collection type would replace the array in the `BookCatalog`. Show the field declaration.
+(c) How does `findByIsbn()` change when implemented with the Ch 9 collection? Show before (Ch 5) and after (Ch 9) versions in two to three lines each.
 
 ---
 
@@ -385,6 +439,8 @@ public Book findByIsbn(String isbn) {
 ```
 The entire loop disappears. The ISBN is passed directly to `get()`, and the `HashMap` performs the lookup internally in O(1) average time.
 
+> **Common error:** A surface answer says "use a HashMap because it's faster." A strong answer writes the operation profile for `findByIsbn()` explicitly — "lookup by ISBN key in O(1)" — then connects that profile to the `HashMap` choice, and shows the before/after where the loop disappears.
+
 ---
 
 **Exercise 12**
@@ -417,6 +473,8 @@ The additional step is extracting the key (the ISBN) from the parsed `Book` obje
 
 **(c)** The CSV format itself does not change. A CSV line represents a `Book` object's fields — `isbn,title,author,year` — and that representation is independent of which Java collection holds the objects. The CSV format is the object's serialization format; the collection is the in-memory access structure. Switching from `ArrayList` to `HashMap` changes how Java code iterates and retrieves `Book` objects, but it does not change what data a `Book` holds or how that data is written as text.
 
+> **Common error:** Students often say the CSV must add a "key" column because the `HashMap` has a key. It does not — the key is the ISBN, which is already a field in the CSV line. The key is extracted from the parsed `Book` object during load, not read from a separate column.
+
 ---
 
 ## Instructor Notes
@@ -437,4 +495,13 @@ The additional step is extracting the key (the ISBN) from the parsed `Book` obje
 
 - **Exercise 13 (Challenge):** Most students correctly identify the three field types but state the invariant vaguely ("all three stay in sync"). Require a precise statement: the `List`, `Map`, and `Set` contain exactly the same books (no extras, no missing). The mutability issue with `getAllSorted()` is frequently missed — students return the internal list directly. Credit responses that propose `Collections.unmodifiableList()` or a defensive copy, and that also note the internal list should not be sorted in place.
 
-**Suggested point distribution:** Tier 1: 5 pts each. Tier 2: 10 pts each. Tier 3: 15 pts each. Tier 4: 20 pts (rubric-graded).
+**Point distribution:** T1 = 5 pts each · T2 = 10 pts each · T3 = 15 pts each · T4 = 20 pts (rubric-graded)
+
+**Bloom's distribution:**
+
+| Tier | Bloom's Level | % of exercises |
+|------|--------------|----------------|
+| Tier 1 | Remember / Understand | ~25% |
+| Tier 2 | Apply / Analyze | ~55% |
+| Tier 3 | Analyze / Evaluate | ~12% |
+| Tier 4 | Evaluate / Create | ~8% |

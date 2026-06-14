@@ -11,6 +11,49 @@
 
 ---
 
+## Worked Example
+
+*Study this example before attempting Tier 1. After reading it, close it and try to recall the key steps from memory before moving on.*
+
+**Problem:** A student writes this JUnit test for a `Catalog.findByIsbn()` method:
+
+```java
+@Test
+public void testFind() {
+    Catalog catalog = new Catalog();
+    catalog.add(new Book("978-0451524935", "1984", "Orwell"));
+    catalog.findByIsbn("978-0451524935");
+    System.out.println("Test passed!");
+}
+```
+
+The test passes. But a reviewer says it provides no evidence that `findByIsbn()` works correctly. Diagnose why and write a corrected version.
+
+**Approach:**
+1. **Identify the three parts.** Every JUnit test has setup (create objects), execution (call the method), and assertion (verify the result). This test has setup and execution but no assertion.
+2. **Identify what the print statement does.** `System.out.println` writes to the console — it is not a JUnit assertion. The test passes if no exception is thrown, regardless of what `findByIsbn()` returns.
+3. **Identify what the test should assert.** `findByIsbn()` should return the `Book` object that was added. The test should assert that the returned `Book` has the correct ISBN (or title, or is not null).
+4. **Write the corrected test:**
+```java
+@Test
+public void findByIsbn_returnsCorrectBook_whenIsbnExists() {
+    // Setup
+    Catalog catalog = new Catalog();
+    catalog.add(new Book("978-0451524935", "1984", "Orwell"));
+    // Execution
+    Book result = catalog.findByIsbn("978-0451524935");
+    // Assertion
+    assertNotNull(result);
+    assertEquals("1984", result.getTitle());
+}
+```
+
+**Answer:** The original test had no assertion — it proved only that the method did not throw an exception. The corrected test captures the return value and asserts it is the correct book.
+
+**What to notice:** A test name that describes the expected behavior (`findByIsbn_returnsCorrectBook_whenIsbnExists`) is more useful than `testFind`. When the test fails, the name tells you exactly what broke.
+
+---
+
 ## Tier 1 — Warm-Up
 
 *(Tests: recall, conceptual identification, true/false with explanation)*
@@ -33,6 +76,20 @@ What is a regression? Why is a regression test useful even after the bug that ca
 True or False — then explain your answer in 2–3 sentences:
 
 > "Writing more test cases always improves your test suite quality."
+
+---
+
+**Exercise 5b.** (Tests: five-case taxonomy — contrastive classification)
+
+Classify each test description below as covering the **normal case**, **empty case**, **no-match case**, **boundary case**, or **invalid input case** for `Catalog.searchByTitle(String query)`. Write one sentence justifying each classification.
+
+- (a) Query `"Gatsby"` on a catalog with 50 books, one of which has "Gatsby" in the title — returns that book.
+- (b) Query `"Gatsby"` on a newly created `Catalog` with no books added.
+- (c) Query `null` — should throw `IllegalArgumentException`.
+- (d) Query `"XYZ123"` on a catalog with 50 books, none of which contain "XYZ123".
+- (e) Query `"a"` — the shortest possible non-empty query — returns all books containing the letter "a".
+
+*(Why this is tempting to get wrong: (d) and (b) both return empty lists. But they are different cases: (b) tests "nothing to search," while (d) tests "searched but nothing matched." Each reveals a different category of bug.)*
 
 ---
 
@@ -83,6 +140,19 @@ The AI suggests:
 - Identify the strongest point in the AI's response.
 - Identify which of the five test case types the AI missed. There are at least two.
 - Write the corrected and complete list of test cases, using the five-case taxonomy as your framework.
+- **(d)** State the specific assertion you would add to the normal-case test to make it more valuable as evidence — what exact assertion, using what method, with what expected value?
+
+**Exercise 9b — Self-Explanation** (Tests: five-case taxonomy — why separate empty and no-match cases)
+
+In this chapter, the five-case taxonomy includes both an "empty" case and a "no-match" case. Explain in 2–3 sentences why these are distinct cases rather than variations of the same case. Your explanation must use the term **"failure mode"** correctly and describe a bug that the empty case would catch but the no-match case would not.
+
+**Exercise 9c — Cumulative** (Tests: test case design + persistence round-trip from Ch 8)
+
+In Ch 8, you implemented `saveToFile()` and `loadFromFile()` for CSV persistence. In Ch 13, you write tests with the five-case taxonomy.
+
+(a) Write the test case descriptions (not full code — one sentence each) for all five cases applied to `loadFromFile()`. For each case, name the input and the expected result.
+(b) Which of the five cases is most critical for detecting the "writer never closed" bug from Ch 8? Explain why.
+(c) Write one complete JUnit test (with setup, execution, assertion) for the case you identified in (b).
 
 **Exercise 10.** (Tests: regression — diagnosing a feature-caused test failure)
 A developer adds a new feature to a library system: the ability to add multiple copies of the same book (identified by the same ISBN). After adding this feature, a previously passing test for `findByIsbn()` now fails.
@@ -241,6 +311,8 @@ Correction: Rename to `checkout_marksBookAsCheckedOut_whenBookAndPatronExist()`.
 (c) The test that likely failed: `findByIsbn_returnsCorrectBook_whenIsbnExists()` — after adding the multiple-copy feature, `findByIsbn()` may now return a list or the first match rather than a single `Book`, causing the assertion `assertEquals(book, result)` to fail because the return type or behavior changed.
 
 ### Exercise 11
+> **Common error note appears after the full answer below.**
+
 ```java
 @Test
 public void saveAndLoad_roundTrip_preservesAllBooks() throws IOException {
@@ -268,6 +340,8 @@ public void saveAndLoad_roundTrip_preservesAllBooks() throws IOException {
 
 **What it does not prove:** That the round-trip preserves all fields (e.g., if a `notes` field is not serialized, this test would not catch it). It also does not prove that loading a corrupted or empty CSV file is handled correctly.
 
+> **Common error:** A surface answer writes a test that only checks `loaded.size() == 3` — it proves the count but not the content. A strong answer also asserts at least one specific field value (title, ISBN) on a loaded book, confirming that the data is correct, not just that three objects were created.
+
 ### Exercise 12
 (a) From the test failure alone, you know: a method that previously returned (or did) X now returns (or does) something different after the refactor. You do not know why — the failure is a symptom pointing to a location, not an explanation of the cause. The specific line of code that changed behavior is unknown until you investigate.
 
@@ -279,6 +353,8 @@ public void saveAndLoad_roundTrip_preservesAllBooks() throws IOException {
 5. Repeat with a narrowed hypothesis if the first is wrong.
 
 (c) Changing the expected value in the test to match the new (wrong) output hides the bug: it records "this new broken behavior is acceptable" and removes the test's ability to detect future regressions of the same behavior. The test now passes, but the underlying change — which broke the contract the method was supposed to fulfill — is no longer detectable. This is sometimes called "papering over" a failure: the symptom disappears but the disease remains.
+
+> **Common error:** A surface answer says "don't just fix the test, fix the code." A strong answer uses Ch 4 vocabulary from the debugging loop: the test failure is a symptom. Changing the expected value removes the symptom without identifying the root cause. Name the specific thing that was hidden: the contract of the method — what it was supposed to return — was violated by the refactor, and updating the assertion destroys the only record of that contract.
 
 ---
 
@@ -295,5 +371,16 @@ public void saveAndLoad_roundTrip_preservesAllBooks() throws IOException {
 **Sequencing recommendation:** Assign Exercise 1 (anatomy) and Exercise 6 (write tests) before Exercise 7 (error analysis). Students who have written at least four tests with correct structure find the errors in Exercise 7 obvious. Students who have not written tests yet find Exercise 7 abstract.
 
 **Tier 3 notes:** Exercise 11 requires Ch 8 persistence vocabulary. If students did not implement CSV persistence in Ch 8, substitute: "write a test for a `toString()` and `fromString()` round-trip on a single Book object." Exercise 12 requires Ch 4 debugging vocabulary (breakpoint, hypothesis, isolate). Students who did not internalize the Ch 4 loop will give generic "I would debug it" answers — push them to name the specific steps and the specific hypothesis.
+
+**Point distribution:** T1 = 5 pts each · T2 = 10 pts each · T3 = 15 pts each · T4 = 20 pts (rubric-graded)
+
+**Bloom's distribution:**
+
+| Tier | Bloom's Level | % of exercises |
+|------|--------------|----------------|
+| Tier 1 | Remember / Understand | ~25% |
+| Tier 2 | Apply / Analyze | ~55% |
+| Tier 3 | Analyze / Evaluate | ~12% |
+| Tier 4 | Evaluate / Create | ~8% |
 
 **Tier 4 note:** Common valid sixth categories include: concurrent modification (two threads modify catalog simultaneously), test isolation failure (one test leaves state that corrupts the next test's setup), floating-point precision (GPA calculations that are close but not equal to expected), and locale-dependent behavior (date parsing that works in one timezone but not another). Accept any of these with a concrete justification. Reject "edge case" as a category name — that is not meaningfully different from boundary.

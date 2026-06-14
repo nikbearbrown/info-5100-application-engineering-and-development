@@ -1,6 +1,8 @@
 # Module 12 — Recursion: FXML, Scene Builder, and @FXML Injection
 ## Exercise Set
 
+> **Content note:** Despite the module title "Recursion," this chapter's exercises cover **FXML, Scene Builder layout, `@FXML` field injection, `fx:id`, and the `initialize()` lifecycle**. Recursion is not the topic of this chapter.
+
 **Learning Objectives**
 1. Design FXML layouts in Scene Builder and explain their structure
 2. Write FXML-controller mapping tables as a verification discipline
@@ -8,6 +10,32 @@
 4. Diagnose and fix injection failures including silent null failures
 
 **Core Concepts:** FXML as serialized JavaFX object graph, `fx:id` as component identifier, `@FXML` annotation for injection, `FXMLLoader` injection mechanism, `initialize()` method as configuration point, constructor vs. `initialize()` lifecycle, silent null failure from `fx:id` mismatch, mapping table as verification discipline
+
+---
+
+## Worked Example
+
+*Study this example before attempting Tier 1. After reading it, close it and try to recall the key steps from memory before moving on.*
+
+**Problem:** A student has a `TableView` in their FXML file with `fx:id="appointmentTable"`. Their controller has:
+
+```java
+@FXML private TableView<Appointment> appointmentTable;
+```
+
+They run the app. It starts without errors, but the table is always empty and none of the `initialize()` setup takes effect — as if the method was never called.
+
+Apply the `@FXML` injection lifecycle to diagnose what went wrong.
+
+**Approach:**
+1. **Check the `fx:id` value.** The FXML has `fx:id="appointmentTable"`. The controller field is named `appointmentTable`. These match — this is not the problem.
+2. **Check whether the controller is set.** `FXMLLoader` only injects into a controller that is declared in the FXML file (`fx:controller="com.example.AppointmentController"`) or set programmatically. If no controller is set, `@FXML` injection never runs and `initialize()` is never called.
+3. **Check the injection lifecycle.** The order is: (1) constructor, (2) `@FXML` injection, (3) `initialize()`. If `initialize()` appears to not run, either the controller is not connected to the FXML, or the setup code is in the constructor (running before injection).
+4. **Apply the fix.** Verify that `fx:controller` is set in the FXML Document pane in Scene Builder. Confirm that all setup code is in `initialize()`, not the constructor.
+
+**Answer:** The controller was not declared in the FXML file. `FXMLLoader` did not know which class to inject into, so injection and `initialize()` never ran. The fix: set `fx:controller` in Scene Builder's Document pane.
+
+**What to notice:** Two completely different bugs produce the same symptom — table is empty and `initialize()` seems to not run. One is a missing `fx:controller`; the other is setup code in the constructor. The mapping table (Exercise 6) catches both: if you fill it out and then check the FXML, you will find the mismatch.
 
 ---
 
@@ -33,6 +61,20 @@ What is the `initialize()` method? When does `FXMLLoader` call it relative to th
 True or False — then explain your answer in 2–3 sentences:
 
 > "If you rename an `fx:id` in Scene Builder but forget to update the corresponding field name in the controller, you will get a compilation error."
+
+---
+
+**Exercise 5b.** (Tests: `fx:id` vs. `@FXML` vs. `initialize()` — contrastive classification)
+
+Classify each item below as belonging to the **FXML file**, the **controller field declaration** (`@FXML`), or the **`initialize()` method**. Write one sentence justifying each classification.
+
+- (a) `fx:id="searchField"` on a `TextField`
+- (b) `@FXML private TextField searchField;`
+- (c) `searchField.textProperty().addListener(...)`
+- (d) `onAction="#handleSearch"` on a `Button`
+- (e) `enrollButton.setDisable(true);`
+
+*(Why this is tempting to get wrong: (d) is in the FXML file — but students often think handler wiring happens in Java. Both wiring locations exist, but FXML `onAction` is a declarative wiring in the file, while `setOnAction()` is an imperative wiring in `initialize()`.)*
 
 ---
 
@@ -96,6 +138,21 @@ The AI responds:
 - Identify the strongest point in the AI's response.
 - Identify what the AI omitted that would cause a silent failure.
 - Write the missing step in one clear sentence.
+- **(d)** State the specific check you would perform after wiring the button to verify it is correctly connected — describe what action you would take in the running application and what specific result would confirm the wiring worked.
+
+**Exercise 9b — Self-Explanation** (Tests: constructor vs. `initialize()` — why lifecycle ordering matters)
+
+In this chapter, `@FXML` fields must be accessed in `initialize()`, not the constructor. Explain in 2–3 sentences why the ordering matters. Your explanation must use the term **"injection"** correctly and describe what value an `@FXML` field holds when the constructor runs.
+
+**Exercise 9c — Cumulative** (Tests: FXML injection lifecycle + setter-before-show from Ch 3)
+
+In Ch 3, the setter-before-show contract requires setting data on a screen before calling `layout.show()`. In Ch 12, the `initialize()` method runs after `@FXML` injection — it is the first safe point for any UI setup code.
+
+A library app loads a patron detail screen via `FXMLLoader.load()`. After loading, the app calls `detailController.setPatron(patron)` and then shows the screen.
+
+(a) In what order do these events occur: (i) constructor, (ii) `@FXML` injection, (iii) `initialize()`, (iv) `setPatron()`, (v) screen shown to user?
+(b) What value does `patronNameLabel` hold when `initialize()` runs, if `setPatron()` has not been called yet?
+(c) What is the correct place to display the patron's name in the label — in `initialize()` or in `setPatron()`? Justify your answer using the Ch 12 lifecycle and the Ch 3 contract.
 
 **Exercise 10.** (Tests: implement initialize() — TableView, ComboBox, button state)
 Write the complete `initialize()` method for a course enrollment controller. The controller has these `@FXML`-injected fields (already declared — do not redeclare them):
@@ -244,6 +301,8 @@ public void initialize() {
 
 (c) The model gets connected to the controller in **`initialize()`**, not in the constructor and not in the FXML file. The FXML file has no mechanism for injecting non-FXML objects like a `LibraryModel`. The constructor runs before `@FXML` injection, so it cannot safely reference injected components. `initialize()` runs after injection is complete, making it the first safe point for all setup — including connecting the Model (passed via a setter before `initialize()` runs, or accessed via a static registry).
 
+> **Common error:** A surface answer says "the model is connected in the controller." A strong answer uses Ch 12 lifecycle vocabulary: constructor → injection → `initialize()`. The model cannot be wired in the constructor (injection not yet done) and cannot be wired by FXML (FXML only injects UI components). `initialize()` is the first safe point.
+
 ### Exercise 12
 (a) **Lambda in `initialize()`:**
 ```java
@@ -260,6 +319,8 @@ Fails silently when: the `@FXML` field `checkoutButton` is null (due to `fx:id` 
 ```
 Fails silently when: the method name `"handleCheckout"` does not exactly match the controller method name — the handler is simply not registered, no error. Better choice when: the handler is a straightforward method call with no complex wiring, and you want the connection visible in Scene Builder for design-time verification.
 
+> **Common error:** A surface answer shows both forms. A strong answer identifies the specific silent failure for each: lambda in `initialize()` fails with `NullPointerException` if the `@FXML` field is null (fx:id mismatch); FXML `onAction` fails silently with no exception if the method name doesn't match. Different bugs, different detection strategies.
+
 ---
 
 ## Instructor Notes
@@ -275,5 +336,16 @@ Fails silently when: the method name `"handleCheckout"` does not exactly match t
 **Sequencing recommendation:** The mapping table exercise (Exercise 6) should be assigned before any coding exercise. Have students fill out the table for their current project's screens as a pre-coding checklist. Students who do this have significantly fewer `NullPointerException` crashes from `fx:id` mismatches.
 
 **Tier 3 notes:** Exercise 11 requires Ch 10 MVC vocabulary. Students who said "the FXML is the View" without explaining why should be asked: "If you delete the FXML file and rebuild the screen in Java, which MVC layer are you still building?" Exercise 12 requires Ch 11 handler vocabulary. The key discrimination is the silent failure mode — both approaches can fail silently, but for different reasons.
+
+**Point distribution:** T1 = 5 pts each · T2 = 10 pts each · T3 = 15 pts each · T4 = 20 pts (rubric-graded)
+
+**Bloom's distribution:**
+
+| Tier | Bloom's Level | % of exercises |
+|------|--------------|----------------|
+| Tier 1 | Remember / Understand | ~25% |
+| Tier 2 | Apply / Analyze | ~55% |
+| Tier 3 | Analyze / Evaluate | ~12% |
+| Tier 4 | Evaluate / Create | ~8% |
 
 **Tier 4 note:** The strongest responses to Exercise 13 will describe setter injection: set the model on the controller via a setter method called immediately after `FXMLLoader.load()`, before any UI interaction. The failure mode is that the load-and-configure sequence must be followed in exactly the right order — a developer who calls `load()` without calling the setter will get a null model and a runtime crash at first interaction. Accept factory patterns (a loader utility that always sets the model) as an equally valid answer.

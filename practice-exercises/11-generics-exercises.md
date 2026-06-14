@@ -1,6 +1,8 @@
 # Module 11 — Generics: Event Handlers and Responsibility
 ## Exercise Set
 
+> **Content note:** Despite the module title "Generics," this chapter's exercises cover **event handlers, lambda expressions, handler decomposition, and the handler responsibility rule**. Generics are not the primary topic here.
+
 **Learning Objectives**
 1. Register handlers using lambda, anonymous class, and named inner class forms
 2. Decompose handler responsibility into delegated methods
@@ -8,6 +10,36 @@
 4. Trace the full click-to-view-update chain
 
 **Core Concepts:** event/handler/registration triad, handler as translation not implementation, lambda vs. anonymous vs. named inner class, closet handler (too much responsibility), responsibility rule (single reason to change), handler decomposition, model update + view update as separate methods, dependency injection in handlers
+
+---
+
+## Worked Example
+
+*Study this example before attempting Tier 1. After reading it, close it and try to recall the key steps from memory before moving on.*
+
+**Problem:** A student's checkout button handler is 45 lines long. It validates the ISBN, finds the book, checks availability, finds the patron, creates the checkout record, saves to file, clears the form, and shows a confirmation. A reviewer says it violates the handler responsibility rule. Diagnose why and sketch the fix.
+
+**Approach:**
+1. **State the handler responsibility rule.** A handler's only job is to translate a user event into a model operation and update the view. It should not contain business logic itself.
+2. **Identify what is wrong.** This handler has multiple distinct reasons to change: validation rules could change, the checkout business logic could change, the save format could change, and the confirmation display could change. Each change requires editing the handler.
+3. **Apply decomposition.** Group the steps by reason to change:
+   - `validateInput()`: ISBN and patron ID validation → reason to change: validation rules
+   - `performCheckout()` → called on the Model: availability check, record creation, status update → reason to change: business logic
+   - `persistChanges()` → Model's save method → reason to change: storage format
+   - `updateView()`: clear form, show confirmation → reason to change: screen layout
+4. **Write the decomposed handler:**
+```java
+checkoutButton.setOnAction(e -> {
+    if (validateInput()) {
+        model.checkout(isbnField.getText(), patronField.getText());
+        updateView();
+    }
+});
+```
+
+**Answer:** The handler was a "closet handler" — it stuffed unrelated responsibilities into one method. After decomposition, the handler itself is 3–4 lines. Business logic lives in the Model. View updates live in a dedicated method.
+
+**What to notice:** The handler does not need to shrink — it needs to *delegate*. Three lines in the handler can represent work that happens across four well-named methods.
 
 ---
 
@@ -33,6 +65,20 @@ What are the three ways to register an event handler in Java? For each, give a o
 True or False — then explain your answer in 2–3 sentences:
 
 > "A handler that is 50 lines long and handles validation, model update, view update, and persistence is acceptable if it passes all tests."
+
+---
+
+**Exercise 5b.** (Tests: handler responsibility — contrastive classification)
+
+Classify each step below as belonging in the **handler** (translation only), the **Model** (business logic), or the **View** (display update). Write one sentence justifying each classification.
+
+- (a) `isbnField.getText()` — read the ISBN from the input field
+- (b) Check whether the book is currently available for checkout
+- (c) `statusLabel.setText("Checkout complete!")` — update the label after checkout
+- (d) Determine whether a patron has exceeded their borrow limit
+- (e) Call `model.checkout(isbn, patronId)` from inside the handler
+
+*(Why this is tempting to get wrong: (e) is tempting to classify as "Model" because it calls a model method. But the call itself lives in the handler — the handler is doing the translation. The business logic is inside `model.checkout()`, not inside the call that invokes it.)*
 
 ---
 
@@ -95,6 +141,19 @@ The AI responds:
 - Identify the strongest point in the AI's response.
 - Identify what the AI missed about the model-view boundary.
 - Write a correction that specifies where each of the three extracted methods should actually live, and why.
+- **(d)** State the specific test you would run to verify that `processCheckout()` — now in the Model — is tested correctly. Describe what the test asserts and why that assertion cannot be made through the handler directly.
+
+**Exercise 9b — Self-Explanation** (Tests: handler responsibility rule — why "single reason to change" matters)
+
+In this chapter, the handler responsibility rule is defined as: a handler has one reason to change — the event wiring changes. Explain in 2–3 sentences why "single reason to change" is a useful test for whether a method belongs in the handler or elsewhere. Your explanation must use the term **"reason to change"** correctly and name one specific reason that would require editing the handler if business logic were left inside it.
+
+**Exercise 9c — Cumulative** (Tests: handler decomposition + MVC from Ch 10)
+
+In Ch 10, the Controller translates user events into model operations. In Ch 11, handlers are the code that responds to a specific event. A student's `handleCheckout()` method calls `catalog.findByIsbn()`, validates availability, creates a `CheckoutRecord`, and updates the status label — all inline.
+
+(a) Which of these steps violate the handler responsibility rule from Ch 11?
+(b) Which MVC layer should own the availability check and record creation? Why?
+(c) Rewrite `handleCheckout()` as it should appear after decomposition — three to five lines maximum. The handler should only contain what the responsibility rule allows.
 
 **Exercise 10.** (Tests: click-to-view trace — responsibility rule applied end to end)
 A user clicks the "Return Book" button in a library app. Trace the complete flow:
@@ -265,6 +324,8 @@ A handler is a part of the Controller layer, not a separate concept and not the 
 
 For the checkout button: the handler lives in the Controller class (or is registered by it). The handler calls `model.checkout(isbn, patronId)` (a model operation), then calls `checkoutView.showConfirmation()` (a view update). The handler does not perform the checkout logic itself — that would put business logic in the Controller layer, which Ch 10 prohibits.
 
+> **Common error:** A surface answer says "handlers are part of the controller." A strong answer uses both Ch 10 and Ch 11 vocabulary: the handler is one unit of controller behavior — it calls a model method, then calls a view-update method, and contains no business logic itself.
+
 ### Exercise 12
 Handler pseudocode:
 ```
@@ -281,6 +342,8 @@ handleCheckoutComplete():
 
 **Failure mode:** Navigating before calling the setter causes the confirmation screen to initialize with null data, which either shows empty fields or crashes.
 
+> **Common error:** A surface answer sequences the steps correctly but doesn't explain why. A strong answer names the specific failure: calling `initialize()` on the confirmation screen before the setter means the screen runs its setup code against a null `checkoutRecord`, throwing `NullPointerException` when any field is accessed.
+
 ---
 
 ## Instructor Notes
@@ -296,5 +359,16 @@ handleCheckoutComplete():
 **Sequencing recommendation:** Run Exercise 10 (click trace) on the board with students narrating each step before they write. Students who cannot narrate "the handler calls model, not implements logic" will produce handlers with business logic no matter how many exercises they do.
 
 **Tier 3 notes:** Exercise 11 requires Ch 10 MVC vocabulary. Exercise 12 requires Ch 3 setter-before-show vocabulary. Students who skipped Ch 3 will sequence the handler steps incorrectly — they will navigate first. Use the failure mode as the teaching moment.
+
+**Point distribution:** T1 = 5 pts each · T2 = 10 pts each · T3 = 15 pts each · T4 = 20 pts (rubric-graded)
+
+**Bloom's distribution:**
+
+| Tier | Bloom's Level | % of exercises |
+|------|--------------|----------------|
+| Tier 1 | Remember / Understand | ~25% |
+| Tier 2 | Apply / Analyze | ~55% |
+| Tier 3 | Analyze / Evaluate | ~12% |
+| Tier 4 | Evaluate / Create | ~8% |
 
 **Tier 4 note:** The strongest responses to Exercise 13 will name dependency injection explicitly — the model and view are passed into the controller (or handler class) rather than accessed via static references or globals. Accept any mechanism (constructor injection, setter injection) as long as it is named and the reason is given.

@@ -9,6 +9,39 @@
 
 ---
 
+## Worked Example
+
+*Study this example before attempting Tier 1. After reading it, close it and try to recall the key steps from memory before moving on.*
+
+**Problem:** A student writes a login check like this:
+
+```java
+public boolean login(String username, String password) {
+    UserAccount account = accounts.get(username);
+    return account != null && account.password.equals(password);
+}
+```
+
+Is this correct? Apply the credential security principles from this chapter.
+
+**Approach:**
+1. **Identify what is stored.** `account.password` holds the plaintext password — the exact string the user typed at registration. This is the first problem.
+2. **Identify what is compared.** `account.password.equals(password)` compares the stored plaintext to the typed input. If an attacker reads the credential store, all passwords are immediately readable.
+3. **Apply the SHA-256 principle.** Passwords must never be stored in plaintext. At registration, hash the password with SHA-256 via `MessageDigest` and store only the hash. At login, hash the input and compare hashes:
+
+```java
+String inputHash = hashPassword(password);
+return account != null && account.passwordHash.equals(inputHash);
+```
+
+4. **Check what is returned.** Returning `boolean` is correct — the method should only answer "yes/no," not return the domain object. The `Patron` should be retrieved separately through the catalog after a successful login.
+
+**Answer:** Two problems: (1) plaintext password stored and compared — should store and compare SHA-256 hashes; (2) returning `boolean` is already correct in this version, which is good. The fix is entirely in replacing `account.password` with `account.passwordHash` and hashing the input before comparison.
+
+**What to notice:** The login method is almost right. The single change — hash before storing, hash before comparing — is what separates a vulnerable design from a safe one.
+
+---
+
 ## Tier 1 — Warm-Up
 
 *(Tests: recall, vocabulary, true/false with explanation)*
@@ -46,6 +79,20 @@ What property of SHA-256 makes it suitable for password storage? Define the term
 **True or False:** "If two patrons have the same password, their stored hashes will be the same."
 
 State whether the claim is true or false, then explain what this means for an attacker who obtains the credential file.
+
+---
+
+**Exercise 5b** (Tests: plaintext vs. hashed storage vs. domain separation — contrastive classification)
+
+Classify each of the following as an **authentication concern**, a **domain concern**, or **both**. Write one sentence explaining each classification.
+
+- (a) Whether a patron's name is spelled correctly
+- (b) Whether the password matches the stored hash
+- (c) Which books a patron has currently checked out
+- (d) Whether a username already exists in the credential store
+- (e) Retrieving the `Patron` object after a successful login
+
+*(Why this is tempting to get wrong: (d) and (b) both involve the credential store — but (d) is about uniqueness/registration, not about checking credentials. The classification depends on which layer of the design each concern belongs to.)*
 
 ---
 
@@ -101,11 +148,11 @@ Design a `LoginManager` for a hospital appointment system where patients are rep
 
 ---
 
-**Exercise 9 — AI Interaction** (Tests: evaluating AI-generated security advice)
+**Exercise 9 — AI Interaction** (Tests: evaluating AI-generated security advice — hashing requirement)
 
-A student asks an AI assistant: *"How do I store user passwords in Java?"*
+First, without consulting AI, write one sentence describing what must happen to a password before it is stored in any Java data structure.
 
-The AI responds:
+Then read this AI response to "How do I store user passwords in Java?":
 
 > "The simplest approach is to store passwords in a `HashMap<String, String>` where the key is the username and the value is the password. You can check passwords with `storedPasswords.get(username).equals(inputPassword)`."
 
@@ -116,6 +163,26 @@ Answer the following:
 **(b)** Identify the security problem the AI's response introduces.
 
 **(c)** Write a corrected three-sentence explanation of how passwords should be stored in Java, suitable for a student who has just learned about `MessageDigest`.
+
+**(d)** State the specific test you would run to verify that a login system is NOT storing plaintext passwords — what would you inspect, and what result would confirm the system is correctly hashing?
+
+---
+
+**Exercise 9b — Self-Explanation** (Tests: ID-based linking — why separation between credential and domain objects matters)
+
+In this chapter, a `UserAccount` links to a `Patron` by storing `patronId` (a String) rather than by holding a direct `Patron` reference. Explain in 2–3 sentences why ID-based linking is preferable to holding a direct reference. Your explanation must use the term **"credential store"** correctly and explain what would break if a `Patron` object were replaced or reloaded.
+
+---
+
+**Exercise 9c — Cumulative** (Tests: authentication gate + setter-before-show from Ch 3)
+
+In Ch 3, you learned the setter-before-show contract: data must be set on a screen before calling `layout.show()`. In this chapter, an authentication gate must verify a user before granting access to any protected screen.
+
+A library app's login screen calls `LoginManager.login(username, password)`. If it returns `true`, the app navigates to the patron dashboard.
+
+(a) Apply the setter-before-show contract: what must be set on the patron dashboard before `layout.show()` is called?
+(b) Where does that data come from — the `LoginManager`, the catalog, or somewhere else?
+(c) What specific failure occurs if the dashboard is shown before the patron object is set? Name the object that will be null and the exception that will be thrown.
 
 ---
 
@@ -348,6 +415,8 @@ In Chapter 5, the supply-side catalog preloads all `Patron` objects into memory 
 
 If the `Patron` catalog has not been loaded before login is attempted, the lookup returns `null` even though authentication succeeded. The user has proved their identity, but the application cannot find the domain object they are linked to. This is a specific, testable failure: `catalog.findById(account.getPatronId())` returns `null`, and any subsequent code that calls methods on the returned object throws a `NullPointerException`. The authentication step and the domain lookup step are separate operations, and the supply-side model must complete before the domain lookup is meaningful.
 
+> **Common error:** A surface answer says "load the patron data first." A strong answer names the specific failure mode — `catalog.findById()` returns `null` because the in-memory registry is empty — and uses supply-side vocabulary: preload, entities, catalog independence.
+
 ---
 
 **Exercise 12**
@@ -357,6 +426,8 @@ If the `Patron` catalog has not been loaded before login is attempted, the looku
 **(b)** A protected screen — such as a patron dashboard or checkout screen — requires a successfully authenticated `UserAccount` and a resolved domain object (e.g., the current `Patron`) to be set before it is shown. This state is set by the login event: when `LoginManager.login()` returns `true`, the application resolves the patron from the catalog and calls the setter on the next screen before calling `setVisible(true)`. This is the setter-before-show contract from Chapter 3 applied at the authentication boundary.
 
 **(c)** If a developer bypasses the login check and navigates directly to the patron dashboard, the screen's `currentPatron` field will be `null` — it was never set because the login event never fired. Any method on that screen that calls `currentPatron.getName()` or similar will throw a `NullPointerException`. The screen will appear to open but will immediately crash when it tries to display patron data. The setter-before-show contract and the authentication gate enforce the same underlying requirement: the screen must not be displayed before the object it depends on has been provided.
+
+> **Common error:** A surface answer treats authentication as purely a security concept and misses the structural connection. A strong answer names `currentPatron` as the missing object, identifies `NullPointerException` as the failure, and explicitly uses "setter-before-show" from Ch 3.
 
 ---
 
@@ -376,4 +447,15 @@ If the `Patron` catalog has not been loaded before login is attempted, the looku
 
 - **Exercise 13 (Challenge):** Common weak responses name "dictionary attack" and "rainbow table" as if they are different categories. A strong response explains that both exploit the deterministic nature of hashing, and that salting breaks precomputation specifically. Credit responses that show understanding of the mechanism, not just the label.
 
-**Suggested point distribution:** Tier 1: 5 pts each. Tier 2: 10 pts each. Tier 3: 15 pts each. Tier 4: 20 pts (rubric-graded).
+**Point distribution:** T1 = 5 pts each · T2 = 10 pts each · T3 = 15 pts each · T4 = 20 pts (rubric-graded)
+
+**Bloom's distribution:**
+
+| Tier | Bloom's Level | % of exercises |
+|------|--------------|----------------|
+| Tier 1 | Remember / Understand | ~25% |
+| Tier 2 | Apply / Analyze | ~55% |
+| Tier 3 | Analyze / Evaluate | ~12% |
+| Tier 4 | Evaluate / Create | ~8% |
+
+**DEI note:** Exercise 8 uses a hospital / patient scenario. Be sensitive if students have had stressful healthcare experiences; the technical concepts (boolean return, hash storage) are fully separable from the medical framing.

@@ -11,6 +11,32 @@
 
 ---
 
+## Worked Example
+
+*Study this example before attempting Tier 1. After reading it, close it and try to recall the key steps from memory before moving on.*
+
+**Problem:** A student implements a search bar for their library catalog. When the user types in the search field, the handler removes non-matching rows directly from `tableView.getItems()`. The search appears to work — but when the user clears the search field, the table does not restore the missing books.
+
+Apply MVC principles to diagnose the problem and write the correct fix.
+
+**Approach:**
+1. **Identify what is being modified.** `tableView.getItems()` returns the `ObservableList` that the `TableView` is currently displaying. Removing items from it removes them from the display and from the list the `TableView` holds.
+2. **Identify the MVC violation.** The View is being used as the source of truth. There is no separate model list — the filtered display is the only list. When items are removed from it, they are gone permanently from the View's memory.
+3. **Apply the MVC principle.** The Model holds the authoritative list of all books. Search is a Model operation that returns a filtered subset. The Controller passes that result to the View for display — the original list in the Model is never modified.
+4. **Write the corrected handler:**
+```java
+searchField.textProperty().addListener((obs, old, newVal) -> {
+    List<Book> results = model.search(newVal);
+    tableView.setItems(FXCollections.observableArrayList(results));
+});
+```
+
+**Answer:** The bug is the search-on-view anti-pattern. The View held the only copy of the data, so filtering was destructive. The fix: move the source of truth to the Model. The View always reflects the Model's result — never mutates it.
+
+**What to notice:** The bug "works" on the first search. It only breaks when the user tries to clear or change the search. Always test the clear-then-search case when implementing search.
+
+---
+
 ## Tier 1 — Warm-Up
 
 *(Tests: recall, conceptual identification, true/false with explanation)*
@@ -33,6 +59,20 @@ What is the scene graph in JavaFX? What is the relationship between a scene, a r
 True or False — then explain your answer in 2–3 sentences:
 
 > "A method that formats a date for display (e.g., `formatDisplayDate()`) belongs in the Model class because it operates on model data."
+
+---
+
+**Exercise 5b.** (Tests: Model vs. View vs. Controller — contrastive classification)
+
+Classify each responsibility below as belonging to the **Model**, the **View**, or the **Controller**. Write one sentence justifying each classification.
+
+- (a) The list of all `Appointment` objects for a doctor
+- (b) The method that changes an appointment's status from Pending to Confirmed
+- (c) The listener that fires when the user selects a row in the appointments table
+- (d) The code that formats a `LocalDate` as `"Mon, Jun 9"` for display in the table
+- (e) The call to `model.cancelAppointment(id)` triggered by a button click
+
+*(Why this is tempting to get wrong: (c) is tempting to classify as View because it fires on a UI event. But the listener is registered by the Controller — the Controller owns the wiring between events and model calls.)*
 
 ---
 
@@ -85,6 +125,19 @@ The AI responds:
 - Identify the strongest point in the AI's response.
 - Identify the MVC violation.
 - Write a corrected answer that specifies exactly which class should own GPA calculation and why.
+- **(d)** State the specific test you would run to verify that GPA calculation is correctly placed — describe how you would test it without involving the GUI or the Controller.
+
+**Exercise 9b — Self-Explanation** (Tests: search-filters-model principle — why the model must be the source of truth)
+
+In this chapter, the principle is that search filters the model, not the table. Explain in 2–3 sentences why the model must be the source of truth for a search filter. Your explanation must use the term **"source of truth"** correctly and explain what specific failure occurs when the View holds the only copy of the data.
+
+**Exercise 9c — Cumulative** (Tests: Model layer + supply-side catalog from Ch 5)
+
+In Ch 5, the supply-side catalog held all `Book` and `Patron` entities and answered queries like `findByIsbn()`. In Ch 10, the Model layer holds business state and answers search queries from the Controller.
+
+(a) Is the `Catalog` from Ch 5 a Model-layer concern, a supply-side concern, or both? Explain in one sentence.
+(b) In Ch 10's architecture, which component calls the `Catalog`'s query methods — the Model, the View, or the Controller? Why?
+(c) What breaks if the Controller calls `catalog.findByIsbn()` directly, bypassing the Model? Name the specific MVC principle violated.
 
 **Exercise 10.** (Tests: layer tracing — full GUI-to-model round trip)
 A user types "Smith" in the doctor search bar of a hospital scheduling app and the table updates to show only Dr. Smith's appointments. Trace this interaction from start to finish through all three MVC layers:
@@ -232,6 +285,8 @@ nameCol.setCellValueFactory(cellData -> {
 
 (c) The Controller cannot call the Catalog directly. MVC requires that the Controller only call the Model. Allowing the Controller to bypass the Model and call the Catalog directly breaks the layer boundary — the Controller would then be responsible for assembling results that are the Model's job to assemble.
 
+> **Common error:** A surface answer says "the Catalog is the Model" or "the Catalog is a supply-side thing — different." A strong answer names the specific layer violation — the Controller bypassing the Model to call the Catalog directly — and names the MVC principle it violates: Controller calls Model, not internal data structures.
+
 ### Exercise 12
 **Model fields needed:**
 ```java
@@ -249,6 +304,8 @@ tableView.setItems(FXCollections.observableArrayList(model.getAllSorted()));
 
 **Why two fields:** Different operations have different performance requirements. The Map serves O(1) lookup; the sorted List serves ordered display. Maintaining both is a deliberate design choice from Ch 9's operation-profile analysis — no single collection structure serves all three operations efficiently.
 
+> **Common error:** A surface answer lists one collection field. A strong answer names two fields, derives each from an operation profile (O(1) lookup vs. ordered display), and explains why one field cannot serve both operations.
+
 ---
 
 ## Instructor Notes
@@ -264,5 +321,16 @@ tableView.setItems(FXCollections.observableArrayList(model.getAllSorted()));
 **Sequencing recommendation:** Run Exercise 10 (layer tracing) as a full-class whiteboard exercise before assigning the written exercises. Students who can narrate the trace fluently answer Exercises 6, 7, and 11 correctly. Students who cannot narrate it will misassign responsibilities even after reading the chapter.
 
 **Tier 3 notes:** Exercise 11 requires Ch 5 vocabulary (`Catalog`, supply-side). If students did not complete Ch 5, substitute: "A `BookRepository` holds all books. How does it relate to the Model?" Exercise 12 requires Ch 9 operation-profile reasoning. Students who chose collections without analysis in Ch 9 will give flat answers here.
+
+**Point distribution:** T1 = 5 pts each · T2 = 10 pts each · T3 = 15 pts each · T4 = 20 pts (rubric-graded)
+
+**Bloom's distribution:**
+
+| Tier | Bloom's Level | % of exercises |
+|------|--------------|----------------|
+| Tier 1 | Remember / Understand | ~25% |
+| Tier 2 | Apply / Analyze | ~55% |
+| Tier 3 | Analyze / Evaluate | ~12% |
+| Tier 4 | Evaluate / Create | ~8% |
 
 **Tier 4 note:** Accept any three genuinely distinct approaches to Exercise 13. Common weak responses propose "put formatting in the Model," "put it in the Controller," and "put it in the View" as if these are three different approaches to the same problem rather than three distinct architectural stances. Push students to name the trade-off, not just the location.

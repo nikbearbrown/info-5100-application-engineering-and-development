@@ -9,6 +9,47 @@
 
 ---
 
+## Worked Example
+
+*Study this example before attempting Tier 1. After reading it, close it and try to recall the key steps from memory before moving on.*
+
+**Problem:** A student writes this `saveToFile()` method and runs it. The program finishes without throwing any exception. But when they open the saved file, it is empty or contains only the first few records.
+
+```java
+public void saveToFile(String filename) throws IOException {
+    BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+    for (Book book : catalog) {
+        writer.write(book.toCSV());
+        writer.newLine();
+    }
+    // no close() call
+}
+```
+
+Why does the file appear to save successfully but contain no data?
+
+**Approach:**
+1. **Identify what `BufferedWriter` does.** It does not write directly to disk on each `write()` call. It accumulates output in an internal memory buffer and flushes the buffer to disk only when the buffer is full or when `close()` is called.
+2. **Identify what is missing.** There is no `writer.close()` call. When `saveToFile()` returns, the buffer has been written to in memory, but it has never been flushed to disk. The file may be created (zero bytes) or partially written.
+3. **Apply the fix.** Use try-with-resources, which automatically calls `close()` when the `try` block exits — whether normally or via an exception:
+
+```java
+try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+    for (Book book : catalog) {
+        writer.write(book.toCSV());
+        writer.newLine();
+    }
+}
+```
+
+4. **Check the failure mode.** The program produces no error message. The only way to detect this bug is to open the file and inspect its contents after the save. Tests that only check "no exception was thrown" will miss it.
+
+**Answer:** The buffer was never flushed to disk because `close()` was never called. Try-with-resources is the fix.
+
+**What to notice:** Silent data loss — the method appears to succeed and throws no exception. Only inspecting the file reveals the problem. This is why testing persistence requires opening and reading the output, not just checking for absence of errors.
+
+---
+
 ## Tier 1 — Warm-Up
 
 *(Tests: recall, vocabulary, true/false with explanation)*
@@ -46,6 +87,20 @@ What does CSV stand for, and why is it described as a "transparent format"? What
 **True or False:** "Exception handling code can be omitted in student projects because `IOException`s are rare in practice."
 
 State whether the claim is true or false, then write two to three sentences explaining what happens at runtime if `IOException` handling is omitted and the file is missing or unwritable.
+
+---
+
+**Exercise 5b** (Tests: save strategy vs. data format vs. exception policy — contrastive classification)
+
+Classify each scenario below as a **save strategy failure**, a **data format failure**, or an **exception handling failure**. Write one sentence explaining each classification.
+
+- (a) The saved CSV file contains all records on a single line with no line separators.
+- (b) Appointments added in the last 40 minutes are missing after the application is restarted following a normal exit.
+- (c) `loadFromFile()` crashes on the third line of the CSV file with an `ArrayIndexOutOfBoundsException` because one field is missing.
+- (d) `saveToFile()` throws an `IOException` and the program continues normally, showing no error to the user.
+- (e) A power outage mid-write leaves a partially written file that cannot be parsed on the next load.
+
+*(Why this is tempting to get wrong: (e) is tempting to classify as "exception handling" because an exception might be involved. But the failure occurs because the write was not atomic — no exception handling policy can prevent partial writes; the fix is in the save strategy, specifically atomic rename.)*
 
 ---
 
@@ -120,6 +175,26 @@ Answer the following:
 **(b)** Identify one significant limitation of Java object serialization that the AI did not mention. Consider what happens when you change a field name or add a field to the class after files have already been saved.
 
 **(c)** Write a one-paragraph comparison of serialization vs CSV for a student project, covering at least: human readability, compatibility after class changes, and ease of debugging.
+
+**(d)** State the specific action you would take to verify that the serialization approach actually saved your data correctly — name what you would do step by step and what specific result would confirm the save worked before trusting it in production.
+
+---
+
+**Exercise 9b — Self-Explanation** (Tests: try-with-resources — why it is safer than manual close)
+
+In this chapter, try-with-resources is recommended over manually calling `writer.close()`. Explain in 2–3 sentences why try-with-resources is a safer choice. Your explanation must use the term **"control flow"** correctly and explain what happens to the manual `close()` call if an exception is thrown inside the `try` block before `close()` is reached.
+
+---
+
+**Exercise 9c — Cumulative** (Tests: persistence startup sequence + supply-side preloading from Ch 5)
+
+In Ch 5, the supply-side catalog must be fully populated before any transactions run — every entity must exist in memory before it can be referenced. In Ch 8, you learned that in-memory data does not persist across restarts and must be explicitly loaded from file.
+
+(a) Write the correct startup sequence for a library system that has both a supply-side catalog and CSV persistence. What must happen first, and what must be true before any checkout transaction is safe to attempt?
+
+(b) A student calls `bookCatalog.loadFromFile()` after the catalog has already been used to answer a checkout query. What specific runtime failure occurs, and at what line does it happen?
+
+(c) Is the bug in (b) a persistence error (Ch 8) or a startup ordering error (Ch 5)? Explain in one sentence why the chapter attribution matters for choosing the fix.
 
 ---
 
@@ -351,6 +426,8 @@ The correct startup sequence is:
 
 If `loadFromFile()` has not been called before a checkout is attempted, the `PatronCatalog` and `BookCatalog` are empty. A checkout transaction calls something like `patronCatalog.findById(patronId)`, which returns `null` because no patrons have been loaded yet. Any subsequent operation on that `null` reference throws a `NullPointerException`. The supply-side principle from Chapter 5 — that entities must exist before transactions reference them — is not violated by persistence itself, but by skipping or mis-ordering the load step that restores those entities from disk.
 
+> **Common error:** A surface answer says "load the data before using it." A strong answer uses supply-side vocabulary from Ch 5 (preloading, entities, populated catalog) and identifies the specific runtime failure — `findById()` returns `null` — and names `NullPointerException` as the consequence.
+
 ---
 
 **Exercise 12**
@@ -360,6 +437,8 @@ If `loadFromFile()` has not been called before a checkout is attempted, the `Pat
 **(b)** The most likely root cause is a save strategy issue — specifically, save-on-exit is being used (or no save strategy exists), and the application was closed in a way that bypassed the exit handler (e.g., force-closed, crashed, or the window was closed without triggering the save event). A serialization error would affect all records equally, not just the ones from the last session. A partial-write failure would be visible as a truncated or corrupted file, not as cleanly missing records. Evidence to look for: open the CSV file and check whether appointments from before the last session are present and those from the last session are absent — this pattern confirms save-on-exit with no save triggered.
 
 **(c)** Set a breakpoint at the line in `saveToFile()` where appointments are written, specifically inside the loop: `writer.write(appointment.toCSV())`. Inspect the size of the `appointments` list at the point the breakpoint is hit. If the list contains only the appointments from previous sessions and not from the current session, confirm that the add operation did not update the list the save method is iterating. If the list does contain all appointments including new ones, the bug is in the write loop or the file path. The confirming value is: list size is smaller than the number of appointments the user created; the ruling-out value is: list size matches the expected total.
+
+> **Common error:** A surface answer identifies the symptom as the root cause ("appointments are missing because they weren't saved"). A strong answer applies Ch 4 vocabulary: symptom (missing after reload) → proximate cause (save was not triggered for those appointments) → root cause (save strategy: save-on-exit with no exit handler firing). Name the specific divergence point: in-memory list had the appointments; the CSV file did not.
 
 ---
 
@@ -381,4 +460,15 @@ If `loadFromFile()` has not been called before a checkout is attempted, the `Pat
 
 - **Exercise 13 (Challenge):** Most students default to physical failure scenarios (disk full, power loss). The question specifically asks for a logical corruption scenario — data that was wrong before being written, not data that was written incorrectly. Guide students toward: a mutation that was applied to the wrong object, a concurrent modification during iteration, or an in-memory invariant violation that was then faithfully persisted.
 
-**Suggested point distribution:** Tier 1: 5 pts each. Tier 2: 10 pts each. Tier 3: 15 pts each. Tier 4: 20 pts (rubric-graded).
+**Point distribution:** T1 = 5 pts each · T2 = 10 pts each · T3 = 15 pts each · T4 = 20 pts (rubric-graded)
+
+**Bloom's distribution:**
+
+| Tier | Bloom's Level | % of exercises |
+|------|--------------|----------------|
+| Tier 1 | Remember / Understand | ~25% |
+| Tier 2 | Apply / Analyze | ~55% |
+| Tier 3 | Analyze / Evaluate | ~12% |
+| Tier 4 | Evaluate / Create | ~8% |
+
+**DEI note:** Scenario contexts use hospitals and grade management systems in addition to the library. If a student has had difficult healthcare experiences, the hospital scenario in Exercise 6 and Exercise 12 may be sensitive. The technical concepts (CSV format, save strategies) are fully separable from the medical framing.
