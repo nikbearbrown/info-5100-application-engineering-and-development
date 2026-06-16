@@ -2,41 +2,49 @@
 ## Companion Chapter
 > **Wonder Edition:** Read this alongside the chapter, not instead of it.
 
-> **Content note:** Despite the title "Event-Driven Programming," this chapter covers Java Collections (List, Map, Set), operation profiles, Comparators, Comparable, and the stream filter pipeline.
+> **Content note:** Despite the title "Event-Driven Programming," this chapter covers Java Collections (List, Map, Set), operation profiles, Comparator and Comparable as named ordering rules, and the stream filter pipeline. This companion follows the actual chapter content.
 
 ---
 
 ## The Strange Question
 
-A library stores fifty thousand books. Two students write lookup code. Student A iterates a list and checks each ISBN. Student B calls a single method on a map. Both programs return the correct book. Both pass the unit tests.
+A library stores fifty thousand books. Two students write an ISBN lookup. Student A iterates a `List<Book>` and compares each ISBN to the query. Student B calls `map.get(isbn)` on a `Map<String, Book>`.
 
-Why does one of them get fired at scale?
+Both programs return the correct book. Both pass every unit test. Both compile without warnings.
+
+On a test collection of fifty books, both finish in under a millisecond. Then the library imports its full catalog.
+
+At fifty thousand books, Student A's lookup takes roughly one thousand times longer than it did at fifty. Student B's lookup takes the same time it always did.
+
+What is different between the two programs — and why does that difference only appear at scale?
 
 ---
 
 ## First Intuition
 
-Most people assume a collection is a container. A list holds books. A map holds books. A set holds books. They are all boxes. The question is which box you feel like using today. The familiar one is fine. Lists are flexible. Lists compile. Lists run.
+Most people treat a collection as a container. A `List` is a box. A `Map` is a box. A `Set` is a box. The difference is cosmetic — they all hold the same books. The choice between them is a style preference, like whether to name a variable `i` or `index`.
 
-Under this model, the choice of collection type is a style preference, like variable naming. You can use a list for everything and get on with the real work.
+Under this model, `List` is the obvious default. It is familiar. It supports any operation. It compiles. It runs. The result is always correct.
 
-> **Planning Metacognitive Prompt:** Before reading further, write down your prediction. If a list and a map both store the same books and both return the correct result for a lookup, what — if anything — could actually go wrong with using the list? Be specific. What would have to be true for the difference to matter?
+This model comes from real experience. In early programming courses, collections are small. Fifty elements, maybe a hundred. Nothing in that experience produces a visible cost difference between `List` and `Map`. The code works. The assumption calcifies.
+
+> **► Planning prompt:** Before continuing, write a prediction. You are using a `List` for everything and the program is correct. What would have to be true — specifically — for that choice to cause a problem? Name a number, a scenario, or a condition. Write it before you read further.
 
 ---
 
 ## The Surprise
 
-But something is different between the two programs, and it is not visible in the output.
+But the two programs are not equivalent. The difference is invisible in the output and invisible in the test results. It lives in the relationship between collection size and operation cost.
 
-Student A's program examines each book in sequence until it finds the matching ISBN. With fifty books, the loop runs at most fifty times. With fifty thousand books, it runs at most fifty thousand times. The number of steps grows with the size of the collection. Double the library; double the worst-case lookup time.
+Student A's `List` lookup scans elements one at a time. At fifty books, the loop runs at most fifty iterations. At fifty thousand books, it runs at most fifty thousand iterations. The cost scales linearly with the size of the collection. Double the catalog; double the worst-case lookup time.
 
-Student B's program does not scan. It computes a position directly from the ISBN and retrieves the value. With fifty books, the operation takes a fixed number of steps. With fifty thousand books, it takes the same fixed number of steps. The size of the collection does not change the cost.
+Student B's `Map` lookup does not scan. It computes a position from the ISBN key and retrieves the value directly. At fifty books, this takes a small fixed number of steps. At fifty thousand books, it takes the same small fixed number of steps. Size does not change the cost.
 
-Both programs are correct. Their correctness is identical. Their behavior under scale is not.
+Both programs agree on every answer. Their correctness is identical. Their behavior under growth is not.
 
-> **Monitoring Metacognitive Prompt:** Does this surprise you, or did your earlier prediction already anticipate it? If you predicted it, what made you confident? If it surprises you, what assumption in your First Intuition turned out to be false?
+> **► Monitoring prompt:** Revisit your prediction. Did you anticipate this, or does it surprise you? If you predicted it, name the assumption that told you. If it surprises you, identify which assumption in First Intuition turned out to be false — and why that assumption felt safe given your prior experience.
 
-The surprise is not resolved yet. The question is not just "which is faster." The question is what it means for a collection to encode an assumption about how you will use it — and why that encoding is invisible until the collection is large.
+The surprise is not fully resolved here. Knowing that `Map` is faster at lookup is not the same as understanding why — or what a collection is actually doing when it "encodes an assumption." That is the next section.
 
 ---
 
@@ -44,103 +52,135 @@ The surprise is not resolved yet. The question is not just "which is faster." Th
 
 A collection is not a container. It is a performance contract.
 
-Each Java collection type makes specific operations cheap and other operations expensive. `List` makes iteration and indexed access cheap. Lookup by value — "find the element matching this key" — costs O(n): the worst case scales linearly with the size. `Map` makes keyed lookup cheap: O(1) on average, regardless of size. Its cost is that it imposes no iteration order over entries. `Set` makes membership testing cheap: O(1) on average. Its cost is that elements carry no index and no guaranteed order.
+Each Java collection type makes specific operations cheap and other operations expensive. Those costs are not accidents. They follow from the internal structure the collection uses to store elements.
 
-The choice of collection is a decision about which operations deserve O(1) performance. That decision cannot be undone after the rest of the code is written around it. A `List` used as a lookup table compiles, runs, and produces correct output — until the collection is large enough to expose the O(n) cost. By then, the rest of the code may depend on `List` semantics, and migration is expensive.
+`List` preserves insertion order and supports indexed access in O(1). Looking up an element by a key — "find the book with ISBN 978-0-7432-7356-5" — requires scanning the list in the worst case. That cost is O(n): it grows linearly with the number of elements.
 
-> **Misconception Checkpoint:** It is tempting to think that correctness guarantees good performance — if the code returns the right answer, the implementation is fine. But correctness and performance are independent properties. A program can be completely correct and unacceptably slow. The correct model holds that collection type determines the performance contract, not the output. Two programs can agree on every answer while disagreeing dramatically on cost.
+`Map` stores key-value pairs and maintains an internal structure that converts a key into a storage position in roughly constant time. Keyed lookup costs O(1) on average regardless of how many entries the map holds. The cost is that map entries have no defined iteration order and no index.
+
+`Set` stores unique elements and supports membership testing in O(1) on average. Its cost is that elements carry no index and duplicates are silently discarded.
+
+The choice of collection type is a decision about which operations deserve O(1) performance. That decision cannot be undone after the rest of the code is written around it.
+
+> **Misconception Checkpoint:** It is tempting to think that correctness guarantees adequate performance — that if the code returns the right answer, the implementation is fine. But correctness and performance are independent properties. The correct model holds that a program can be completely correct and unacceptably slow at the same time. The key distinction is that collection type determines the *cost* of each operation, not its *output* — two programs can agree on every answer while disagreeing dramatically on how long each answer takes to produce.
+
+**Code Trace — List.contains() vs Map.get() side by side:**
+
+```java
+// List lookup — O(n): scans until match found or end reached
+List<Book> catalog = new ArrayList<>();
+// ... fifty thousand books added ...
+Book found = null;
+for (Book b : catalog) {
+    if (b.getIsbn().equals("978-0-7432-7356-5")) {
+        found = b;
+        break;
+    }
+}
+
+// Map lookup — O(1) average: key hashes directly to position
+Map<String, Book> index = new HashMap<>();
+// ... same fifty thousand books added, keyed by ISBN ...
+Book found = index.get("978-0-7432-7356-5");
+```
+
+The `List` version examines up to fifty thousand entries on a miss. The `Map` version examines one slot regardless of how large the index grows. Both `found` variables hold the same `Book` object.
 
 ---
 
 ## Try Looking At It This Way
 
-Consider a physical library's reference desk.
+**Target:** Java collection types — `List`, `Map`, and `Set` — and their operation cost contracts.
 
-A new librarian arrives and stores all call slips in a single stack. Any patron request requires the librarian to flip through the stack from the top until the matching slip appears. This always produces the correct slip. With ten patrons, the delay is negligible. With ten thousand patrons, the delay is not.
+**Base:** A physical reference desk in a large library, staffed by two different librarians with two different systems.
 
-An experienced librarian uses a card catalog: a set of drawers organized by the first letter of the patron's name, then alphabetically within that letter. Any patron request requires the librarian to open the correct drawer and locate the slip directly. This also always produces the correct slip. With ten patrons or ten thousand, the number of physical steps is nearly the same.
+**Features:**
+- The first librarian keeps all patron request slips in a single stack. Finding any slip requires working through the pile from the top until the matching slip appears. The system always produces the correct slip. The time to find a slip grows with the number of slips in the stack.
+- The second librarian uses a card catalog: drawers organized by the first letter of the patron name, then alphabetically within each drawer. Finding a slip requires opening one drawer and locating the card directly. The time to find a slip is nearly the same whether the drawer holds ten cards or ten thousand.
+- A third librarian keeps a registry — a board listing only the names of patrons who currently have overdue items. Checking whether a patron is overdue requires scanning the board until the name appears or the end is reached — unless the board is organized for fast lookup, in which case the check is nearly instant.
 
-Now map this to Java collections.
+**Commonalities:**
+- Stack of slips ↔ `List`: sequential scan is the primary operation; lookup cost grows with size because there is no structure that shortens the search.
+- Card catalog drawer ↔ `Map`: the organizational structure converts a key (the patron name) into a position (the drawer) directly; lookup cost stays constant because the structure does the navigation.
+- Overdue registry ↔ `Set`: the purpose is membership testing ("is this patron on the list?"); the structure supports that question efficiently and prevents duplicate entries by design.
 
-The stack of call slips corresponds to a `List`. The operation is sequential scan. The cost grows with the number of elements. The card catalog corresponds to a `Map`. The operation is direct retrieval by key. The cost is roughly constant regardless of size.
+**Boundaries:**
+- A physical card catalog is alphabetically ordered, so range queries ("all patrons whose names start with S") come naturally. Java's `HashMap` is not ordered — it sacrifices ordering for O(1) lookup. A `TreeMap` preserves key order at O(log n) per operation. The card catalog maps cleanly to `TreeMap`, not `HashMap`.
+- The card catalog analogy implies some physical traversal: opening a drawer, flipping past a few cards. Java's `HashMap` involves no traversal in the best case — the hash function computes the slot directly. The drawer metaphor suggests O(log n); the actual behavior is O(1) average case.
 
-Both mechanisms store the same data. Both return correct results. Their structures encode different assumptions about which operation will be performed most often and how large the collection will grow.
-
-The feature mapping: patron name corresponds to the key in a `Map`. The call slip corresponds to the value. The drawer corresponds to the hash bucket. The alphabetical drawer organization corresponds to the hash function that converts a key into a position.
-
-**Boundaries of this analogy:** A physical card catalog is alphabetically ordered, so range queries ("give me all patrons whose names start with S") are natural. Java's `HashMap` is not ordered — it sacrifices ordering for O(1) lookup. A `TreeMap` preserves key order at the cost of O(log n) operations. The analogy also does not capture how `Set` differs from `Map`. A `Set` is like a registry that records only which patron names are present, not what they checked out.
+**Conclusions:** The librarian's organizational choice encodes an assumption about which operation will be performed most often. The collection type choice in code encodes the same assumption. When the assumption matches the actual usage pattern, the operation is fast. When it does not, correctness is preserved but performance degrades invisibly until the collection is large enough to expose the mismatch.
 
 ---
 
 ## Where The Analogy Breaks
 
-The card catalog analogy breaks at duplicates and ordering.
+Unlike the card catalog, a `Map` does not allow two entries under the same key.
 
-A physical card catalog can hold two slips for the same patron name, one behind the other. A `Map` cannot: each key maps to exactly one value. If you insert a second value under the same key, the first is overwritten. The catalog drawer has no equivalent of this constraint.
+A physical drawer can hold two slips for different patrons who happen to share a name — the librarian distinguishes them by looking at additional fields. A `HashMap` cannot: each key maps to exactly one value. Inserting a second value under the same key silently overwrites the first. The drawer has no equivalent of this constraint, which makes it a poor model for reasoning about key collisions in application data.
 
-The analogy also implies that lookup involves some physical traversal — opening a drawer, flipping past a few slips. Java's `HashMap` lookup ideally involves no traversal at all: the hash function computes the slot directly. The drawer metaphor suggests O(log n) behavior; the actual behavior is O(1) average case.
-
-Do not use the card catalog to reason about hash collision behavior or worst-case HashMap performance.
+This matters because real catalogs contain data entry errors. Two book records with the same ISBN but different author spellings will collide in a `Map`. The second record overwrites the first. No exception is thrown. The lost record is invisible unless the developer explicitly checks for the overwrite condition.
 
 ---
 
 ## Small Discovery
 
-The following data comes from a different domain: a city's parking enforcement department. Read it and look for a pattern before answering the question below.
+The following data comes from a city's parking enforcement department. Each lot generates citation records. Staff look up citations by license plate number throughout the day.
 
-| Lot ID | Citation lookups per day | Data structure used | Average lookup time (ms) |
-|--------|--------------------------|---------------------|--------------------------|
-| A-14   | 12,000                   | sorted array scan   | 47                       |
-| B-02   | 12,000                   | hash table          | 2                        |
-| C-07   | 850                      | sorted array scan   | 44                       |
-| D-11   | 850                      | hash table          | 3                        |
-| E-09   | 50                       | sorted array scan   | 41                       |
-| F-03   | 50                       | hash table          | 2                        |
+| Lot ID | Records in database | Daily lookup requests | Data structure | Avg lookup time (ms) |
+|--------|--------------------|-----------------------|----------------|----------------------|
+| A-14   | 8,200              | 12,000                | sequential scan | 38                  |
+| B-02   | 8,300              | 12,000                | hash table      | 2                   |
+| C-07   | 8,100              | 850                   | sequential scan | 37                  |
+| D-11   | 8,400              | 850                   | hash table      | 3                   |
+| E-09   | 8,050              | 50                    | sequential scan | 36                  |
+| F-03   | 8,200              | 50                    | hash table      | 2                   |
 
-Look at the lookup time column. Notice what changes and what does not as the lookup volume increases.
+Look at the "Avg lookup time" column. Notice what changes and what does not as the daily lookup request count increases. Notice which variable seems to drive the lookup time for the sequential scan lots.
 
-Now predict: if a seventh lot, G-01, uses a sorted array scan and receives 120,000 lookups per day, what would you expect its average lookup time to be — and why?
+Now predict: a seventh lot, G-01, uses a sequential scan, holds 80,000 records, and handles 200 daily lookups. Write down your estimate for its average lookup time — and your reason — before reading further.
 
 ---
 
-The lookup time for the array scan lots is roughly constant around 44 ms regardless of whether the lot handles 50 or 12,000 lookups per day. The time per lookup does not depend on how many lookups there are — it depends on how many records are in the array being scanned.
+For the sequential scan lots (A-14, C-07, E-09), the average lookup time is nearly constant at 36–38 ms regardless of whether the lot processes 50 or 12,000 daily lookups. Volume does not change per-lookup cost.
 
-This is the key distinction: lookup count per day and lookup cost per operation are different variables. The sorted array scan pays its cost for each lookup regardless of how many lookups are requested. The hash table pays a smaller cost per lookup, regardless of volume.
+What does change the scan time is the number of records in the database — the size of the structure being scanned. G-01 holds 80,000 records, roughly ten times more than the other scan lots. Its lookup time would be approximately ten times longer: somewhere around 360–380 ms per lookup, not 38 ms.
 
-If G-01 uses a sorted array scan for a collection of the same size as the other lots, its average lookup time would be approximately 44 ms — the same as the other scan-based lots. Volume does not change per-operation cost.
+The concept named here is *complexity class*: the relationship between input size and operation cost. Sequential scan is O(n) — cost scales with the number of records, not the number of queries. Hash table lookup is O(1) — cost stays constant regardless of how many records are stored.
 
-What would change the lookup time is the size of the array being scanned, not the number of queries.
+This pattern appears everywhere: a database table without an index, a spreadsheet lookup function scanning row by row, a manual filing system with no organizational structure. The structure chosen to store data determines which operations are fast. Volume of use does not.
 
 ---
 
 ## What This Changes
 
-A reader who has worked through this chapter can now explain why two programs with identical outputs can have entirely different scalability properties. They can name the primary operation a collection must support and use that name to select the collection type — rather than defaulting to the familiar one. They can read a `Comparator` chain and identify what ordering rule it encodes, and they can explain why the rule exists as a named object rather than as inline comparison logic.
+A reader who has worked through this chapter can now explain why two correct programs can have entirely different scalability properties. They can name the three most common operations a collection will perform, match each operation to the collection type that makes it O(1), and state what that type gives up. They can read `Comparator.comparing(Book::getAuthorLastName).thenComparing(Book::getTitle)` and explain why the ordering rule exists as a named object — so that when the requirement changes, only the rule object is replaced, not the entire sort implementation.
 
-The question that comes next: collections organize data in memory. But a user does not see memory — they see a screen. The sorted, filtered `List<Book>` is not visible until it is bound to a display component. How does a collection become a view? And when the collection changes — a book is checked out, a new title is added — how does the view learn about the update without receiving a direct reference to the underlying data?
+The specific code that looks different: a student who previously wrote `list.stream().filter(b -> b.getIsbn().equals(isbn)).findFirst()` for every lookup now sees that call as an O(n) operation disguised as a one-liner. They reach for a `Map` before writing the method, not after the performance complaint arrives.
 
-That is the model-view problem. It is where the next module begins.
+**Practice Bridge:** In the library semester project, locate the method that finds a book by ISBN. If it iterates a `List<Book>`, replace the `List` with a parallel `Map<String, Book>` keyed on ISBN. Add a method that populates the map from the existing catalog. Benchmark `findByIsbn()` on a catalog of one hundred books and again on ten thousand books. Record both times and state whether the ratio matches what the complexity analysis predicts.
+
+The open question: collections organize data in memory. A user does not see memory — they see a screen. The sorted, filtered `List<Book>` is invisible until it is bound to a display component. When a book is checked out and the collection changes, how does the display learn about the update without holding a direct reference to the underlying data? That is the model-view problem, and it is where the next module begins.
 
 ---
 
 ## Wonder Questions
 
-1. A `HashMap` lookup is O(1) average case. But "average case" hides something. What event converts a `HashMap` lookup into O(n) worst case — and under what real-world conditions might an attacker deliberately cause that event?
+1. A `HashMap` lookup is O(1) *average case*. What event degrades it to O(n) worst case — and under what conditions might an attacker deliberately trigger that event against a web application that uses a `HashMap` to parse request parameters?
 
-2. `Comparable` allows only one natural ordering per class. But a book has many plausible natural orders: by title, by author, by ISBN, by publication year. What principle should guide which ordering gets to be "natural" — and is that principle intrinsic to the object, or is it always a convention?
+2. `Comparable` permits only one natural ordering per class. A `Book` has several plausible natural orders: by title, by ISBN, by publication year. What principle should determine which ordering is "natural" — and is that principle intrinsic to the object, or is it always a convention chosen by the author of the class?
 
-3. The stream pipeline `filter().sorted().collect()` does not modify the source collection. This is described as safe and clean. But what happens to memory when the source collection has one million elements, the filter keeps nine hundred thousand, and the operation is called repeatedly on every user interaction?
+3. The stream pipeline `filter().sorted().collect()` produces a new collection without modifying the source. This sounds safe. What happens to memory when the source contains one million books, the filter keeps nine hundred thousand, and the pipeline is called on every user interaction?
 
-4. `Set` eliminates duplicates automatically. But "duplicate" requires a definition of equality. If two `Book` objects have the same ISBN but different author spellings due to a data entry error, are they duplicates? What mechanism in Java controls this definition — and what breaks silently when that mechanism is implemented incorrectly?
+4. `Set` eliminates duplicates automatically. But "duplicate" requires a definition of equality. If two `Book` objects have the same ISBN but different author spellings, are they duplicates? What Java mechanism defines this — and what fails silently when that mechanism is implemented incorrectly?
 
-5. The chapter recommends choosing a collection type by operation profile before writing code. But in practice, requirements change: a collection built for iteration later acquires a performance-critical lookup requirement. What is the cost of migrating from `List` to `Map` after the rest of the system is already written against `List` semantics — and what design patterns exist to reduce that migration cost?
+5. The chapter recommends choosing collection type before writing code. In practice, requirements change: a collection built for iteration later acquires a performance-critical keyed lookup requirement. What does migration from `List` to `Map` cost after the rest of the system is written against `List` semantics — and what design patterns reduce that cost?
 
 > **Precision Summary**
 >
-> **What this concept is:** The principle that collection type encodes an operation performance contract. `List` makes iteration O(n) and lookup O(n). `Map` makes keyed lookup O(1). `Set` makes membership testing O(1). `Comparator` is a named, external ordering rule that separates the sort criterion from the objects being sorted.
+> **What the concept is:** Collection type is a performance contract. `List` makes ordered iteration cheap and keyed lookup O(n). `Map` makes keyed lookup O(1) and sacrifices defined iteration order. `Set` makes membership testing O(1) and eliminates duplicates automatically. `Comparator` is a named, external ordering rule — an object that separates the sort criterion from the objects being sorted so that changing the rule requires replacing one named object, not excavating inline comparison logic.
 >
-> **What it explains:** Why two correct programs can have radically different scalability. Why choosing `List` for everything is a performance risk, not a style choice. Why a sorting rule should be expressed as a named object rather than inline comparison logic.
+> **What it explains:** Why two programs with identical outputs can have radically different scalability. Why defaulting to `List` for every collection is a performance risk, not a style choice. Why a sort rule should be expressed as a named `Comparator` object rather than as anonymous inline comparisons — so that the rule is visible, replaceable, and testable.
 >
-> **What it does NOT mean:** It does not mean `List` is wrong. `List` is the right type when the primary operation is ordered iteration. It does not mean AI-generated comparators are unsafe — they are appropriate for mechanical expression of a rule the developer has already specified. It does not mean correctness and performance are the same property.
+> **What it does NOT mean:** It does not mean `List` is wrong — `List` is correct when ordered iteration is the primary operation. It does not mean AI-generated `Comparator` chains are unsafe — mechanical expression of a rule the developer has already specified is an appropriate use of AI assistance. It does not mean correctness and performance are the same property.
 >
-> **What comes next:** The sorted, filtered collection must be bound to a display component. When the collection changes, the display must update. That problem — separating the data model from the view and propagating changes between them — is the subject of the next module.
+> **What comes next:** The sorted, filtered collection must be bound to a display component. When the collection changes, the display must update without holding a direct reference to the underlying data. That problem — separating the data model from the view and propagating changes between them — is the model-view problem, and it is the subject of the next module.

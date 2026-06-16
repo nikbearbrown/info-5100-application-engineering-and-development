@@ -4,139 +4,162 @@
 
 ---
 
-> **Content Notice:** The chapter title says "Objects and Classes," but the chapter's core argument is about *object references traveling through a multi-screen flow*. The curriculum alignment section lists constructors, instance variables, and static fields — all present but subordinate. The real puzzle is reference identity: when two panels display the same title, are they reading the same object? This companion follows the chapter's actual argument, not just its header.
+> **Content Note:** The chapter title and EDGE outline promise constructors, instance variables, and static fields. Those terms appear but do not drive the argument. The chapter's actual claim is narrower and more surprising: a user flow is a path through object state, not a sequence of screens, and the traveling object must be the same reference at every step — not a copy. This companion follows that argument.
 
 ---
 
 ## The Strange Question
 
-Two panels in a running Java application display the same book title. The checkout panel shows it. The confirmation panel shows it. A programmer changes the book's status field on the checkout panel. The confirmation panel shows the old status.
+A Java application runs. The user selects a book on the result screen. The checkout screen displays the correct title and author. The user confirms the loan. The confirmation screen displays the correct title — but the loan status still reads "available."
 
-Both panels displayed the same title. Only one panel saw the update. What explains the difference?
+The checkout panel updated the status field. The confirmation panel did not see the update. Both panels displayed the same title. Only one panel saw the change.
+
+What explains the difference between a field that propagated and a field that did not?
 
 ---
 
 ## First Intuition
 
-Most learners approach this by thinking about display. If two screens show the same data, they reason, those screens must be connected. The connection is the data itself — the string "Dune," the author name, the ISBN. When data is the same, the screens feel equivalent.
+Most learners reason from the display outward. Two screens show the same title. Therefore those screens are working from the same data. If data is the same, state is the same. Updates made anywhere are visible everywhere.
 
-This intuition comes from everyday experience with forms and spreadsheets. A cell value is a cell value. Copy it and you have two independent cells. Edit one; the other is untouched. That behavior feels normal, even correct.
+This model comes from forms and spreadsheets. A cell value is just a value. Paste it somewhere else and the paste is independent. Change the source; the paste is untouched.
 
-Applying this model to Java objects, learners expect that two panels showing identical data are working with independent copies. Updates stay local. Each panel owns its own version of the state.
+Applied to Java, this produces a specific prediction. Two panels with identical display values hold independent copies. A change in one panel stays in that panel. Each screen manages its own version of the state.
 
-*Before reading further: how does your mental model explain what should happen when a user selects a book on one screen and proceeds to a different screen? Does the book "move"? Is it "sent"? Or does something else happen?*
+> **► Planning prompt:** Write your mental model explicitly before continuing. When a user selects a book on the result screen and the application navigates to checkout, what do you predict happens to the Book object? Does it move? Is it copied? Is a new one created? Write your prediction and the experience it comes from.
 
 ---
 
 ## The Surprise
 
-But Java does not copy objects when you pass them between methods.
+But Java does not copy objects when passing them between methods.
 
-When a method receives an object as a parameter, it receives a reference — an address pointing to a single object in memory. There is no copy. There is one `Book`. There are two references to it.
+A method that receives an object as a parameter receives a reference — a variable holding the memory address of one object. There is no duplication. There is one `Book` in memory and one variable pointing at it.
 
-This means: if two panels hold references to the same `Book` object, an update made through one reference is immediately visible through the other. The object is not local to either panel. It exists in memory, independent of both, and both panels are reading from and writing to the same location.
+```java
+checkoutPanel.setBook(selectedBook);
+layout.show(container, "checkout");
+```
 
-Now return to the opening puzzle. Both panels showed the same title. But the checkout panel saw the update and the confirmation panel did not. If Java passes references, not copies, how did those two panels end up pointing at *different* objects?
+After the first line, `checkoutPanel` holds a reference to the same `Book` that the result panel selected. Any modification `checkoutPanel` makes to that `Book`'s fields is immediately visible to any other code that holds a reference to the same object.
 
-*What assumption does your current model make about when a new object gets created? Where in the flow might a second `Book` have been constructed without the programmer realizing it?*
+Now the puzzle sharpens. If Java passes references, both panels should see every update. But the confirmation panel missed the status change. That means the confirmation panel was not looking at the same object. Somewhere in the flow, a second `Book` was constructed.
+
+> **► Monitoring prompt:** Where in the flow could a second Book have been created without the programmer noticing? What assumption does your model make about when object construction happens? What does your model still fail to explain about why the title matched but the status did not?
 
 ---
 
 ## The Hidden Structure
 
-Therefore, the puzzle resolves as soon as the moment of object construction is located.
+Therefore the failure has a precise location: any line in the flow that calls `new Book(...)` rather than accepting a reference to an existing one.
 
-Java passes references — but only when the same object is passed forward. If any screen in the flow constructs a *new* object — even using identical field values — that screen now holds a different reference. The two references look identical when displayed. They point to different locations in memory. An update through one is invisible to the other. This is the *lost-reference failure*.
-
-The core mechanism is **reference identity**. Two variables either point to the same object — same identity, same memory address — or they do not. Identical display values do not imply identical identity.
-
-The design that prevents this failure is **explicit reference passing**: each panel receives the same object reference through a setter method before it becomes visible. The setter stores the reference. The panel reads from it and, if permitted, writes to it. No panel constructs its own copy of the domain object.
-
-**Key terms:**
-- **Reference** — a variable that stores the memory address of an object, not the object's data directly.
-- **Reference identity** — two variables share identity when they point to the same memory address. Java's `==` operator tests identity; `.equals()` tests value equivalence.
-- **Setter method** — a method that accepts an object reference and stores it as an instance variable, giving the panel access to a shared object.
-- **Setter-before-show contract** — the rule that a panel's setter must be called before `CardLayout.show()` is called, so the panel's display code reads from an initialized reference.
+If a panel constructs its own `Book` — even by reading the same database row, even using identical field values — it produces a second object at a different memory address. The two objects look identical when displayed. They are not the same object. An update made through one reference is invisible to any code holding the other reference.
 
 **Misconception Checkpoint:**
-It is tempting to think that passing the same data to two panels is equivalent to passing the same object. But two panels constructed from the same database row hold two independent objects with no shared identity. The correct model holds that only an explicit reference — the same variable, the same memory address — guarantees that an update in one panel is visible in another.
+> "It is tempting to think that two panels displaying the same data are reading from the same object. But identical display values do not imply shared identity. The correct model holds that only an explicit reference — the same memory address, passed forward through setter methods — guarantees that mutations in one panel are visible in another. The key distinction is between value equivalence (same field contents) and reference identity (same object in memory): Java's `.equals()` tests the first; `==` tests the second, and the screen-flow problem requires the second."
+
+**Code Trace:**
+
+```java
+// Setter-before-show: correct order
+checkoutPanel.setBook(selectedBook);   // reference stored
+layout.show(container, "checkout");    // panel now visible, reference ready
+
+// Premature display: incorrect order
+layout.show(container, "checkout");    // panel visible
+checkoutPanel.setBook(selectedBook);   // reference stored too late
+                                       // panel may have rendered with null
+```
+
+The first block satisfies the setter-before-show contract. The second allows the panel's display code to run before the reference exists.
 
 ---
 
 ## Try Looking At It This Way
 
-Consider a whiteboard and two students in a classroom.
+**Target:** A Java object reference passed between panels in a CardLayout flow
 
-The whiteboard is the object. It holds information — a title, a set of notes, a diagram. The first student faces it from the left; the second faces it from the right. Both students are looking at the same whiteboard. If the first student erases a word and writes a correction, the second student sees the correction immediately. The whiteboard is one thing. Two observers do not produce two whiteboards.
+**Base:** A document pinned to a shared office noticeboard
 
-Now map this to the Java application. The `Book` object is the whiteboard. The checkout panel and the confirmation panel are the two students. When a setter method hands a panel a reference to the `Book`, it is pointing the panel at the whiteboard — not handing it a photograph of the whiteboard.
+**Features:**
+- The document exists in one location. Everyone who reads it walks up to the same physical object. There is no personal copy distributed to each reader.
+- Writing on the document changes what every reader sees the next time they look. The change does not need to be "sent" to anyone. It is already there.
+- A reader can be given the room number and cabinet label — an address — rather than a photocopy. They arrive at the document using the address. Two readers with the same address find the same document.
 
-The shared reference and the shared whiteboard behave the same way: one object, multiple observers, all changes immediately visible to everyone looking at the same thing.
+**Commonalities:**
+- One object, multiple accessors — the noticeboard document and the Java object both exist independently of how many references point at them. Holding a reference does not duplicate the target.
+- Address instead of copy — passing `selectedBook` between panels is like handing someone the cabinet label, not photocopying the document. The recipient navigates to the same thing.
+- Mutation propagates — writing on the noticeboard changes the single source. Modifying a field through one Java reference changes the single object. Every other reference-holder reads the change.
 
-The whiteboard analogy works for the following reasons. A whiteboard exists independently of who looks at it, just as a Java object exists independently of which panel holds a reference to it. Observers do not own the whiteboard; they access it. Panels do not own the domain object; they hold a reference to it. Writing on the whiteboard changes what every observer sees. Mutating an object through one reference changes what every reference-holder reads.
+**Boundaries:**
+- The analogy does not represent duplication. A Java program can call `new Book(...)` and produce a second object with identical contents. In the physical world, two documents with identical text are obviously two documents. In Java, two `Book` objects with identical fields are indistinguishable through their displayed values. Only `==` reveals the duplication.
+
+**Conclusions:** The noticeboard model captures reference sharing accurately for the normal case. It fails to represent the silent duplication that produces the lost-reference failure, which is the most dangerous case precisely because it looks identical to the correct case.
 
 ---
 
 ## Where The Analogy Breaks
 
-Unlike a whiteboard, a Java object can be duplicated — and the duplicate looks identical from the outside.
+> "Unlike a noticeboard document, a Java object does not resist duplication. This matters because the lost-reference failure is invisible at the display layer — two panels can show identical titles while pointing at different objects — and the duplication may have been introduced by a single unnoticed `new Book(...)` call inside a panel's initialization code."
 
-If a panel constructs a new `Book` using the same title and author, it produces a second whiteboard with identical writing. An observer looking at the second whiteboard sees the same initial content. But when the first whiteboard is updated, the second whiteboard is not. The observer at the second whiteboard cannot tell from the content alone that they are looking at a copy.
-
-This matters because the lost-reference failure is invisible at first glance. Two panels display the same data. The application looks correct in a forward, happy-path demo. The failure only appears when a modification is made and expected to propagate. By that point, the programmer may assume the bug is in the display logic — the wrong layer entirely.
-
-The whiteboard analogy cannot represent this failure, because in the physical world two identical whiteboards would be obviously two different objects. In Java, two objects with identical field values are indistinguishable through normal display. The only way to detect the duplicate is to inspect reference identity directly, not displayed content.
+The programmer looking at the running application sees correct titles on both screens and assumes the reference is shared. The assumption is wrong. No warning appears. No error fires. The failure only surfaces when a modification is expected to propagate and does not. By that point, the programmer's first instinct is to inspect the display code — the wrong layer entirely.
 
 ---
 
 ## Small Discovery
 
-Examine the following sequence of Java declarations. Do not run them — read them.
+Consider how commercial kitchens handle recipe versioning. A head chef updates the sauce recipe on a master card kept in a central binder. Line cooks who work from that binder see the update immediately the next time they open it. But a line cook who photocopied the recipe last Tuesday and keeps the copy at their station does not see the update. The copy is frozen at the moment it was made.
 
-```java
-String a = "library";
-String b = "library";
-String c = a;
-```
+The kitchen runs two services. The first uses the binder directly. The sauce is correct. The second service has one station using the binder and one using the copy. The sauce tastes different at one end of the pass than the other.
 
-Here is the raw data: three variables, all associated with the same text.
+**Pattern search:** What property of this system determines whether a cook sees the updated recipe? Write an answer before reading further.
 
-Look for a pattern: how many distinct objects exist in memory after these three lines execute? Write down a number before reading further.
+---
 
-Now: which variables share identity — meaning, which variables point to the same object in memory? Write your prediction: `a == b`, `a == c`, `b == c` — which of these evaluate to `true`?
+What determines update visibility is not whether the cooks have the same information. It is whether they are consulting the same source. Two cooks reading the same physical card see every change. Two cooks reading different cards — even cards with the same original contents — see diverging information the moment either card is changed.
 
-Revelation (read only after writing your prediction):
+**Guided prediction:** If the kitchen now moves all recipes to a shared digital screen visible to every station, what problem disappears? What new problem is introduced?
 
-In Java, `c = a` assigns the *reference* stored in `a` to `c`. After that line, `a` and `c` point to the same object. `a == c` is `true`. But `a` and `b` may or may not share identity — Java sometimes interns string literals, meaning `a == b` might be `true` or `false` depending on the JVM and context. This is exactly why Java provides `.equals()` for value comparison and `==` for identity comparison. The distinction matters in object flows: two `Book` variables built from the same string data are not guaranteed to share identity, and testing them with `==` will expose the difference.
+---
+
+The concept named here is **shared source versus distributed copy**. Update propagation is guaranteed only when all readers access the same authoritative object. Copies propagate nothing. In Java, an object reference is an address pointing to the shared source. Constructing a new object — even from identical data — produces a copy. The two patterns look the same at first use and diverge the moment a mutation occurs.
 
 ---
 
 ## What This Changes
 
-Before this chapter, a programmer looking at two panels displaying the same data would conclude the panels are in sync. After it, the same programmer asks a different question: are these panels holding references to the same object, or to different objects with identical values?
+**Question now answerable:** Why did the confirmation panel miss the status update even though it displayed the correct title? Because the confirmation panel held a reference to a different `Book` object — one constructed during panel initialization from the same data, producing a copy with no connection to the `Book` that the checkout panel modified.
 
-That question is testable. It has a definite answer. And it determines whether a mutation in one panel is visible in the other.
+**Specific code looks different:** When a programmer now reads `confirmationPanel.setLoan(newLoan)`, the question is no longer "does this pass data?" It is "does `newLoan` carry the same `Book` reference that the checkout panel modified, or did someone construct a new `Book` inside `newLoan`?" The surface form of the code and the reference chain it produces are two different things.
 
-The question that comes next: when the flow needs to handle errors — a book is unavailable at checkout, or the database write fails at confirmation — the object may be in a partially modified state. How does the application recover without leaving corrupted state in the object that panels are still pointing at? That is the question this chapter raises but does not answer. It belongs to error handling, which arrives in a later module.
+**Practice Bridge:** Before writing the two-screen flow for the semester project, fill out the state table the chapter specifies: screen, user action, object involved, fields read, fields written. For each row, identify the exact line of code that hands the object reference to the next panel. That line must come before the `layout.show()` call. Confirm that no panel in the table constructs a new domain object from raw field values.
+
+**Open question:** The flow works in the forward direction. What happens when the user navigates backward — from Checkout to Result — and the `Book` object has already been partially modified? The object is in a state that does not match what the result panel originally showed. That question belongs to error handling, which arrives in a later module.
 
 ---
 
 ## Wonder Questions
 
-1. If Java passes references instead of copies, what happens when a panel modifies a field it was not supposed to own — say, a confirmation panel that writes to the book's title? The modification goes through. Java does not enforce ownership rules. What does that mean for application design?
+1. Java does not enforce ownership rules. A confirmation panel can write to a `Book`'s title field if it holds a reference. Nothing in the compiler or runtime stops it. What does this mean for the design of a flow with five or more screens? What would a language feature that enforced field-level ownership look like?
 
-2. Two objects have identical field values. A programmer writes `if (bookA == bookB)` to check whether they are the same book. The condition evaluates to `false`. The programmer changes the check to `bookA.equals(bookB)` and it evaluates to `true`. Which check is correct for the screen-flow problem — and why does the answer depend on what the programmer is actually asking?
+2. A programmer replaces all explicit reference passing with a single static `Book` field in a utility class. Every panel reads and writes `AppState.currentBook`. The lost-reference failure disappears. What failure mode replaces it — specifically, under what condition does a shared static field produce incorrect state in a multi-user or concurrent context?
 
-3. A static field in Java is shared across all instances of a class. A programmer uses a static `Book` field in a utility class so every panel can access the current selection without passing references. This approach solves the reference-passing problem. What does it give up? Under what conditions would it produce the same lost-reference failure as the explicit-passing pattern?
+3. Two `Book` variables are checked with `bookA.equals(bookB)`. The result is `true`. The programmer concludes the panels are in sync. Explain precisely why this conclusion can be wrong, and what check would confirm synchronization for the purposes of the screen-flow problem.
 
-4. In the staging-object pattern, an `Appointment` object is constructed incomplete and gains fields as the user moves through screens. At what point does the object become "valid"? If the user abandons the flow midway, what is the state of the partially constructed object? Who is responsible for cleaning it up?
+4. The staging-object pattern constructs an `Appointment` across three screens, each adding fields. At what point is the object valid enough to be stored? If the user abandons the flow after the second screen, the object exists in memory with some fields set and others null. Who is responsible for that object, and what should happen to it?
 
-5. The setter-before-show contract is a rule that Java does not enforce — the compiler accepts the wrong order just as readily as the correct order. What would a language feature that enforced this contract look like? What tradeoff would it introduce?
+5. The setter-before-show contract is invisible to the compiler. Both orderings — setter first, show first — compile without error. A junior developer on a team has never heard the rule and writes the show call first because it "reads more naturally." What testing strategy would catch this before it reaches production?
 
 ---
 
 **Precision Summary**
 
-The core concept is **reference identity**: a Java variable stores the address of an object in memory, not a copy of the object's data. This explains how two panels can display identical content while pointing at different objects — and why only shared references guarantee that mutations propagate across panels. It does not mean that all Java variables are pointers in the C sense, nor that Java has no value types; primitive types are passed by value. What it prepares for is the error-handling problem: when a shared object is partially modified and the flow fails, the modification is already visible to every reference-holder, and recovery requires deliberately undoing or guarding the change.
+**What the concept is:** Reference identity — a Java variable stores the memory address of an object, not a copy of its data. Two variables may display identical values while pointing at different objects.
+
+**What it explains:** Why a modification made through one panel's reference is not visible through another panel's reference, even when both panels display the same initial data — and why the setter-before-show contract is not a style preference but a correctness requirement.
+
+**What it does NOT mean:** That Java objects are always shared. A `new Book(...)` call always produces a distinct object. Reference sharing is a consequence of explicit passing, not a default. Primitives (`int`, `boolean`) are passed by value and do not exhibit reference identity at all.
+
+**What comes next:** When a shared object is partially modified and the flow fails — unavailable book at checkout, database error at confirmation — the modification is already visible to every reference-holder. Recovery requires deliberately guarding or reversing the change. That is the error-handling problem, and it assumes everything this chapter established about reference identity.
 
 ---

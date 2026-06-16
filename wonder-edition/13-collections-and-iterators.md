@@ -3,136 +3,173 @@
 
 > **Wonder Edition:** Read this alongside the chapter, not instead of it.
 
-> **Content note:** Despite the title "Collections and Iterators," this chapter covers JUnit testing, executable behavioral claims, regression detection, and lambda/stream operations as verified transformations.
+> **Content note:** Despite the title "Collections and Iterators," this chapter covers JUnit testing, executable behavioral claims, regression detection, assertions, and lambda/stream operations. The Collections Framework appears briefly. The central subject is testing discipline.
 
 ---
 
 ## The Strange Question
 
-A method passes every test you run. It compiles. It produces output that looks correct. A teammate changes one unrelated class. You run the method again — it fails.
+Consider this specific scenario. A developer writes a `searchByTitle` method. It receives a query string and returns a list of matching books from the library catalog. The developer runs it. Five books appear. The right five books appear. The developer moves on.
 
-Nothing in the method changed. So what broke it?
+Three days later, a teammate refactors the `Book` class to normalize titles to lowercase on construction. The teammate does not touch `searchByTitle`. Nobody runs `searchByTitle` again.
+
+At the demo, `searchByTitle("Design")` returns an empty list. The method is unchanged. The teammate's change is unrelated. So what, precisely, caused the failure?
 
 ---
 
 ## First Intuition
 
-Most people answer: something must have changed in the method after all. Or: the tests were not thorough enough. Or: the teammate introduced a bug.
+Most people reach for the teammate's change immediately. The teammate touched the `Book` class. The search broke. Therefore the teammate broke it.
 
-All three feel plausible. None of them is the deepest answer.
+This feels logical. It is also incomplete. The teammate's change is the trigger, not the cause. The cause is older.
 
-The instinct points toward the code. The deeper answer points toward the claims made about the code. When the method "worked," what exactly did that word mean? What had been verified, and by whom, and when?
+The developer ran `searchByTitle` and saw correct output. That observation lived in the developer's memory. It could not run again on Tuesday. It could not compare new output to old output. It was a judgment made once about one moment. That is not verification.
 
-Before reading further, write down your answer to this question: what is the difference between "I ran the method and the output looked right" and "the method is correct"?
-
-> **Planning Metacognitive Prompt:** What assumptions are you making about what "correct" means? Are those assumptions written anywhere the computer can check them?
+> **Planning prompt:** Before reading further — what mental model do you hold right now about what "the code works" means? Rate your confidence on a 1–5 scale. Predict: will your model change after this chapter, or will it be confirmed? Write your prediction before continuing. This matters because you will check it at the end.
 
 ---
 
 ## The Surprise
 
-The method did not fail because something changed in the method. It failed because a claim about the method was never written down.
+But the teammate did not break the method. The teammate changed an assumption the method depended on without knowing it was an assumption.
 
-On Monday, the system happened to be in a state that made the output look right. The developer looked at the output and judged it correct. That judgment lived in a person's memory. It could not run again on Tuesday. It could not compare Tuesday's output to Monday's output. It could not report a failure.
+The `searchByTitle` method compared the query string to book titles using `contains`. Before the refactor, book titles were stored exactly as entered — "Design Patterns" with mixed case. After the refactor, they were stored as "design patterns" in lowercase. The query "Design" no longer matched.
 
-The method was never "correct." It was "unreported." The passing behavior was an observation about one moment, not a verifiable claim about the method's requirements.
+The method never stated that it required titles in their original case. That assumption was invisible. It was embedded in the setup every time the method ran and produced correct output. Nothing in the method changed. The ground beneath the method changed.
 
-But here is what makes this uncomfortable: the test suite that exists on Tuesday also does not prove the method is correct. A passing test proves exactly one thing — that on this specific input, with this specific setup, the output matched the stated requirement at the time the test ran. Nothing more.
+What still goes unexplained: if the developer had written a test before the demo, would the test have caught this? Yes — but only if the test was written in a way that created a specific title and searched for a specific string. A test that added a book titled "Design Patterns" and searched for "Design" would fail after the refactor. It would have flagged the regression the moment the refactor ran.
 
-> **Monitoring Metacognitive Prompt:** Does the existence of a test suite change whether the method is correct? Or does it change what you know about the method? Hold the distinction — it is not resolved yet.
+> **Monitoring prompt:** Name the hidden assumption the method made. Identify the moment that assumption was contradicted. Ask: what would it look like to write that assumption down in a form the computer can check?
 
 ---
 
 ## The Hidden Structure
 
-The chapter resolves the puzzle by separating two activities that most developers conflate: observing output and verifying claims.
+Therefore, the puzzle resolves when you separate two activities that look identical from the outside: observing output and verifying a claim.
 
-Observing output is informal. It requires a developer to be present, to run the program, to judge whether the result looks right, and to remember that judgment. The judgment cannot be rerun. It cannot be shared automatically. It decays as the system changes.
+Observing output requires a developer, a running program, a moment of judgment, and a memory. The judgment is informal. It cannot be replayed. It cannot detect change. It belongs to one person at one time.
 
-Verifying a claim is formal. A claim takes the form: "When the library has these books and the query is this string, the search method returns this specific list." That sentence is a requirement. A test encodes the requirement as an assertion the computer can check, anytime, without a developer present.
+Verifying a claim requires none of those things. A claim takes the form: "When the catalog contains a book titled 'Design Patterns' and the query is 'Design', `searchByTitle` returns a list of size one." That sentence is a requirement. A test encodes it as an assertion. The computer can check it at any time, without anyone present, including after the surrounding code has changed.
 
-It is tempting to think that tests prove code is correct. But tests cannot enumerate every possible input, so no finite test suite covers all cases. The correct model holds that tests make claims explicit and executable. A passing test is evidence that a specific stated claim holds. It is not a proof of general correctness. The value is precision and repeatability, not certainty.
+**Misconception Checkpoint**
 
-The null-input failure in the chapter illustrates this exactly. The assumption "the query is never null" was real — it was embedded in the implementation. It was never stated as a requirement. The test did not create a bug; it surfaced an assumption that was already there, invisible.
+It is tempting to think that tests prove code is correct. But no finite test suite can enumerate every possible input, every possible system state, or every future change to the code's environment. The correct model holds that tests make claims explicit and executable — a passing test is evidence that a specific stated claim holds under specific conditions. The key distinction is between a test that confirms output looks right in one moment and a test that states a verifiable requirement that can be checked automatically whenever the codebase changes.
+
+**Code Trace**
+
+Here is a test that appears to check the search method but proves nothing:
+
+```java
+// Version 1 — no assertion; this is observation, not verification
+@Test
+void searchLooksRight() {
+    Library library = new Library();
+    library.addBook(new Book("Design Patterns", "Gang of Four"));
+    List<Book> results = library.searchByTitle("Design");
+    System.out.println(results);  // developer reads the output
+}
+```
+
+This test will always pass. It contains no assertion. The test runner cannot distinguish correct output from incorrect output. Now compare the corrected version:
+
+```java
+// Version 2 — assertion present; this is verification
+@Test
+void searchByTitleReturnsSingleMatch() {
+    Library library = new Library();
+    library.addBook(new Book("Design Patterns", "Gang of Four"));
+    List<Book> results = library.searchByTitle("Design");
+    assertNotNull(results);
+    assertEquals(1, results.size());
+}
+```
+
+The second version states a requirement. After the `Book` refactor, this test fails. That failure is information. It tells the developer exactly when the assumption broke and what the assumption was.
 
 ---
 
 ## Try Looking At It This Way
 
-Consider how a legal contract works.
+**Target:** A JUnit test suite for a method — a set of assertions that state what the method is required to do and check it automatically.
 
-**The base domain — contracts.** Before two parties sign a contract, their obligations exist only as intentions and verbal agreements. Those intentions may be genuine. They cannot be enforced automatically. After the contract is signed, the obligations are written down in a form a third party can interpret. If a dispute arises, the contract is consulted. The contract does not prevent bad behavior. It makes the expected behavior explicit enough to detect when it is violated.
+**Base:** A building inspection checklist used by a licensed inspector before a structure is approved for occupancy.
 
-**The target domain — test suites.** Before a test exists, a method's expected behavior exists only as the developer's intention. That intention may be genuine. It cannot be checked automatically. After the test is written, the expected behavior is encoded in assertions a test runner can execute. If a change breaks the behavior, the test runner detects it. The test does not prevent bugs. It makes the expected behavior explicit enough to detect when it is violated.
+**Features:**
+- Both encode requirements as explicit, checkable items before deciding whether the subject satisfies them.
+- Both can be re-run after changes — a remodel triggers a new inspection; a code change triggers the test suite.
+- Both distinguish failure modes: a checklist item can fail because the building is wrong, or because the requirement changed, or because the inspector set up the check incorrectly — parallel to the three reasons a test fails.
+- Both grow more valuable as the thing being checked grows more complex. A small shed needs fewer checklist items than a twelve-story building. A small method needs fewer tests than a method with six branches and three boundary conditions.
 
-**Shared features.** Both a contract and a test transform informal obligations into formal claims. Both enable automatic detection of violations. Both are written before disputes arise, not after. Both are more valuable over time than at the moment of writing.
+**Commonalities:**
+- The checklist item "emergency exit must open from inside without a key" corresponds to the assertion `assertEquals(1, results.size())` — each makes the requirement precise enough to check without judgment. This matters because precision is what enables automatic re-checking.
+- The inspector who re-runs the checklist after a remodel is performing regression detection. This matters because the passing tests from before the remodel are not guaranteed to pass after it.
+- The inspector does not write the checklist while inspecting. The checklist is written before the inspection begins, from the building code. This matters because writing a test after seeing the output biases the assertion toward what the implementation already does.
 
-**Mapped commonalities.** The assertion in a test corresponds to a contract clause. The test setup corresponds to the conditions under which the clause applies. The test runner corresponds to a judge checking whether the clause was violated. A regression corresponds to a breach.
+**Boundaries:**
+- Unlike a building inspection, a test suite is written by the same person who wrote the code under test. A building inspector has no involvement in the construction. This creates a blind-spot risk: the developer's assumptions about how the method works will shape the tests they think to write. An inspector has no assumptions to import. This is why the chapter recommends asking AI to suggest cases after writing your own assertions — not to offload thinking, but to find the cases your assumptions made invisible.
 
-**Boundary of the analogy.** A contract negotiates between parties with different interests. A test has no negotiating parties — the developer writes both the requirement and the implementation. Contracts can be ambiguous by design; test assertions must be precise or they fail to compile. The analogy holds for the detection-of-violations structure, not for adversarial dynamics.
-
-**Conclusion.** A test suite is a self-enforcing contract between a developer and their future self. Its value increases as the codebase grows, because there are more clauses to violate.
+**Conclusions:** A test suite is an inspector's checklist written by the builder. Its strength is repeatability and precision. Its weakness is that it reflects the builder's assumptions about what matters. Writing the assertion before the implementation is the closest analog to separating the inspector's role from the builder's role that a solo developer can achieve.
 
 ---
 
 ## Where The Analogy Breaks
 
-A contract is enforced by a third party after a violation occurs. A test suite runs before deployment and catches violations before they reach users. This is not a minor difference. It changes when information arrives. Tests shift the moment of discovery from after a failure is observed to before it is released. No contract analogy captures this temporal inversion. Do not let the analogy suggest that tests are reactive — they are proactive by design.
+Unlike a building inspection checklist, a test suite runs before the structure is occupied — before the code reaches users. An inspection happens after construction completes. Tests run continuously during construction, after every change. This matters because it shifts the moment of discovery. A test failure during development is cheap to fix. A regression discovered at the demo, or by a user, is expensive. The inspection analogy suggests a one-time review at the end. The test-suite reality is continuous re-checking throughout. Do not let the analogy imply that testing is a final step.
 
 ---
 
 ## Small Discovery
 
-Here is a short inquiry into a domain outside software.
+Consider what happens in commercial food manufacturing before a product reaches store shelves.
 
-Consider a recipe for bread. A baker follows the recipe and produces a loaf. The loaf looks right — golden crust, correct height, hollow sound when tapped. The baker declares success.
+**Raw data:** A cookie manufacturer runs a production line. The formula specifies flour, sugar, butter, and baking time. The cookies that come out of the oven look correct — golden, uniform, the right diameter. Quality control passes. The product ships.
 
-**Raw data.** The same baker follows the same recipe on five consecutive days. On day one: perfect loaf. On day two: dense, flat loaf. On day three: perfect loaf. On day four: dense, flat loaf. On day five: perfect loaf.
+Three weeks later, a supplier substitutes a different grade of butter with a slightly higher water content. The formula is unchanged. The oven temperature is unchanged. The cookies that come out are softer, with a shorter shelf life. Customer complaints arrive six weeks after the substitution.
 
-**Pattern search.** The recipe did not change. The oven did not change. What varied between the days?
+**Pattern search:** What changed? Not the formula. Not the oven. Not the baking time. The butter changed. But the quality control check only measured the output cookies — color, diameter, hardness at time of production. It did not measure the input ingredients against the formula's assumptions.
 
-Here is what the baker recorded: day one, flour from a new bag, humidity 40%. Day two, same flour bag, humidity 80%. Day three, new bag, humidity 41%. Day four, same bag, humidity 79%. Day five, new bag, humidity 38%.
+**Prediction — write before reading the next paragraph:** The quality control check passed because the cookies looked right at the time of production. What does this correspond to in software testing? What would a "boundary test" look like in this manufacturing context? Write your answer before continuing.
 
-**Guided prediction.** Before reading the next sentence, write down: what does the pattern suggest is the hidden variable? What is the "assumption" the recipe never stated?
+---
 
-**Revelation.** The recipe assumed low ambient humidity. Flour absorbs moisture from the air. At high humidity, the flour's water content changed, and the recipe's stated ratios no longer produced the right dough consistency. The assumption was real. It was embedded in every successful bake. It was never written down. The five bakes did not reveal the assumption — only the variation between conditions did.
+The revelation: the quality control check was observing output, not verifying claims about inputs. A proper specification would state: "butter must have water content below X percent." A check against that specification would fail immediately when the substitution occurred — not six weeks later when customers complained.
 
-This is what a boundary test does. The normal case (new bag, low humidity) always passes. The edge case (same bag, high humidity) reveals the assumption. A recipe that only specifies ingredients but not environmental conditions is an incomplete specification — exactly as a method that handles the happy path but never states its assumptions about null inputs is an incomplete specification.
+This is the boundary test. The normal case (standard butter, low water content) always passes. The boundary case (substitute butter, elevated water content) reveals the assumption the formula depended on. A recipe that specifies only output appearance but not input tolerances is an incomplete specification — exactly as a method that handles the happy path but never states its assumptions about input conditions is an incomplete specification.
 
 ---
 
 ## What This Changes
 
-A reader who has worked through this can now explain three things they could not explain before.
+A reader who has worked through this can now answer questions that were unanswerable before.
 
-First: why a method that "worked" can fail after a change to a different class. The method's behavior depended on an assumption embedded in the surrounding state. No test stated that assumption. No test ran to detect when the assumption was violated. When the state changed, the assumption broke silently.
+First: a method that "worked" on Monday can fail on Tuesday after an unrelated change because the method's correct behavior depended on an assumption embedded in the system state. No assertion stated the assumption. No test ran to detect when the assumption was violated. The failure was silent until a state change made the assumption false.
 
-Second: why five targeted tests — normal, empty, no-match, boundary, invalid input — are more valuable than fifty variations of the happy path. Each of the five covers a category of claim. The fifty variations cover one category more thoroughly without extending coverage to the others. The goal is not test count; it is claim coverage.
+Second: specific test code looks different now. A test that contains only `System.out.println` is not a test — it is a print statement annotated with `@Test`. A test that contains `assertNotNull(results)` and `assertEquals(2, results.size())` is a test. The assertion is what separates observation from verification.
 
-Third: why writing the assertion before writing the implementation is not pedantic. The assertion states the requirement. Writing it first forces the developer to have a requirement before they check whether the implementation satisfies it. Writing it after produces tests that verify whatever the implementation already does — which may or may not be the requirement.
+**Practice Bridge:** Write five JUnit tests for your project's `searchByTitle()` method — or the most search-like method in your domain. Cover: (1) normal case returning one result, (2) normal case returning multiple results, (3) empty collection returning an empty list, (4) query that matches nothing returning an empty list, (5) null input not throwing a `NullPointerException`. Each test must include at least one `assertEquals` or `assertNotNull`. At least one test must fail on first run and reveal an assumption in the implementation. Document what assumption it revealed and what you changed.
 
-The question that comes next is this: what happens when multiple components interact? A search method can pass all its unit tests and still fail in the application because the component calling it passes the wrong argument. Unit tests verify components in isolation. They cannot verify the interactions between them. That is the gap Module 14 will address.
+The open question pointing forward: a method can pass all five of these tests and still fail in the running application. The controller calling it can pass the wrong argument. The persistence layer can load malformed data. The GUI can display results before the method returns. Unit tests verify components in isolation. They cannot verify the interactions between them. Module 14 addresses that gap.
 
 ---
 
 ## Wonder Questions
 
-1. If a passing test is not a proof of correctness, what would a proof of correctness even look like — and why do most production systems not attempt it?
+1. If a passing test is not a proof of correctness, what would a proof of correctness look like? Formal verification tools exist — why do most production systems not use them?
 
-2. The chapter says a failing test is information. A developer says a failing test is an obstacle to shipping. Both are describing the same event. What are they actually disagreeing about?
+2. The chapter says a failing test is information. A developer says a failing test is an obstacle to shipping. They are describing the same event. What, precisely, are they disagreeing about?
 
-3. Regression tests catch behavior that breaks after a change. But who decides which behavior matters enough to protect with a test? What gets left unprotected, and why?
+3. Regression tests protect behavior that previously worked. Who decides which behavior matters enough to protect? What gets left unprotected, and what is the cost of that decision?
 
-4. A test is written for requirement A. The requirement changes to requirement B. The test still passes because the implementation satisfies both. The developer concludes the software is fine. What is wrong with this reasoning?
+4. A test is written for requirement A. The requirement changes to requirement B. The test still passes because the implementation satisfies both. The developer concludes the software is fine. What is wrong with this reasoning, and how would you detect it?
 
-5. The chapter draws a hard boundary: write assertions before asking AI to suggest test cases. What assumption does this boundary rest on? Under what conditions would that assumption be false?
+5. The chapter draws a boundary: write assertions before asking AI to suggest test cases. What assumption does this boundary rest on? Under what conditions would the assumption be false — and would the boundary still matter?
 
 > **Precision Summary**
 >
-> **What the concept is:** A test is an executable, precise claim that on specific inputs with specific setup, a method produces a specific required output.
+> **What the concept is:** A test is an executable, precise claim that on specific inputs with specific setup, a method produces a specific required output — a claim the computer can check automatically, anytime, without a developer present.
 >
-> **What it explains:** Why code that "worked" can break without the code changing; why boundary and invalid-input cases matter more than additional happy-path variations; why tests grow more valuable as a codebase grows.
+> **What it explains:** Why code that "worked" can break after an unrelated change; why five targeted tests covering normal, empty, no-match, boundary, and invalid-input cases are more valuable than fifty happy-path variations; why tests grow more valuable as the codebase grows and as the number of possible regressions increases.
 >
-> **What it does NOT mean:** Tests prove code is correct. Tests are complete specifications. A passing test suite means no bugs remain.
+> **What it does NOT mean:** Tests prove code is correct. A passing test suite means no bugs remain. Writing tests is a substitute for stating requirements before implementation.
 >
-> **What comes next:** How to verify behavior that spans multiple interacting components — the gap between unit testing and system correctness.
+> **What comes next:** How to verify behavior that spans multiple interacting components — the gap between unit testing and system correctness that Module 14 addresses through integration testing and end-to-end verification.

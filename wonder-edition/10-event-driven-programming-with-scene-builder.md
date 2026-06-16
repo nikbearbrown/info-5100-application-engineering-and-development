@@ -7,160 +7,172 @@
 
 ## The Strange Question
 
-A student builds a library catalog. Nine modules of work: `Book` objects, `Patron` objects, checkout rules, search logic. Everything works. The console prints correct output.
+A student completes nine modules of a library program. The console prints book titles, patron names, checkout records. Every method works. The model is correct.
 
-Then the student adds a GUI. A window opens. A table displays the same books. A search bar filters them. Everything still works — and looks completely different.
+Then the student adds a `TableView`. The window opens. The same catalog appears in rows and columns. The search bar filters by title. Everything still works — and looks completely different.
 
-Here is the precise question: what changed in the program's logic?
+Here is the specific failure to observe. The student types in the search bar. Rows disappear from the table. The filtered results appear correctly. Then the student types a second search without clearing the first. The results are wrong. Some books that should appear do not.
 
-The `Book` objects did not change. The checkout method did not change. The search method did not change. Nothing that decides what is true about the library changed at all.
-
-So if nothing about the program's decisions changed — what exactly did the GUI add?
+What broke? And more precisely: where is the broken logic living?
 
 ---
 
 ## First Intuition
 
-Most people answer immediately: the GUI added interactivity. Now the user can click things, type things, see things. The program stopped being passive. It started responding.
+The first instinct is to look at the search method. The model's `search()` logic must have a bug. It is not returning the right books the second time.
 
-That answer feels complete. A console program waits for the programmer to call methods. A GUI program waits for the user to click buttons. The difference is who drives the execution. That seems like the whole story.
+That instinct comes from console programming experience. In a console program, if output is wrong, the method computing the output is wrong. The method is the only place the logic lives. Debugging means reading the method.
 
-**Planning Metacognitive Prompt:** Before reading further, commit to this prediction. Write it down or hold it clearly. Ask: does "interactivity" fully explain what changed? Or does "responding to the user" still leave something unnamed?
+> **► Planning prompt:** Before continuing, write down your answer. Where do you expect the bug to be — in the model's search method, in the event handler, or somewhere else? What experience is driving that prediction? What would you check first, and in what order?
 
-The intuitive answer is partly right. But partly right means partly wrong. Something important is hiding inside the word "interactivity" — something about structure, not just behavior. The next section names it.
+The instinct is not wrong about methods. It is wrong about where the logic is living. This program has two places where "which books are shown" could be decided. The model decides which books match a query. The table decides which rows are visible. When those two decisions are separate, a search can appear to work once and fail the second time — without any bug in the model at all.
 
 ---
 
 ## The Surprise
 
-The intuitive answer treats the GUI as a feature added on top of the program. The program already worked. The GUI made it prettier and clickable. The structure stayed the same.
+The model's search method is fine. It returns the correct books every time it is called.
 
-But here is what actually happened structurally: the application split in two.
+The bug is in the table. The first search removed non-matching rows from the `TableView`'s items list. The table stored the removed rows nowhere. They are gone. When the second search runs, the model searches the full catalog and returns correct results — but the table's items list no longer contains the full catalog. It contains only the results of the first search. The model and the table now disagree about what the catalog is.
 
-Before the GUI, the program had one layer. Objects, methods, logic, output — all in the same conceptual space. After the GUI, the program has a layer that knows about books and checkout rules, and a separate layer that knows about windows, rows, and colors. These two layers do not know about each other.
+**But** — this creates an architectural puzzle that the bug alone does not resolve. If the table should not hold the authoritative book list, where does the list live? And if filtering means asking the model and then updating the table, how does the table "know" not to lose data it removed?
 
-That split is not cosmetic. It is architectural.
+The answer is that the table should never remove rows in the first place. But that requires treating the table as a display surface — not as a data store. That distinction is the architecture this module is built on. It is not intuitive. It has to be named.
 
-**But** — and this is the contradiction the intuitive answer misses — if the layers are truly separate, then the `Book` class should not know what color it is displayed in. The checkout method should not know which button triggered it. The search logic should not know it is being called from a search bar.
-
-The GUI did not add interactivity on top of the existing program. It forced the program to divide itself — to separate what is true from how truth is displayed.
-
-That division does not happen automatically. It requires a decision.
-
-**Monitoring Metacognitive Prompt:** Pause here. The claim is that adding a GUI forces an architectural split — not just a visual layer. Does that match what you built in previous modules? Was there ever a moment when display logic and business logic lived in the same place? What did that feel like, and what would it take to separate them?
-
-Leave that question open. The next section explains the structure that resolves it.
+> **► Monitoring prompt:** Hold the contradiction. The table displays books. The model holds books. These seem like the same thing — just in two different places. What assumption made them feel equivalent? What fact about the bug contradicts that assumption? What is still unexplained about how the table and model stay synchronized?
 
 ---
 
 ## The Hidden Structure
 
-The program split into three layers, not two. The chapter calls this MVC: Model, View, Controller.
+The program has three layers, and the search bug is a symptom of collapsing two of them.
 
-The model holds what is true. The view displays what is true. The controller moves information between them.
+The model holds what is true about the library. The view displays what the model holds. The controller translates user actions into model calls and view updates. These three layers are the MVC architecture the chapter describes.
 
-This is the resolution to the surprise. The GUI did not just add interactivity. It forced three distinct kinds of work to live in three distinct places. Work that decides domain truth belongs in the model. Work that renders things on screen belongs in the view. Work that translates user action into model operations belongs in the controller.
+The search bug collapsed the model and the view. The table's items list became the authoritative catalog. The model's catalog and the table's rows became two separate sources of truth. One source of truth is an architectural principle, not a preference.
 
-The split is the architecture. Interactivity is a consequence of having the split in place.
+**Misconception Checkpoint**
 
-**Misconception Checkpoint:** It is tempting to think that MVC is a design pattern a programmer chooses to use — like a feature that can be added to well-written code. But MVC is not optional decoration. The correct model holds that any GUI application already has these three responsibilities, whether or not they are separated. The only question is whether each responsibility lives in the right place or whether they are tangled together. Tangled code is harder to test, harder to change, and easier to break — not because MVC is a rule, but because tangled responsibilities create hidden dependencies.
+> "It is tempting to think that MVC is a design pattern a programmer selects — an optional layer of organization that experienced developers add to complex projects. But the three responsibilities already exist in every GUI application. The correct model holds that any program with a user interface already has domain logic, display logic, and translation logic — whether or not those three are separated. The key distinction is that untangled responsibilities can be tested and changed independently; tangled responsibilities cannot be tested at all, because the test cannot reach one without activating the other."
+
+**Code Trace**
+
+The bad pattern treats the table as the data store:
+
+```java
+// BAD: view-modifies-model-data — table becomes the catalog
+searchButton.setOnAction(e -> {
+    String query = searchField.getText();
+    tableView.getItems().removeIf(book ->
+        !book.getTitle().toLowerCase().contains(query.toLowerCase()));
+});
+```
+
+The correct pattern filters the model and updates the view:
+
+```java
+// CORRECT: controller calls model method, view reflects model result
+searchButton.setOnAction(e -> {
+    String query = searchField.getText();
+    ObservableList<Book> results = FXCollections.observableArrayList(
+        model.search(query)           // model owns the search logic
+    );
+    tableView.setItems(results);      // view displays whatever model provides
+});
+```
+
+In the bad pattern, `tableView.getItems()` is the catalog. In the correct pattern, `model.search()` is the catalog. The table is a window onto the model, not a copy of it.
 
 ---
 
 ## Try Looking At It This Way
 
-**Target domain:** The three-layer MVC split in a JavaFX application.
+**Target:** The three-layer MVC split in a JavaFX library application, where the `TableView` displays model objects and the controller mediates user actions.
 
-**Base domain:** A restaurant with a kitchen, a dining room, and a waiter.
+**Base:** A hospital with a records room, a patient display board, and a ward clerk.
 
-**Review the base:** A restaurant kitchen prepares food. It follows recipes, manages ingredients, and applies cooking rules. The kitchen does not arrange tables or take orders. The dining room displays food — plates are set, food is presented, the environment shapes how the meal is experienced. The dining room does not cook. The waiter moves between kitchen and dining room. When a guest orders, the waiter carries the request to the kitchen. When the kitchen is ready, the waiter carries the food to the table. The waiter translates between two domains without being either one.
+**Features:**
+- The records room stores patient files, diagnoses, and treatment histories. It applies medical rules. It does not know what the display board shows or what font it uses. It knows what is true about patients.
+- The display board shows current patient status — room assignments, alert flags, scheduled procedures. It does not make medical decisions. It shows what it is given.
+- The ward clerk receives requests from doctors and nurses, retrieves records from the records room, and updates the display board. The clerk translates between the two domains without being either one.
 
-**Identify shared features:**
-- Kitchen : does work according to rules, does not present to users → Model : holds business logic, does not know about the GUI
-- Dining room : presents results to users, does not make decisions about content → View : renders state, does not make business decisions
-- Waiter : translates requests in both directions, knows both sides → Controller : handles user input, calls model methods, updates the view
+**Commonalities:**
+- Records room does work according to rules, does not present — Model holds business state and logic, does not know about the GUI. Both exist to be correct, not to be visible.
+- Display board shows current status, does not decide content — View renders model state, does not make domain decisions. Both are reactive surfaces, not decision-makers.
+- Ward clerk translates in both directions, knows both domains — Controller receives user input, calls model methods, updates the view. Both are translators, not authorities.
 
-**Map commonalities:**
-- A kitchen that starts decorating plates is doing the dining room's job — just as a model that returns color strings is doing the view's job.
-- A waiter who cooks the food in the dining room has collapsed two separate roles — just as an event handler that computes business logic has absorbed model responsibility.
-- A guest who walks into the kitchen to request changes bypasses the waiter — just as a view that modifies model objects directly bypasses the controller.
+**Boundaries:** The analogy holds for responsibility separation. It does not capture JavaFX's reactive rendering. A hospital display board does not automatically update when a patient file changes. A `TableView` cell value factory recomputes from the model object at render time — the view reaches into the model object directly, without the clerk carrying each value manually. The clerk (controller) triggers re-renders; it does not copy every field.
 
-**Flag the boundaries:** The analogy holds for responsibility separation. It does not capture the live, reactive nature of the scene graph — the fact that when the model changes, the view must update immediately and automatically. A dining room does not re-render when the kitchen changes a recipe. A JavaFX `TableView` does, through its cell value factories.
-
-**Draw conclusions:** The restaurant analogy makes the three-layer responsibility split concrete. Each layer has one job. When any layer absorbs another layer's job, the whole system becomes harder to change — because a change in one domain now requires surgery in a different one.
+**Conclusions:** The hospital analogy makes the MVC split concrete. Each layer has one authority. When a layer absorbs another layer's authority — when the display board starts making triage decisions, or when the ward clerk starts practicing medicine — the system breaks in ways that cannot be tested at the point of failure.
 
 ---
 
 ## Where The Analogy Breaks
 
-The restaurant analogy captures separation but not synchronization.
+Unlike the hospital display board, the JavaFX `TableView` does not wait for the controller to carry each value from the model to the screen.
 
-In a restaurant, the dining room does not automatically update when the kitchen changes something. A waiter must carry the news.
+The cell value factory is a function the programmer defines. The `TableView` calls it at render time, passing each model object. The factory calls the model object's method directly — `book.getTitle()`, `book.isAvailable()`. The view reaches into the model without going through the controller.
 
-In JavaFX, the `TableView` re-renders a cell by calling the cell value factory at render time — it reaches directly into the model object whenever it needs to display a value. If the model object's state changes, the next render reflects the change. The view and model are coupled through the factory function, not through a manual update step.
+This matters because it changes what the controller's job actually is. The controller does not copy data from model to view. It triggers state changes in the model and, when necessary, tells the view to re-render. A design that treats the controller as a data ferry — manually extracting every field from the model and pushing it into the view — misreads the architecture and produces controllers that are too large and too fragile.
 
-This means the MVC split in JavaFX is tighter than the restaurant analogy suggests. The controller does not carry every piece of data from model to view. The view pulls data from the model at render time, using functions the programmer defines. The controller's job is to trigger re-renders when model state changes — not to copy data from model to view manually.
-
-Any argument built on the restaurant analogy that treats the controller as the only channel for model data to reach the view will be wrong in JavaFX.
+Any argument built on the hospital analogy that treats the clerk as the only channel for patient data to reach the board will produce the wrong design in JavaFX.
 
 ---
 
 ## Small Discovery
 
-Consider a different domain: spreadsheet formulas.
+Consider a supermarket with a paper shelf-tag system and a digital price display system.
 
-A spreadsheet cell can hold a raw value — the number `42`. Or it can hold a formula — `=A1+B1`. The formula computes a value from other cells.
+In the paper system, every price change requires a store employee to walk to the shelf and replace the tag. A price change for 200 items means 200 physical trips. The tag holds the price. It is a copy.
 
-Here is the raw data: in a spreadsheet with 100 cells, 60 hold raw values and 40 hold formulas. A user edits cell A1, changing its value from `10` to `20`.
+In the digital system, each shelf display pulls the current price from the central inventory database when it renders. A price change in the database appears on every display the next time that display refreshes. No employee carries prices to shelves. The display does not store a copy — it reads from the source.
 
-**Pattern search:** How many cells might change their displayed value when A1 changes? Think through this before reading on. It is not obviously 1. It is not obviously 40.
+**Pattern search:** In the paper system, the store runs a "sale on all dairy" promotion. The manager updates the database. How many shelf tags still show the old price? How long does the error last? In the digital system, the manager updates the database. How many shelf displays show the old price after the next refresh?
 
-**Guided prediction:** If a formula cell references A1, it will recompute. If another formula cell references that formula cell, it will also recompute. A change in one cell can ripple through the entire sheet. How many cells ultimately update depends on the dependency graph — which cells reference which other cells.
+**Prediction:** Write a number for each system before continuing. The paper system number depends on how fast employees walk. The digital system number depends on the refresh interval. One of these is structurally guaranteed to eventually become consistent. The other requires manual effort to reach consistency.
 
-Make a prediction: in a spreadsheet where every formula cell references the cell before it (B1 references A1, C1 references B1, and so on), how many cells change when A1 is edited?
+---
 
-**Revelation:** Every formula cell changes. All 40 of them. A single edit at the source propagates through the entire dependency chain. The spreadsheet does not copy A1's value into every formula cell. It recomputes each formula at display time, using the current value of its referenced cells.
+The revelation: the paper system has two sources of truth — the database and the tag. Whenever they diverge, the customer sees wrong information. The digital system has one source of truth — the database. The display is a live window onto it.
 
-This is exactly what JavaFX's cell value factory does. The factory does not copy the model's data into the table. It recomputes the display value from the model object whenever the table renders that cell. If the model object changes, the next render reflects the change — just as a formula cell reflects a changed source value without anyone manually copying it.
+This is the cell value factory. The `TableView` does not store book titles or availability strings. It calls `book.getTitle()` and `book.isAvailable()` at render time. When the model changes — when a book is checked out — the next render reflects the new state. No manual copy, no divergence, no stale data.
 
-The insight: a "live view" does not store a copy of the data it displays. It recomputes from the source on demand.
+The insight: a live view is not a copy. It is a function applied to the source at display time.
 
 ---
 
 ## What This Changes
 
-A reader who understands this chapter can now explain three things that previously had no explanation.
+**First:** The question of why the search bar bug occurred now has a precise answer. Removing rows from the `TableView` created a second source of truth. The model held the full catalog. The table held a reduced version. When the controller asked the model for search results the second time, the results were correct — but the table had forgotten half the books. The fix is not in the model. The fix is in not treating the table as a data store.
 
-First: why removing rows from a `TableView` to implement search is wrong. Removing rows makes the table the authoritative list of books. The model and the table now hold different truths. The correct approach filters the model and lets the table display whatever the model provides.
+**Second:** The design of every event handler looks different. A handler that is forty lines long and contains conditions, calculations, and string formatting has absorbed model and view work it should not hold. A correct handler does four things: receives the event, extracts user input from the view, calls the model method, updates the view. Handlers that exceed that boundary are testable only by clicking buttons — which is not testing.
 
-Second: why a `Book` object should not have a `getColor()` method. Color is a display decision. The model returns domain state — availability, due date, patron. The view decides how to render that state. A model object that returns a color has absorbed a display responsibility and will carry GUI dependencies into every context where it is used.
+**Practice Bridge:** Refactor the search button handler — remove `tableView.getItems().removeIf(...)` or `tableView.getItems().clear()` followed by manual row re-insertion, and replace the entire body with `model.search(query)` followed by `tableView.setItems(FXCollections.observableArrayList(results))`. Verify that searching twice without clearing still returns correct results, and that clearing the search field and clicking again restores the full catalog from the model, not from a stored local variable.
 
-Third: why an event handler that is fifty lines long is almost certainly wrong. A handler's job is four steps: receive the event, extract user input from the view, call the model method, update the view. Business logic in a handler is invisible to tests, non-reusable, and coupled to the specific button that triggered it.
-
-**The question that comes next:** The view displays model state. But when the user acts — clicks checkout, returns a book, adds a patron — the model may succeed or fail. How does the view surface a model failure to the user? How does the controller translate a model exception into a visible message without crashing? That is what Module 11 addresses.
+**Open question:** The view displays model state correctly now. But when the user clicks "Check Out" and the model rejects the action — the patron is at their limit, the book is already gone — how does the view surface that failure? The model throws an exception or returns an error state. The controller catches it. The view must show a message without crashing. That feedback loop is Module 11's subject. The clean separation built here is the precondition for that loop to work.
 
 ---
 
 ## Wonder Questions
 
-1. A `TableView` cell factory recomputes its display value from the model every time the table renders. If the model changes ten times per second, does the table display ten updates per second? What would need to be true about the rendering system for this to work — or not work?
+1. The cell value factory recomputes a book's title and availability every time the `TableView` renders that cell. If one hundred books are in the table and the table renders thirty frames per second, how many model method calls happen per second just for rendering? Does the answer change how a programmer should design the model's accessor methods?
 
-2. The chapter says the controller is "the only layer that talks to both" model and view. But the cell value factory, defined in the controller, calls a model method from inside view construction code. Is the factory controller logic, view logic, or something that sits exactly on the boundary? Does the distinction matter?
+2. The chapter says the model "does not know whether it is being displayed in a console or a GUI or a web browser." But a model method like `search()` returns a `List<Book>`. A JavaFX `TableView` works better with an `ObservableList<Book>`. Does wrapping the result in `FXCollections.observableArrayList()` belong in the controller, or does it violate the model-view boundary? Where exactly is the line?
 
-3. Consider a `Book` class that has a method `toDisplayString()` returning a formatted string for the UI. The chapter would call this a violation. But Java's `toString()` method returns a string representation of an object — and no one calls `toString()` a violation. What is the difference between `toString()` and `toDisplayString()`? Is the distinction about the method or about where it is used?
+3. A student adds a `getAvailabilityLabel()` method to `Book` that returns `"Available"` or `"Checked Out"`. The chapter calls this a violation. But `Book` already has `toString()`, which returns a string representation. What is the structural difference between `getAvailabilityLabel()` and `toString()`? Is the violation in the method or in how it is used?
 
-4. The restaurant analogy breaks because the dining room re-renders from the kitchen's state directly. But in some JavaFX patterns, the controller explicitly calls `tableView.refresh()` to force re-rendering. When is that necessary? What does it suggest about the cell value factory's recomputation — when does it happen, and when does it not happen automatically?
+4. The chapter says an event handler should be "no more than a dozen lines." A checkout handler that extracts the selected book, extracts the logged-in patron, calls `model.checkout(patron, book)`, and calls `tableView.refresh()` is eight lines. A handler that does the same thing but also disables the checkout button when no row is selected and re-enables it after checkout is fourteen lines. Is the second handler a violation? What is the actual criterion — and when does line count mislead?
 
-5. The chapter says "if the handler is more than a dozen lines, suspect that it has absorbed model logic." Is line count the right diagnostic? Could a twelve-line handler be badly structured and a twenty-line handler be correct? What is the actual criterion — and can line count ever be a reliable proxy for it?
+5. The MVC split ensures the model can be tested without a GUI. But the controller cannot easily be tested without both a model and a view. Does MVC make controllers untestable? Or is there a design decision that makes controllers testable in isolation? What would that design look like?
 
 ---
 
 **Precision Summary**
 
-**What this concept is:** MVC is a three-layer architecture that assigns domain truth to the model, rendering to the view, and mediation to the controller. In JavaFX, the cell value factory is the seam where the view pulls display values from model objects at render time.
+**What the concept is:** MVC is a three-layer architecture assigning domain truth to the model, rendering to the view, and mediation to the controller. In JavaFX, the cell value factory is the seam where the view pulls display values directly from model objects at render time — not through the controller.
 
-**What it explains:** Why filtering by removing rows breaks, why model objects must not return display values, why event handlers must not contain business logic, and why a testable system requires logic to live in the layer that can be tested in isolation.
+**What it explains:** Why filtering by removing `TableView` rows creates two sources of truth and breaks on the second search; why `Book.getColor()` is a violation even if it is convenient; why a forty-line event handler almost certainly contains model logic that should be extracted; and why a testable system requires each layer to be reachable independently.
 
-**What it does NOT mean:** MVC is not a design pattern a programmer opts into. It does not mean the controller manually copies all data from model to view. It does not mean the view never touches the model — the cell value factory calls model methods directly. It does not mean more layers are always better.
+**What it does NOT mean:** MVC does not mean the controller manually ferries every field from model to view. It does not mean the view never touches the model — the cell value factory calls model methods directly. It does not mean more layers are always better, or that MVC is a pattern a programmer opts into rather than a structure that already exists in any GUI application.
 
-**What comes next:** The model may reject user actions. A patron may be at their borrowing limit. A book may already be checked out. The view must surface these failures without crashing. Module 11 addresses the feedback loop between model errors and view state.
+**What comes next:** The model enforces rules. It will reject actions — a patron at their limit, a book already checked out. The controller must catch these rejections. The view must surface them to the user without crashing. Module 11 addresses the feedback loop between model errors and view state, and it depends entirely on the clean separation built here.

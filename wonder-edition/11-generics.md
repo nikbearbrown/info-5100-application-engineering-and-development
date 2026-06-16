@@ -3,35 +3,57 @@
 
 > **Wonder Edition:** Read this alongside the chapter, not instead of it.
 
-> **Content note:** Despite the title "Generics," this chapter covers event-driven programming, lambda expressions, handler registration, and handler responsibility decomposition in JavaFX.
+---
+
+> **Content note:** The title of this module says "Generics." The chapter content covers event handlers, lambda expressions, handler decomposition, and the single-responsibility principle applied to JavaFX event-driven programs. The assessments reference generic types and wildcards separately. The Wonder Edition follows the chapter content — event handling and responsibility decomposition — because that is what the chapter teaches.
 
 ---
 
 ## The Strange Question
 
-A button handler runs. It validates input, finds a book, marks it unavailable, updates two list views, sets a status label, writes to disk, and catches a file exception — all in one body.
+Here is a handler a student submitted. It runs. Every test passes. The instructor marks it as broken.
 
-The code works. Every test passes. Every feature is present.
+```java
+checkoutButton.setOnAction(e -> {
+    String selectedIsbn = catalogListView.getSelectionModel().getSelectedItem();
+    if (selectedIsbn == null) { statusLabel.setText("No book selected."); return; }
+    Book book = catalog.findByIsbn(selectedIsbn);
+    if (book == null || !book.isAvailable()) {
+        statusLabel.setText("Book not available."); return;
+    }
+    book.setAvailable(false);
+    currentPatron.addCheckout(book);
+    catalogListView.getItems().remove(selectedIsbn);
+    checkedOutListView.getItems().add(selectedIsbn);
+    statusLabel.setText("Checked out: " + book.getTitle());
+    try { catalog.saveToFile("catalog.csv"); }
+    catch (IOException ex) { statusLabel.setText("Save failed: " + ex.getMessage()); }
+});
+```
 
-So why is this handler considered broken?
+The output is correct. The behavior matches the requirements. The code is real — taken from a real student project in a prior semester.
+
+What is broken about code that works?
 
 ---
 
 ## First Intuition
 
-The natural instinct is to focus on length. Long methods are messy. They are hard to scroll through. They feel unmanageable.
+Most students reach the same diagnosis within seconds. The handler is too long. Long methods are hard to read. Hard-to-read code is bad code. The fix is to shorten the method.
 
-So the intuitive fix is to shorten the method. Move some lines up. Move some lines down. Keep the handler tight.
+This hypothesis has a satisfying precision. It is measurable: count the lines. It connects to real advice taught in earlier modules: keep methods short, avoid deep nesting, extract repeated logic. The length hypothesis sounds like a rule that should be true.
 
-This framing — that the problem is length — feels correct. It matches every prior experience with "clean code." Shorter is better. Simpler is better.
-
-> **Planning Metacognitive Prompt:** Before reading further, write one sentence: what do you predict is the actual problem with that handler, if not its length? What would a handler have to do to be "clean" even if it were 50 lines long?
+> **► Planning prompt:** Before reading further, write your answers to these three questions.
+>
+> 1. State your current prediction in one sentence: what specific thing makes this handler "broken" if the output is correct?
+> 2. Recall your own experience with long methods. Did they cause problems? What kind of problem — reading, debugging, changing, or something else?
+> 3. If length is the diagnosis, describe what a correct fix would look like. Write the fix before you continue.
 
 ---
 
 ## The Surprise
 
-But consider this: the refactored handler the chapter shows is only four lines.
+The chapter shows this as the correct replacement:
 
 ```java
 checkoutButton.setOnAction(event -> {
@@ -42,128 +64,171 @@ checkoutButton.setOnAction(event -> {
 });
 ```
 
-It is short. It is clean. Now imagine adding a feature — a due date, a checkout limit warning — directly to those four lines. The handler grows to fifteen lines. It still delegates to named methods. Is it now broken?
+Four lines. The chapter endorses this as well-designed.
 
-The answer the chapter gives is: yes, if the new lines contain logic that belongs elsewhere. No, if the new lines only add to the coordination sequence.
+But now consider a different four-line handler:
 
-The puzzle is this: two handlers can be the same length and one is healthy and the other is a closet. Length is not the diagnostic. Something else determines whether a handler is doing its job.
+```java
+checkoutButton.setOnAction(event -> {
+    book.setAvailable(false);
+    patron.addCheckout(book);
+    catalog.saveToFile("catalog.csv");
+    statusLabel.setText("Done.");
+});
+```
 
-What is that something?
+Same length. This handler skips input validation, mutates a hardcoded object, ignores exceptions, and mixes a model update with a view update in the same body. Shortening the original handler would not produce this — but the point holds: four lines does not guarantee good design.
 
-> **Monitoring Metacognitive Prompt:** Did your prediction from the Planning prompt match the surprise above? If not, name the gap between what you expected and what you found. That gap is the concept this module is teaching.
+Two handlers. Same length. One is healthy. One is a structural problem waiting for a bug report. Length is not the diagnostic.
+
+> **► Monitoring prompt:** Before reading further, write three things.
+>
+> 1. Name the assumption the four-line bad handler just challenged.
+> 2. The four-line good handler has something the four-line bad handler lacks. Try to name that thing without reading ahead.
+> 3. What does the surprise leave unexplained? Write the question it opens.
 
 ---
 
 ## The Hidden Structure
 
-The real problem with the original handler is not length. It is mixed responsibilities.
+The four-line good handler contains four method calls. Each call belongs to a single layer. `getSelectedIsbn()` knows the view. It does not know the model. `controller.performCheckout(isbn)` knows the model. It does not know the view. `refreshView(success)` knows the view. It does not know how the checkout was performed. The handler itself knows the sequence. It does not know the details of any step.
 
-The handler contained validation logic, model logic, view logic, and persistence logic. Each of those four things has its own reason to change. If the validation rule changes, the handler changes. If the model's checkout API changes, the same handler changes again. If the view gains a new control, that same handler changes a third time. Three different engineers, three different change reasons, all editing one method.
+The original handler contains all layers in one body. Validation logic. Model mutation. View update. File persistence. Exception handling. Each of those things has its own reason to change. If the validation rule changes, the handler changes. If the model's checkout API changes, the same handler changes again. If the view gains a new control, that same handler changes a third time.
 
-It is tempting to think that as long as a method works, its internal structure does not matter. But that is only true for methods that never change. Software always changes. The structure of a method determines how many things can break it and how hard the break is to find.
+The diagnostic is not length. It is responsibility.
 
-The correct model holds that a method should have exactly one reason to change. That reason is its responsibility. When a method owns one responsibility, a change to that responsibility touches one method, not several tangled together.
+**Misconception Checkpoint:**
 
-The handler's one responsibility is coordination: get the input, call the right methods in the right order, reflect the result. It does not execute the logic. It sequences the calls to the things that do.
+> "It is tempting to think that a short handler is a correct handler. But two handlers of identical length can have entirely different structural health — one delegates, one embeds. The correct model holds that a handler is correct when each thing it contains belongs to one layer and the handler itself contains only the sequence. The key distinction is between what a handler contains and what it delegates — a handler that calls `controller.performCheckout(isbn)` contains a delegation; a handler that calls `book.setAvailable(false)` contains a responsibility that is not its own."
+
+**Code Trace:**
+
+```java
+// Monolithic handler — one block, seven responsibilities mixed together
+checkoutButton.setOnAction(e -> {
+    String selectedIsbn = catalogListView.getSelectionModel()
+                                         .getSelectedItem();   // view layer
+    if (selectedIsbn == null) {
+        statusLabel.setText("No book selected."); return;      // view + validation
+    }
+    Book book = catalog.findByIsbn(selectedIsbn);              // model layer
+    if (book == null || !book.isAvailable()) {
+        statusLabel.setText("Book not available."); return;    // model + view mixed
+    }
+    book.setAvailable(false);                                  // model mutation
+    currentPatron.addCheckout(book);                          // model mutation
+    catalogListView.getItems().remove(selectedIsbn);           // view update
+    checkedOutListView.getItems().add(selectedIsbn);           // view update
+    statusLabel.setText("Checked out: " + book.getTitle());   // view update
+    try { catalog.saveToFile("catalog.csv"); }                // persistence layer
+    catch (IOException ex) {
+        statusLabel.setText("Save failed: " + ex.getMessage()); // view + error
+    }
+});
+
+// Decomposed handler — one responsibility: sequence only
+checkoutButton.setOnAction(event -> {
+    String isbn = getSelectedIsbn();              // delegates to: view layer
+    if (isbn == null) return;
+    boolean success = controller.performCheckout(isbn); // delegates to: model layer
+    refreshView(success);                         // delegates to: view layer
+});
+// getSelectedIsbn()            — owns: view selection logic; changes only when view changes
+// controller.performCheckout() — owns: validation, model mutation, persistence
+// refreshView()                — owns: all display updates; changes only when display changes
+```
 
 ---
 
 ## Try Looking At It This Way
 
-Consider how an air traffic controller works at a busy airport.
+**Target:** A JavaFX event handler that delegates correctly.
 
-The base domain is aviation operations. Dozens of aircraft need to land, depart, and taxi simultaneously. The controller communicates with each pilot. The pilots fly the planes.
+**Base:** An air traffic controller at a busy airport.
 
-The controller does not fly any aircraft. The controller does not fuel the planes. The controller does not check passenger manifests. The controller sequences the actions: "Flight 101, you are cleared to land on runway 28L. Flight 203, hold at altitude 5,000."
+**Features:**
+- The controller does not fly any aircraft. The controller calls specific parties — the pilot, the ground crew, the gate agent — and sequences those calls: "Flight 101, cleared to land runway 28L. Flight 203, hold at 5,000."
+- Each call the controller makes has exactly one purpose. Clear for takeoff. Hold at gate. Redirect to runway 2. The controller does not also perform the landing.
+- The controller holds the sequence. The pilot holds the flight. The ground crew holds the ground. None of those responsibilities overlap at the coordination layer.
+- When a flight goes wrong, investigators locate which party received which instruction and when. The trace is intact because the responsibilities were separated before the failure.
+- A controller who also attempted to fly the plane, manage the gate, and refuel the aircraft would not improve the system. The work might still happen, but no investigator could trace what went wrong or who owned which step.
 
-The shared features are: one coordinator, many executors, clear delegation, no overlap. The controller knows the sequence and the constraints. The pilots know how to fly. Neither does the other's job.
+**Commonalities:**
+- Both the handler and the controller own sequence, not content. WHY: Sequence is the only thing that can live at the coordination layer without entangling the layers below it — once content enters the coordinator, the content's reasons to change become the coordinator's reasons to change.
+- Both delegate to named parties with defined roles. WHY: Named parties with defined roles can be changed, tested, and reasoned about independently.
+- Both produce a traceable chain. WHY: Traceability requires that each step has exactly one owner; two owners for one step produce ambiguity about which owner failed.
 
-The handler maps to the controller. The model method and view method map to the pilots. The handler says: "Get the ISBN. Call checkout. Refresh the view." The model method knows how to checkout. The view method knows how to refresh. Neither knows about the other's domain.
+**Boundaries:**
+- The controller does not issue flight-level decisions — altitude, speed, fuel management. Those belong to the pilot. Similarly, the handler does not issue model-level decisions — availability status, checkout record updates, persistence. Those belong to the controller object the handler calls.
 
-The analogy holds on a further dimension. When something goes wrong at an airport, investigators can pinpoint the break: was it the controller's instruction, or the pilot's execution? The separation of responsibilities makes failure locatable. The chapter makes exactly this point: if the view does not update, the bug is in `refreshView()`. If the model does not update, the bug is in `performCheckout()`. The trace is intact because the boundary is intact.
+**Conclusions:**
+
+A handler that delegates is not doing less work. It is doing the right work at the right level. The work still happens — in `getSelectedIsbn()`, in `controller.performCheckout()`, in `refreshView()`. The handler's job is to call those methods in the right order and stop. When it does exactly that, every step in the chain is independently readable, independently testable, and independently changeable.
 
 ---
 
 ## Where The Analogy Breaks
 
-An air traffic controller makes real-time judgment calls under uncertainty. A handler does not. The handler executes a deterministic sequence every time. It does not decide which method to call based on live conditions — it calls the same methods in the same order. The analogy helps explain separation of concerns. It does not help explain what to do when the sequence itself must change based on runtime state. That is a different design problem.
+> "Unlike an air traffic controller, a JavaFX event handler does not make real-time judgment calls under uncertainty. This matters because the analogy implies a richer feedback loop than Java event handling actually provides — the controller adapts to live conditions, while the handler executes the same deterministic sequence on every event. Students who carry the analogy too far may expect the handler to be an intelligent decision-maker rather than a fixed coordinator. That is a different design problem and requires different mechanisms."
 
 ---
 
 ## Small Discovery
 
-Here is a set of numbers. Do not skip ahead.
+In 1979, the nuclear power plant at Three Mile Island experienced a partial core meltdown. Investigators spent years analyzing why. The cause was not a single catastrophic failure. It was a sequence of small failures in adjacent systems that compounded each other.
 
-```
-12, 12, 12, 12, 12
-```
+The data: a feedwater pump stopped. A relief valve opened to reduce pressure, then failed to close. A light in the control room indicated the valve had received a signal to close — not that it had actually closed. Operators read the light as "valve closed" and reduced coolant flow, which accelerated the damage.
 
-How many things can change that output?
+The pattern: four separate systems — the pump, the valve, the indicator, the operator response — each failed or misread in sequence. No single failure caused the meltdown. The failures were adjacent. They shared no boundary between them.
 
-One. The value 12.
+**Before reading the revelation, write your prediction:**
 
-Now consider this:
-
-```
-3 + 4 + 5
-```
-
-How many things can change that output?
-
-Three. Any of the three operands.
-
-Now consider this expression, where A, B, and C are functions that each produce a number:
-
-```
-A() + B() + C()
-```
-
-How many things can change that output?
+If the investigators wanted to prevent a similar event, where would they intervene — in one system or across all four? What would "separation" mean in a physical plant? Write your prediction before continuing.
 
 ---
 
-Predict: if A() calls a database, B() reads a file, and C() does an arithmetic calculation, how many independent reasons exist for this expression to produce the wrong answer?
+The investigation concluded that the core design problem was coupling: the indicator light showed command state, not physical state. The valve and its indicator shared no clean boundary — one could change without the other reflecting the change. The recommendation was separation: the indicator must measure the valve directly, not infer its state from a sent signal.
 
-Do not read the next paragraph yet. Write a number.
-
----
-
-The answer is three. Each function has its own reason to fail. A database connection, a missing file, or an arithmetic bug — each is independent and traceable to a single function. If the expression were one function that did all three, tracing the failure would require reading the entire function every time.
-
-The handler's four responsibilities are exactly this: four independent sources of change, four independent places where bugs can originate. Separating them does not reduce their count. It makes each one findable.
+This is the handler problem in physical form. A handler that contains model logic and view logic has no boundary between them. A change to the model logic can break the view logic without any code change in the view — because they live in the same method, sharing the same scope, reading the same variables. Decomposition creates a boundary. The model method cannot break the view method because they do not share a scope. The bug stays where it was introduced.
 
 ---
 
 ## What This Changes
 
-A reader who finishes this module can now explain why a working handler can still be badly designed. They can apply the responsibility test: count the reasons a method could change, and if the answer is more than one, identify which reasons belong to which layers.
+**The question now answerable:** Why does a working handler fail a design review? Because "working" describes the current output. "Correct design" describes whether the output will remain traceable as the system changes. A handler that works today but violates responsibility boundaries is accumulating debt for the moment something changes — and in software, something always changes.
 
-They can now read a lambda and ask the right question — not "does this work?" but "does this handler contain anything other than coordination?"
+**What specific code looks different:** The checkout handler no longer reads like a recipe of operations. It reads like a sequence of delegations. `getSelectedIsbn()`, `controller.performCheckout(isbn)`, `refreshView(success)`. Each line names a responsibility and the method that owns it. A reader does not need to hold the entire checkout algorithm in working memory to understand the handler. The reader holds only the sequence.
 
-They can now use the trace as a diagnostic tool. When a bug appears, they can identify which artifact in the chain to inspect, rather than reading the entire application.
+**Practice Bridge:** In your semester project, locate the primary action handler — the button that triggers the most consequential user action. Decompose it into three delegations:
 
-The question that comes next is the bridge question the chapter names: how do you build more complex interfaces without tangling layout and logic? That question points toward Scene Builder, FXML, and the separation of interface declaration from controller logic — the subject of the following module.
+1. `getSelectedIsbn()` — or the equivalent selection read for your domain. This method knows the view. It returns a value or null. It does not touch the model.
+2. `controller.performCheckout(isbn)` — or the equivalent model operation. This method knows the model. It performs validation, mutation, and persistence. It does not touch the view.
+3. `refreshView(success)` — or the equivalent display update. This method knows the view. It reads the result and updates every display element. It does not know how the operation was performed.
+
+After decomposing, apply this test to each extracted method: count the number of reasons it could need to change. A method with exactly one reason is correctly scoped. A method with two or more reasons still contains mixed responsibilities and needs a further split.
+
+**Open question:** The handler delegates sequence, and the delegated methods own their layers. What happens when a method at one layer genuinely needs information produced by another layer — not to do the other layer's work, but to do its own work correctly? How does that information cross the boundary without carrying the other layer's logic with it? That question points toward the design of the objects methods return — toward return types as contracts rather than raw values.
 
 ---
 
 ## Wonder Questions
 
-1. A method with one responsibility is easier to test in isolation. But what does "test in isolation" actually mean? If `performCheckout()` calls the catalog, and the catalog reads a file, is the method still testable in isolation? Where does isolation end?
+1. A handler that delegates is shorter than a handler that embeds. But the total number of lines of code in the program is the same — the logic moved into `getSelectedIsbn()`, `performCheckout()`, and `refreshView()`. If the total code did not decrease, what exactly was gained?
 
-2. The chapter says the handler's job is "coordination." But the handler also contains a conditional — `if (isbn == null) return;`. Is a conditional coordination logic, or is it validation logic? What rule determines whether a conditional belongs in the handler or belongs in the method it guards?
+2. The chapter says the handler's conditional — `if (isbn == null) return;` — belongs in the handler. But null-checking could also be placed inside `performCheckout()`. What principle decides which method owns a guard clause?
 
-3. Every experienced programmer has written a handler that became a closet. The chapter implies this is a discipline failure — a decision made under deadline pressure. Is it also a tool failure? Does the language or framework make responsibility mixing easy and separation hard? If so, what would a better tool look like?
+3. Every experienced programmer has written a handler that became a closet. The chapter frames this as a discipline failure under deadline pressure. Is it also a tool failure — does the language make mixing responsibilities easier than separating them? If so, what would a better tool look like?
 
-4. The chapter distinguishes lambda from named inner class based on complexity and reuse. But a lambda that captures variables from the enclosing scope is implicitly carrying dependencies. A named inner class makes those dependencies explicit in the constructor. If explicit dependencies are better for testability, why is the lambda ever preferred?
+4. A lambda captures variables from the enclosing scope implicitly. A named inner class takes dependencies explicitly in a constructor. Both give the handler access to the same objects. What is the actual design difference, and when does making dependencies explicit change something testable?
 
-5. The chapter says "code breaks at change boundaries." But not all changes are equal. A change to a business rule is more common than a change to the validation algorithm. Does responsibility separation need to align with the frequency of change, not just the category of change? Can a method have two responsibilities if they always change together?
+5. The responsibility rule says each method should have one reason to change. Who decides what counts as one reason? Could two experienced developers draw the boundary at different places and both be right?
 
 > **Precision Summary**
 >
-> **What the concept is:** A handler's responsibility is coordination — sequencing calls to model and view methods. It does not contain business logic or view logic.
+> **What the concept is:** The single-responsibility principle applied to event handlers — the handler owns only coordination (sequencing calls), each delegated method owns exactly one layer (view selection, model operation, or display update), and the boundary between layers is a verifiable property of the code, not a style preference.
 >
-> **What it explains:** Why a working handler can still be badly designed, and why bugs become locatable when the handler boundary holds.
+> **What it explains:** Why a working handler can fail a design review; why two handlers of identical length can have entirely different structural health; why bugs become locatable when the handler boundary holds; why adding a second checkout path (keyboard shortcut) requires no code duplication when the checkout logic lives in a model method.
 >
-> **What it does NOT mean:** That handlers must be short. A long handler that only coordinates is fine. A four-line handler that mixes responsibilities is not.
+> **What it does NOT mean:** That handlers must be short; that lambdas are always better than named inner classes; that decomposition reduces the total amount of logic; or that a four-line handler is automatically well-designed.
 >
-> **What comes next:** If handlers coordinate model and view, and the view is built in a layout file, the interface declaration and the controller logic must be connected. That connection is the subject of the next module.
+> **What comes next:** If handlers coordinate model and view, and the view is built in a layout file, the interface declaration and the controller logic must be connected by a mechanism. That connection — and what it means for the responsibility boundary — is the subject of the following module.

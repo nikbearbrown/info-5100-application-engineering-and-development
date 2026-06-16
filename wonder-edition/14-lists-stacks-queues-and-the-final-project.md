@@ -3,142 +3,184 @@
 
 > **Wonder Edition:** Read this alongside the chapter, not instead of it.
 
-> **Content note:** Despite the title "Lists, Stacks, Queues and the Final Project," this chapter covers professional software handoff, the five-layer architecture built across the semester, the three-question AI audit, design defense techniques, and the verification habit. Data structures (Lists, Stacks, Queues) appear only in the assessments list and course outline header — the chapter's substance is about what it means to finish a system and be able to explain it.
+> **Content note:** Despite the title "Lists, Stacks, Queues and the Final Project," this chapter does not cover those data structures. The substance is professional software handoff — what it means to finish a system and be accountable for it. The chapter introduces the five-layer architecture built across the semester, the three-question AI audit, the strong-defense format for design decisions, and the verification habit as a portable professional practice. Lists, Stacks, and Queues appear only in the assessments header and course outline. A reader expecting a data-structures chapter will find a capstone chapter instead.
 
 ---
 
 ## The Strange Question
 
-A student runs the final project. It launches. It does not crash. Every feature works as demonstrated. The examiner pauses and asks: "What does this component do, why did you design it this way, and what would you change?"
+A student runs the final project demo. The application launches. Every feature works as demonstrated. Nothing crashes.
 
-The student pauses. The code is running. The screen looks correct. The demo went smoothly.
+The examiner looks at the screen and asks three questions: "What does this component do, why did you design it this way, and what would you change?"
 
-Why does the examiner's question feel unanswerable?
+The student cannot answer. The code is running right now, on the screen, in front of both of them.
+
+Why does a working program leave the builder unable to explain it?
 
 ---
 
 ## First Intuition
 
-Most people assume that finishing code means knowing it. The program runs, so the programmer must understand it. Understanding produces running programs, and running programs prove understanding.
+The natural assumption is that finishing code means knowing it. A program runs because a programmer made it run. Making something work requires understanding it.
 
-This seems tight. It seems obvious. It feels like the only way the relationship between building and knowing could work.
+This feels airtight. The relationship seems to flow in both directions: understanding produces working code, and working code proves understanding.
 
-If the code runs, the builder must know what they built.
+A student who completed the project must therefore understand the project. The evidence is right there on the screen.
 
-> **Planning Metacognitive Prompt:** Before reading further, sketch your answer. Can you explain every component of the last program you wrote well enough to answer three questions about it: what it does, why you designed it that way, and what you would change? What would block you from answering those three questions?
+> **► Planning prompt:** Before reading further, write your answer to this question. Pick any component you wrote or generated in the last few weeks. Can you answer all three parts of the examiner's question: what it does, why you designed it that way, and what you would change? Write your answer now, before reading what blocks it.
 
 ---
 
 ## The Surprise
 
-But consider: a student copies a working persistence method from an AI assistant. The method runs. The round-trip saves and loads data correctly. The student has never inspected the error-handling branch that fires when the file is missing on first run.
+But consider a specific moment. A student asks an AI assistant to generate a `save()` method for the catalog persistence layer. The method compiles. The round-trip test passes on the student's machine, where the data directory already exists.
 
-The file is missing on first run during the demo.
+The demo runs on the examiner's laptop. The data directory does not exist yet. The AI-generated `save()` wraps its `FileWriter` in a try-catch that swallows the `IOException` silently — no error message, no created file, no crash. The application appears to run. The save produces nothing. On the next launch, the catalog is empty.
 
-The program crashes in a way the student has never seen and cannot explain.
+The student has no explanation. The code was running. The student never traced the error branch.
 
-The code was running. The student did not know it.
+Running code is not evidence of understanding. A program can behave correctly on every input the author tried and incorrectly on the first new input the examiner uses.
 
-Running is not evidence of understanding. A program can behave correctly on every input the author tried and incorrectly on the first input the examiner uses. The author who generated but never verified can neither predict the failure nor explain the choice that produced it.
-
-> **Monitoring Metacognitive Prompt:** Hold that gap open. There is a difference between "my program runs" and "I can explain what my program does." What exactly is the difference? What would you need, beyond working code, to be able to answer the examiner's three questions with confidence? Do not resolve this yet — sit with the gap.
+> **► Monitoring prompt:** Hold the gap open before resolving it. Name the assumption the student was making — the one the demo violated. Name what the AI-generated method did that contradicted that assumption. What part of the failure is still unexplained: is it the silent IOException, the missing directory, the untested branch, or something else?
 
 ---
 
 ## The Hidden Structure
 
-The resolution is a distinction professionals use but rarely name: the difference between execution and accountability.
+The resolution is a distinction professionals use but rarely name. Execution and accountability are different things.
 
-Execution means the code produces output. Accountability means the engineer can explain the requirement the code satisfies, the design decision that shaped it, and the evidence that the behavior is correct.
+Execution means the code produces output on known inputs. Accountability means the engineer can explain the requirement the code satisfies, the design decision that shaped it, and the evidence that the behavior is correct across the inputs that matter.
 
-A program can execute without the author being accountable for it. That is exactly what happens when AI generates code the engineer does not inspect.
+A program can execute without its author being accountable for it. That is exactly what happens when AI generates a `save()` method and the engineer accepts it without tracing the error path.
 
-> **Misconception Checkpoint:** It is tempting to think that understanding code means being able to read it line by line and describe what each line does. But describing code is not understanding it. The correct model holds that understanding a design decision means being able to name the alternatives that existed, the cost and gain of each, and the specific requirement that made one alternative better for this system than the others. A student who can quote every method but cannot name one trade-off does not yet understand the design.
+> **Misconception Checkpoint:** It is tempting to think that understanding code means being able to read it line by line and describe what each line does. But describing execution is not understanding design. The correct model holds that understanding a component means being able to name the requirement it satisfies, the alternatives that existed, the cost of each, and the specific condition that made one alternative better for this system. The key distinction is between describing what code does line by line and explaining why a design decision was made over the alternatives — a student who can quote every method but cannot name one trade-off does not yet understand the design.
 
-This is why the chapter defines "done" as five things, not one. Running code is necessary. It is not sufficient. Source code that another person can navigate, tests that are evidence rather than impressions, AI use disclosures that name what was delegated and what was decided, and a defense that explains three design decisions — together these constitute a professional handoff. Any one missing and the handoff is incomplete.
+**Code Trace — Five-Layer Architecture:**
 
-The five-layer architecture makes this concrete. Each layer has a defined responsibility: the supply side models the domain, the transaction layer records actions on that domain, persistence makes state survive restarts, the view displays model state without owning it, and the event layer connects user actions to the model through handlers that translate rather than execute. The examiner's question "why did you design it this way?" has a direct answer: each layer knows about the layers below it and nothing about the layers above it. Coupling flows in one direction. Changes to the view do not require changes to the model.
+The following sketch shows a layer violation and how to identify it.
 
-That is not a tutorial rule. That is a consequence of a specific reason that can be explained.
+```java
+// LAYER VIOLATION — view layer reaching into persistence
+public class BookListController {
+    @FXML
+    private void handleSave(ActionEvent e) {
+        // This belongs in the persistence layer, not the event layer
+        try (FileWriter fw = new FileWriter("catalog.csv")) {
+            for (Book b : catalog.getAll()) {
+                fw.write(b.toCSV() + "\n");  // ← persistence logic in handler
+            }
+        } catch (IOException ex) { }  // ← silent swallow: the exact AI pattern
+    }
+}
+
+// CORRECT — event layer translates; persistence layer executes
+public class BookListController {
+    @FXML
+    private void handleSave(ActionEvent e) {
+        controller.saveCatalog();   // ← handler translates, does not implement
+    }
+}
+```
+
+The first version places file I/O inside an event handler. A handler belongs to the event layer. File I/O belongs to the persistence layer. The violation is visible because persistence logic appears above the controller in the call chain. The silent `catch` block is the specific AI failure the chapter describes: code that compiles, passes the happy-path test, and loses data silently the moment the file path is wrong.
+
+The second version places one call in the handler. The persistence logic lives in `controller.saveCatalog()`, which belongs to the layer below. Changes to the file format require no changes to the handler. That is what layer separation means in practice.
 
 ---
 
 ## Try Looking At It This Way
 
-Consider how a hospital hands off a patient between shifts.
+**Target:** A professional software handoff — running code, navigable source, tests, AI use disclosures, and a defense of design decisions.
 
-The outgoing nurse does not simply gesture at the room and leave. The handoff has structure: current condition, active medications with dosages, outstanding labs awaiting results, known complications, decisions made and why, and what the incoming nurse needs to watch for. The incoming nurse does not start from scratch. The incoming nurse starts from a documented state.
+**Base:** A surgical handoff between outgoing and incoming operating-room teams at shift change.
 
-Now consider the target: a professional software handoff. Running code, navigable source, tests as evidence, AI disclosures, and a defense.
+**Features:**
+- Both transfer a current state that the receiving party did not create (patient condition / running application)
+- Both document decisions made and why (surgical notes / design defense)
+- Both provide evidence of what was verified (pre-op labs / test suite)
+- Both name what is known and what remains uncertain (outstanding results / known edge cases)
+- Both allow the receiving party to act correctly without the original party present
 
-The features align tightly. Both handoffs have a current state (running code / patient condition). Both have a record of decisions made (design defense / treatment notes). Both have evidence of verification (tests / lab results). Both name what is known and what is not (AI disclosures / outstanding labs). Both allow the person receiving the handoff to act without the person who created the state being present.
+**Commonalities (WHY each):**
+- State transfer matters because the receiver must act on a system they did not build — in both cases, acting without documentation produces preventable errors
+- Decision documentation matters because the receiving party cannot reconstruct reasoning from observation alone — code and vitals look similar across very different design choices
+- Evidence of verification matters because appearance of correctness is not proof of correctness in either domain — a patient can look stable and have an undetected lab result; code can pass the demo and have an untested error branch
+- Uncertainty disclosure matters because the receiver needs to know which parts of the state have not been confirmed, so they apply judgment rather than false confidence
 
-The feature that maps most precisely is this one: the outgoing nurse does not need to be in the room for the patient to continue receiving correct care. The engineer who hands off a documented system does not need to be present for another engineer to maintain it.
+**Boundaries:**
+- A student who hands off running code without a defense, tests, or AI disclosures has transferred state but not accountability — the same as an outgoing nurse who points at the room and leaves without notes
 
-Both handoffs share the same purpose. They transfer accountability, not just state.
+**Conclusions:**
+The handoff is not complete when the work is done. It is complete when the next person can continue the work without the first person present. Both professions discovered this separately and arrived at the same structural solution: a documented transfer of state, decisions, evidence, and uncertainty.
 
 ---
 
 ## Where The Analogy Breaks
 
-A hospital handoff transfers care for a patient who exists independently of the record. The patient can speak. The patient can display new symptoms that were not in the notes.
+Unlike a surgical handoff, a software handoff receives no new signals from the system being transferred. The patient can speak. The patient can display symptoms that were not in the notes.
 
-A software system only does what it was written to do. It cannot surface a problem it was not written to detect. The code that has a silent bug in an error branch will not flag the bug — it will simply fail when that branch executes. The engineer's handoff must therefore be more complete than the nurse's, because there is no patient to raise an alarm. Tests must cover the cases that will not speak for themselves.
+A software system only does what it was written to do. It cannot surface a bug it was not written to detect. The silent `IOException` catch will not raise an alarm — it will simply lose data the next time the file path is wrong.
+
+This matters because it raises the evidence bar. The engineer's handoff must be more complete than the surgeon's, because there is no patient to flag what the notes missed. Tests must cover the cases that will not speak for themselves. The verification habit is not optional in software the way follow-up instinct partially compensates in medicine.
 
 ---
 
 ## Small Discovery
 
-Here is a different domain: a recipe handed down in a family for three generations.
+Here is a moment from aviation accident investigation.
 
-The grandmother wrote: "bake until golden." The mother interpreted "golden" as a medium amber. The daughter interprets "golden" as a pale yellow. Each generation bakes the dish differently while following the same written instruction.
+In 1972, Eastern Air Lines Flight 401 crashed in the Florida Everglades. The aircraft was functioning. The crew was experienced. One landing-gear indicator light burned out. While all three crew members focused on diagnosing the light, no one noticed the autopilot had been accidentally disengaged. The plane descended slowly and steadily into the ground.
 
-Now consider: three students each implement a `save()` method based on an AI-generated scaffold. Each reads the method, runs the application, sees that it saves data, and marks it done.
+The raw data: aircraft functional, crew occupied with one anomaly, altitude decreasing, no alert triggered.
 
-One student's scaffold handles missing files silently. One throws an unchecked exception. One creates the file if absent.
+The pattern: attention moved entirely to the salient problem (the indicator light). The background condition (altitude) was no longer monitored. The background condition was the fatal one.
 
-All three programs pass the happy-path test. All three produce different behavior on first run in a new environment.
+Before reading on: predict what this reveals about the AI-generated `save()` method scenario. Which component was the indicator light? Which was the altitude?
 
-Before reading on: predict which behavior the examiner is most likely to expose during a demo. What input would reveal the difference between these three implementations?
+---
 
-The examiner runs the application for the first time on a machine where the data directory does not exist yet. Two of the three implementations fail in ways their authors cannot explain, because none of them named the requirement — "what should happen on first run?" — before accepting the generated code.
+The indicator light was the feature that ran correctly — the happy-path save that worked on the student's machine. The altitude was the error branch: the `catch (IOException ex) { }` that swallowed failures silently. Attention moved to what was visible (the working demo). The silent condition was the fatal one.
 
-The recipe analogy breaks at the same place the software analogy does: when the instruction is ambiguous, the person executing it supplies the missing meaning from their own context. AI supplies the missing meaning from its training distribution. The engineer's job is to notice when the supplied meaning does not match the deployment context.
+The concept this names is **attention capture under partial success**. When part of a system works, engineers tend to mark it done and move on. The part that works draws attention. The part that fails silently does not. This is not carelessness — it is a predictable feature of how attention works under cognitive load and time pressure.
+
+The verification habit is the countermeasure. Name the requirement before inspecting the code. Name the observation that confirms the code satisfies the requirement. Do this for every branch, not just the one that succeeded in testing.
 
 ---
 
 ## What This Changes
 
-A reader who has worked through this chapter can now explain something they likely could not explain before: why working code and finished code are different categories.
+A reader who has worked through this chapter can now give a precise answer to a question they likely could not answer before: what is the difference between working code and finished code?
 
-Working code is a property of behavior in known cases. Finished code is a property of accountability — the engineer can explain what the code does, why it was designed that way, what was verified and how, and what would change if the requirements changed.
+Working code is a behavioral property — it produces correct output on the inputs that were tested. Finished code is an accountability property — the engineer can explain what the code does, why it was designed that way, what was verified and how, and what would change if the requirements changed.
 
-This distinction also explains why the three-question AI audit is not a compliance exercise. It is an accountability exercise. "What did you ask AI to do?" establishes scope. "What did you verify, and how?" establishes evidence. "What did you decide that AI could not?" establishes judgment. Together they trace the boundary between delegation and responsibility.
+The three-question AI audit looks different through this lens. It is not a compliance form. "What did you ask AI to do?" establishes the scope of delegation. "What did you verify, and how?" establishes evidence of accountability. "What did you decide that AI could not?" establishes the boundary between tool use and engineering judgment. The audit traces exactly the line between execution and accountability.
 
-The question that opens from here is not small: if the verification habit must travel to every new system and every new tool, what does it look like when the tool is not AI but a library, a framework, or a colleague's module? The answer is the same structure. Name the requirement. Name the observation that confirms it. If you cannot name both, you have not yet verified the code.
+> **Practice Bridge:** Write the design defense for your ISBN lookup or your catalog persistence layer — whichever is more complex. Name the alternatives you considered. Name the cost and gain of each. State the specific requirement that made your choice better for this application than the alternatives. Then name one test that proves the choice was implemented correctly and run it. If the test does not exist, write it before the demo. A defense without a passing test is a claim without evidence.
+
+The question that opens from here: if the verification habit must travel to every new tool and every new system, what does it look like when the tool is a library, a framework, or a colleague's module? The answer is the same structure. Name the requirement. Name the observation that confirms it. If you cannot name both, you have not yet verified the code.
 
 ---
 
 ## Wonder Questions
 
-1. A student writes all the code, uses no AI, and produces a running application. Does the professional handoff standard still require a defense? What would the defense prove if there was no AI involvement?
+1. A student writes all the code from scratch, uses no AI, and produces a working application. Does the professional handoff standard still require a defense? What would the defense prove if there was no AI involvement at all?
 
-2. The chapter says tests are evidence of reasoning, not proof of correctness. If tests cannot prove correctness, what is the limit of what tests can establish? Is there any observation that would count as proof?
+2. The chapter defines tests as evidence of reasoning, not proof of correctness. If no finite test suite can prove correctness, is there any observation that would count as proof? What would it take?
 
-3. The five-layer architecture puts the event layer on top and the supply side at the bottom. Could the layers be reversed — could the view layer define the model? What would go wrong first?
+3. The five-layer architecture places the event layer above the view, which sits above the model. Could the layers be reversed — could the view define the model? What would break first, and in which module's codebase would you find the earliest sign of the failure?
 
-4. The AI audit requires naming "what you decided that AI could not." But AI models are improving rapidly. Is there a decision today that AI cannot make but might be able to make in five years? Does that change the purpose of the audit?
+4. The AI audit requires naming "what you decided that AI could not." AI models are improving. Name a decision today that AI cannot make — and estimate whether it is a temporary limit or a permanent one. Does the answer change the purpose of the audit?
 
-5. The chapter ends with: "The running program is evidence that the code works. The explanation is evidence that you built it." Is there any explanation so good that it would substitute for running code? Is there any running code so reliable that it would substitute for an explanation?
+5. The chapter ends: "The running program is evidence that the code works. The explanation is evidence that you built it." Is there any explanation detailed enough to substitute for running code? Is there any running code reliable enough to substitute for an explanation?
 
 ---
 
 > **Precision Summary**
 >
-> **What the concept is:** Professional software handoff is the transfer of a working, documented, testable system in a form that allows someone else to understand, maintain, and extend it without access to the original author. It requires running code, navigable source, tests as evidence, AI use disclosures, and an explained defense of design decisions.
+> **What the concept is:** The distinction between execution and accountability. Execution means code produces output. Accountability means the engineer can explain the requirement the code satisfies, the design decision that shaped it, and the evidence that the behavior is correct — including in the cases that were not tested during development.
 >
-> **What it explains:** Why running code is necessary but not sufficient for a finished system. Why the examiner's three-question format — what does it do, why did you design it this way, what would you change — is a test of accountability rather than demonstration. Why tests matter as evidence of reasoning rather than proof of correctness.
+> **What it explains:** Why a working demo does not constitute a finished system. Why the examiner's three-question format is a test of accountability rather than a demonstration. Why the silent `IOException` catch is not a small error — it is the specific failure mode produced when AI generates code and the engineer does not trace the error path. Why the five-layer architecture matters: each layer makes accountability local, so changes to one layer do not require re-verifying every other layer.
 >
-> **What it does NOT mean:** That AI-assisted code is disqualified from a handoff. The standard is disclosure and verification, not prohibition. AI-generated code that was inspected, tested, and explained meets the standard. AI-generated code that was accepted without verification does not — not because of the source, but because of the missing evidence.
+> **What it does NOT mean:** That AI-assisted code fails the handoff standard. The standard is disclosure, verification, and judgment — not prohibition. AI-generated code that was inspected, tested against named requirements, and defended in the strong format meets the standard. AI-generated code that was accepted without tracing the error branches does not — because of the missing evidence, not because of the source.
 >
-> **What comes next:** The verification habit. Every tool will change. Every language will change. The requirement to name the requirement a piece of code satisfies and name the observation that confirms it satisfies that requirement will not change. That is the portable thing this course built.
+> **What comes next:** The verification habit, carried forward. Every language will change. Every tool will change. The requirement to name the requirement a piece of code satisfies and name the observation that confirms it satisfies that requirement will not change. That is the portable thing this course built, and it is the thing the examiner is actually testing.

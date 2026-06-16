@@ -5,152 +5,177 @@
 
 ---
 
+> **Content note:** Despite the title "Basics of Object-Oriented Programming Part 2 / Wrapper Classes / Strings," this chapter covers debugging methodology: the hypothesize–isolate–test loop, causal chain tracing, and the distinction between symptom, proximate cause, and root cause. This companion follows the actual chapter content.
+
+---
+
 ## The Strange Question
 
-A program compiles. It runs. It produces output. The output is wrong — but only on the second run of a specific operation, never the first.
+A program compiles without error. It runs without crashing. It finishes cleanly and prints output.
 
-No exception is thrown. No warning is printed. The program finishes cleanly and hands the user an incorrect result.
+The output is wrong — but only on the second execution of a specific operation. The first execution produces the correct result every time.
 
-Here is the precise puzzle: if both operations use the same code path, why does only the second one fail?
+Both operations call the same method. Both call it with different arguments. Only the second one fails.
+
+Here is the precise puzzle: if the code path is identical, what makes the second call behave differently from the first?
 
 ---
 
 ## First Intuition
 
-Most people look at the output first.
+The wrong name appears in the output. The natural move is to look at the output.
 
-The second checkout printed the wrong patron name. So the problem must be in the print logic. Or in the method that formats the output. Or somewhere near the last line that ran.
+Someone checks the print statement. They check the method that formats the string. They check the variable passed to that method. The code there looks fine. Nothing obvious is broken near the end of the program.
 
-This feels right. The last thing that happened produced the wrong thing. Trace backward from there.
+This reaction comes from a deeply familiar experience: when something goes wrong in a physical process, it usually breaks near the end. A batch of cookies burns because the last few minutes of baking were too hot. A report has the wrong total because the last column was summed incorrectly. Proximity between the failure and the cause feels like a law.
 
-**Planning Metacognitive Prompt:** Before reading further, write down exactly where you would look first, and why. Be specific — name a method, a variable, or a line. What assumption does your answer depend on?
+That experience does not transfer cleanly to programs. But it shapes first intuitions anyway.
+
+> **► Planning prompt:** Before reading further, write down exactly where you would look first and why. Name a specific method, variable, or line. Then write one sentence describing what assumption your answer depends on — what would have to be true about programs for that location to be the right place to start?
 
 ---
 
 ## The Surprise
 
-But the print logic is correct.
+But the print method is innocent. It prints exactly what it receives.
 
-The variable passed to the print method holds the wrong value. The print method is faithfully printing whatever it receives. The fault is not here.
+The variable passed to the print method holds the wrong value. Follow that variable backward. It was assigned in the checkout method from a field called `currentPatron`. Inspect `currentPatron` at the moment of that assignment.
 
-Follow the reference back one step. The variable was assigned in the checkout method. Inspect the assignment. The assignment looks correct — it reads from `currentPatron`, just as it should.
+`currentPatron` holds the first patron's name. Not the second patron's name. The second patron was never placed into `currentPatron`. Some earlier step — something that ran cleanly, returned no error, and finished without protest — simply did not update the field.
 
-But `currentPatron` holds the first patron's name. Not the second patron's name. The second patron never made it into `currentPatron`.
+The question has moved. It is no longer about the output, or the print method, or the checkout method. It is about a method that ran before all of those, in a different part of the execution, and left a field in the wrong state. That method is upstream. The symptom is downstream.
 
-Now the question shifts entirely. The bug is not in the output. The bug is not in the checkout method. The bug is in whatever was supposed to update `currentPatron` between the first checkout and the second — and did not.
-
-The output was never the problem. The output was the announcement.
-
-**Monitoring Metacognitive Prompt:** Your first intuition said to look near the output. The evidence points somewhere upstream, in a method that ran earlier and finished without error. What does this tell you about the relationship between where a bug announces itself and where it actually lives?
+> **► Monitoring prompt:** Your first intuition pointed toward the output. The evidence points to a method that ran earlier and finished without any visible signal of failure. Write down what assumption your first intuition was making. Name the specific thing the evidence has now contradicted. What part of the picture is still unexplained — why did that upstream method fail to update the field?
 
 ---
 
 ## The Hidden Structure
 
-A bug does not live at the symptom. It lives upstream, where the state went wrong before the symptom appeared.
+Every Java program is a sequence of state transformations.
 
-Every Java program is a sequence of state transformations. An object starts in some initial state. Methods modify fields. References get assigned or reassigned. The final output is the consequence of every transformation that preceded it. A symptom is what happens at the end of that chain when one earlier transformation was wrong.
+An object begins in some initial state. A method runs. Fields are modified or references are reassigned. Another method runs. More fields change. This continues until the final output is produced. Every visible output is the consequence of every transformation that preceded it.
 
-This means the symptom is always a misleading place to start. The symptom points at the last transformation. The root cause is further back — the transformation that introduced the wrong value, possibly several methods earlier, possibly in a code path that ran silently and returned no error.
+A bug is a transformation that went wrong. The state of some field diverges from its expected value at some point in the sequence. Everything that runs after that point operates on the wrong state. The symptom — wrong output, wrong name, wrong total — is the consequence of an earlier state error, not the error itself.
 
-The debugging workflow the chapter teaches — hypothesize, isolate, test — is a structured method for moving backward through that causal chain until the wrong transformation is found.
+This makes the symptom a misleading starting point. It announces that something went wrong. It does not indicate where or when. The root cause may be several method calls upstream, in code that finished without throwing an exception and produced no visible warning.
 
-**Misconception Checkpoint:** It is tempting to think that fixing the wrong output fixes the bug. But changing the output code only masks the symptom. The correct model holds that a bug is a state error that lives upstream of the symptom, and the fix must address the state error — not its visible consequence.
+The debugging workflow in this chapter — hypothesize, isolate, test — is a structured method for working backward through that causal chain. Each step narrows the search. Each step requires committing to a specific claim before gathering evidence.
+
+**Misconception Checkpoint:**
+
+> "It is tempting to think that finding the wrong output tells you where the bug is. But a symptom only marks the endpoint of the causal chain; the bug lives somewhere earlier in the chain, where a state transformation went wrong. The correct model holds that diagnosing a bug means tracing backward from the symptom through state changes until the first wrong transformation is found. The key distinction is between the location where wrong behavior becomes visible and the location where wrong state was introduced — these are almost never the same line."
+
+**Code Trace:**
+
+```java
+// Second checkout: what the debugger shows at the breakpoint on line 3
+
+String currentPatron;          // field — holds "Alice" (from first checkout)
+currentPatron = getNextPatron(); // this call never ran; field was not reset
+loan.setPatron(currentPatron); // assigns "Alice" — wrong patron for second book
+
+// Symptom: output prints "Alice" for Bob's book
+// Root cause: getNextPatron() was inside a branch that did not execute
+```
+
+The debugger pauses on line 3. The variables panel shows `currentPatron = "Alice"`. The hypothesis — that the field was not updated — is confirmed. The fix is upstream, in the branch logic that skipped `getNextPatron()`.
 
 ---
 
 ## Try Looking At It This Way
 
-**Target domain:** finding where a bug lives in a Java program by tracing state backward from the symptom.
+**Target:** Tracing a bug backward from its visible symptom to its upstream root cause in a Java program.
 
-**Base domain:** a water pipe that delivers discolored water to a faucet.
+**Base:** A city water system that delivers discolored water to one faucet in a building.
 
-**Review the base:** A household water pipe runs from a main supply, through a filtration unit, through a distribution manifold, and finally to individual faucets. Discolored water appears at one faucet.
+**Features:**
+- The discoloration is visible only at the endpoint — the faucet — not at any earlier point in the pipe run.
+- The contamination source could be anywhere along the pipe: the main supply, the building's filtration unit, the distribution manifold, or a section of pipe specific to that faucet.
+- The faucet itself is almost certainly not the source; it is the announcement point.
+- The correct diagnostic method moves backward through the pipe from the faucet, testing sections one at a time, until it finds where clean water becomes discolored.
+- Once the contamination point is found, the repair is made there — not at the faucet.
 
-**Identifying features of the base:**
-- The discoloration is visible only at the endpoint (the faucet).
-- The cause could be anywhere along the pipe run.
-- The faucet itself is probably not the source of contamination.
-- The right method is to trace backward — check the section just before the faucet, then the section before that — until you find where the contamination enters.
-- Once found, the fix is applied at the contamination point, not at the faucet.
+**Commonalities:**
+- The symptom is visible only at the program's output, just as discoloration is visible only at the faucet. Both endpoints announce the problem without revealing its source.
+- The cause could be anywhere upstream in the execution sequence, just as contamination could be anywhere upstream in the pipe run. Proximity to the symptom does not predict proximity to the cause.
+- The diagnostic method in both cases is directional: start at the symptom, move upstream one step at a time, test the state at each step, stop at the first point where the state is wrong.
+- Fixing the faucet while leaving the contamination source untouched would mask the symptom without solving the problem — exactly what happens when a developer patches output code without tracing the state error.
+- Both systems require the investigator to form a hypothesis about where in the chain the fault is before intervening — random testing of pipe sections or random code changes wastes time and may introduce new problems.
 
-**Map commonalities to the target:**
-- The wrong output is visible only at the endpoint (the print statement or the return value).
-- The cause could be in any method that ran before the endpoint.
-- The last method to run is probably not where the bug was introduced.
-- The right method is to trace backward through method calls — inspect the variable just before the endpoint, then the assignment that set it, then the method that produced that assignment.
-- Once found, the fix is applied at the wrong state transformation, not at the output.
+**Boundaries:** The analogy has one significant limit. Contamination in a pipe travels forward continuously and passively. State in a Java program does not travel. A field holds one discrete value until an explicit assignment changes it. The bug in this chapter is not contamination spreading forward — it is an absence: the assignment that should have updated `currentPatron` was never reached. Absence bugs do not have a visible contamination trail. The field simply sits holding its old value, silent and wrong, until something reads it.
 
-**Flag boundaries:** The pipe analogy works well for understanding directionality — bugs are upstream, symptoms are downstream. It does not capture everything. In a pipe, the contamination travels forward continuously. In a program, state is discrete: a field holds one value, then a method runs, then it holds a different value. The causal chain in a program is a sequence of discrete assignments, not a flow. The debugger lets you pause at any discrete step and inspect the value exactly.
-
-**Draw conclusions:** Tracing backward from symptom to root cause is a systematic spatial move, not a guess. The debugger is the tool that makes each step of that move visible.
+**Conclusions:** Tracing from symptom to root cause is a systematic spatial move upstream through a causal chain. The debugger is the tool that makes each discrete step in that chain inspectable. The pipe analogy conveys the directionality well but does not prepare a reader for bugs caused by things that did not happen rather than things that happened incorrectly.
 
 ---
 
 ## Where The Analogy Breaks
 
-The pipe analogy implies contamination travels passively and continuously.
+Unlike a water pipe, a Java program does not carry state forward continuously.
 
-In a Java program, state does not travel. It sits in fields until a method changes it. A variable holds a value until an explicit assignment replaces it. The bug in the chapter — `currentPatron` not being updated between checkouts — is not contamination spreading forward. It is an absence: the assignment that should have updated the field was never reached.
+A field holds a value. It holds that value until a method explicitly assigns a new one. If the assignment is skipped — because it was inside a branch that did not execute, or inside a method that was not called — the field retains its previous value silently. There is no visible signal that the update was missed.
 
-Absence is harder to see than presence. There is no line of code that says "I did not update the field." There is only the field, still holding its old value, silently wrong. The debugger reveals the absence by showing the value that should have changed and did not.
+This matters because the most common class of absence bug produces no error output at all. The program runs. The field holds the wrong value. Every method that reads the field behaves correctly given the value it receives. Only the output is wrong.
 
-The pipe analogy does not prepare you for absence bugs. Keep that limit in mind when you use the analogy.
+The pipe analogy implies that contamination is something added to the system. Absence bugs are the opposite: something that should have been done was not done. The debugger reveals this by showing the field's value at the moment it is read — a value that should have been updated and was not.
 
 ---
 
 ## Small Discovery
 
-Here is a short observation exercise in a different domain: cooking.
+Consider hospital medication administration.
 
-A chef makes a sauce. She tastes it after adding each ingredient. On the third addition, it tastes slightly off. She adds more of the fourth ingredient to compensate. After the fifth ingredient, the sauce is acceptable.
+A nurse prepares six medications for a patient over the course of a shift. At the end of the shift, the patient's blood pressure is within normal range. A supervisor reviewing the chart notices that medication four was documented as administered at 2:14 p.m. but the pharmacy dispensed it at 2:19 p.m. — five minutes later.
 
-**Raw data:** The sauce tasted wrong after ingredient 3. It tasted acceptable after ingredient 5. The chef changed the amount of ingredient 4.
+**Raw data:** The medication was supposedly given before it was dispensed. The patient's final vital signs are normal.
 
-**Pattern search:** The final product is acceptable. Does that mean the problem with ingredient 3 was fixed?
+**Pattern search:** The final state — normal blood pressure — looks correct. Does that tell the supervisor whether medication four was actually given? Does the normal reading confirm that the process was executed correctly?
 
-**Guided prediction:** Before reading the next sentence — write down whether the chef knows the sauce is correct, or whether she only knows the symptom disappeared. What would she need to do to be certain?
+> **► Prediction:** Before reading the next paragraph, write down whether the supervisor can conclude from the normal blood pressure that everything was administered correctly. What would the supervisor need in order to be certain?
 
-**Revelation:** The chef does not know whether the sauce is correct. She knows the final taste is acceptable. Ingredient 3 introduced a flaw. Ingredient 4 in an unusual amount may have masked it — or genuinely corrected it — or introduced a compensating flaw that happens to produce an acceptable taste today. She cannot tell the difference without tasting the sauce without the extra ingredient 4, or tracing back to what ingredient 3 actually changed. The symptom disappeared. The cause is unknown.
+---
 
-This is exactly what happens when a developer changes lines of code until the wrong output disappears. The symptom is gone. The root cause is unknown.
+The supervisor cannot conclude that the administration was correct. The patient's blood pressure is normal. That is a final state. It does not reveal which interventions produced it. Medication four may have been given late and still worked. Another medication may have compensated. The normal reading may be coincidental. The supervisor needs the process record — each step, in sequence, with verified timestamps — not just the final value.
+
+This is identical to the situation of a developer who patches output code until the wrong result disappears. The final output looks correct. That tells the developer nothing about whether the state transformation that was wrong has been corrected, or whether the wrong value is still sitting in a field that this particular test input happened not to reach.
+
+The final state is evidence of the final state. It is not evidence of the process that produced it.
 
 ---
 
 ## What This Changes
 
-A reader who completes this chapter can now explain why wrong output is a poor place to start debugging.
+A reader who completes this chapter can now answer a question that seemed simple before: when a program produces wrong output, where do you look first?
 
-They can articulate the difference between a symptom, a proximate cause, and a root cause — and name a specific location in code for each level.
+The answer is no longer "near the output." The answer is: form a hypothesis naming the specific object, the specific field, and the specific moment in execution where you expect the state to be wrong. Then set a breakpoint there. Then compare what the debugger shows against what the hypothesis predicted.
 
-They can describe what a breakpoint shows that a print statement does not: all variable values at a precise moment, not just the one chosen in advance.
+Specific code looks different after this. A method that reads from a field and passes the value to the output now raises a question about whether the field was correctly set before the method ran — not just whether the method's own logic is correct. Every output becomes the downstream consequence of an upstream state history.
 
-They can explain why fixing the output without tracing the cause produces a program whose bugs are hidden rather than repaired.
+**Practice Bridge:** In the semester project's library checkout module, identify one field that is read by more than one method. Write a hypothesis naming that field, a specific value it might hold incorrectly, and a moment in execution when that incorrect value would produce wrong output. Set a breakpoint at that moment. Document what the variables panel shows — specifically whether your hypothesis was confirmed, refined, or refuted — and write one sentence naming the root cause or explaining why your hypothesis was wrong.
 
-**The question that comes next:** If bugs arise from state that was wrong before it was used, what design choices at the class level would make that kind of error structurally harder to introduce? This is the question Module 5 opens.
+The open question this chapter leaves: if state errors are the source of bugs, what design choices at the class level would make illegal state structurally harder to produce? That is the question Module 5 opens. Hold it now. Return to it after the lab.
 
 ---
 
 ## Wonder Questions
 
-1. A program produces the same wrong output every time it runs, regardless of input. A different program produces wrong output only occasionally, depending on the order operations are called. Which program is harder to debug, and why? What does "harder" actually mean in terms of the hypothesize–isolate–test loop?
+1. A program produces the same wrong output on every single run, regardless of input order. A different program produces wrong output only when two operations are called in a specific sequence. Which program is harder to debug using the hypothesize–isolate–test loop, and why? What property of reproducibility is the loop actually depending on?
 
-2. The chapter argues that a wrong hypothesis is still useful because ruling it out tells you something true. But ruling out a hypothesis requires setting a breakpoint, running the program, and inspecting state. What is the cost of a wrong hypothesis? At what point does that cost become a problem?
+2. The chapter argues that a wrong hypothesis is still useful because ruling it out tells you something true about the system. But testing a hypothesis requires setting a breakpoint, running the program, and reading the variables panel. What is the actual cost of a wrong hypothesis? Is there a point at which forming many wrong hypotheses becomes counterproductive, and what would that look like?
 
-3. A developer claims she can find the root cause of any bug without a debugger, using only print statements. She is often right. What does she lose compared to a developer who uses breakpoints? Is there anything she gains?
+3. A developer argues that print statements are sufficient for all debugging and that the NetBeans debugger adds complexity without benefit. She is often correct. What exactly does she lose compared to a developer who uses breakpoints? Is there a class of bug for which she is right — where print statements genuinely are adequate — and how would you characterize that class?
 
-4. The chapter says the gap between intent and execution is where bugs live. Does that gap ever produce correct output by accident — a program that works for reasons the developer did not intend? If so, what does that imply about output as evidence of correctness?
+4. The chapter says the gap between intent and execution is where bugs live. Can that gap ever produce a program that works correctly for reasons the developer did not intend? If a program produces correct output for the wrong internal reasons, what does that imply about output as evidence of correctness?
 
-5. The module's AI boundary says: form a hypothesis before presenting code to AI. A student argues that AI can help form the hypothesis by analyzing the code first. What exactly is lost if AI forms the initial hypothesis? What is the student's mental model missing?
+5. The module's AI boundary requires forming a hypothesis before presenting code to AI for analysis. A student objects that AI could help form the hypothesis by reading the code first. What specific cognitive work does the student's proposal skip? What does the student lose by not building the causal map independently?
 
 ---
 
 **Precision Summary**
 
-*What this concept is:* Debugging as causal diagnosis — a structured method for tracing from a visible symptom backward through state transformations to the upstream error that caused it.
+**What the concept is:** Debugging as causal diagnosis — a structured method for forming a falsifiable hypothesis about where state went wrong, isolating evidence at that location with a breakpoint, and tracing backward from symptom through proximate cause to root cause.
 
-*What it explains:* Why changing code until the output looks correct is unreliable; why the same wrong behavior can have its root cause far from where it announces itself; why the debugger's intermediate state view is categorically more informative than the program's final output.
+**What it explains:** Why changing code until the wrong output disappears is unreliable; why a bug's root cause is almost never located where the symptom appears; why the debugger's intermediate state view is categorically more informative than the program's final output alone.
 
-*What it does NOT mean:* That all bugs require complex investigation. Simple bugs — a typo, an off-by-one — are still bugs, and the same logic applies, just faster. The framework does not add work; it adds direction to work that would happen anyway.
+**What it does NOT mean:** That every bug requires extensive investigation. Simple bugs still follow the same causal structure — the framework applies, just faster. The framework does not add work; it adds direction to work that would happen anyway, and it produces a verifiable diagnosis rather than a guess that happened to silence the symptom.
 
-*What comes next:* If state errors are the source of bugs, how do you design classes so that illegal state is structurally difficult to produce? That is the question Module 5 addresses through encapsulation, access control, and the design of object boundaries.
+**What comes next:** If state errors upstream of symptoms are the source of bugs, how do you design a class so that illegal state is structurally difficult to introduce in the first place? That is the question Module 5 addresses through encapsulation, access control, and the design of object boundaries.

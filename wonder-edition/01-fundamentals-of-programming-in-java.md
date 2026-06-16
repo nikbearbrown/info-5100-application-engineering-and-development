@@ -3,116 +3,153 @@
 
 > **Wonder Edition:** Read this alongside the chapter, not instead of it.
 
+> **Content note:** Despite the title "Fundamentals of Programming in Java," this chapter covers the object-oriented model — classes, objects, state, behavior, and where business rules live in code — anchored to a library checkout program. The listed syntax topics (variables, loops, control flow) appear in the course outline but not in the chapter body. This companion follows the actual chapter content.
+
 ---
 
 ## The Strange Question
 
-A Java program compiles without errors. It runs without throwing an exception. It produces output on the screen. And it is wrong.
+The library checkout program compiles without errors. It runs without throwing an exception. Output appears on the screen. A patron ends up holding a book she never borrowed. A checked-out book sits marked as available.
 
-How can all three of those things be true at once? The compiler checked the code. The runtime executed it. Something came out. Yet the patron in the library system ends up holding a book she never borrowed, and a book that is checked out sits marked as available on the shelf.
+The compiler passed. The runtime passed. The requirement did not pass. Three different tests, two passes, one failure — and nothing in Java announced the failure.
 
-The compilation passed. The execution passed. The requirement did not pass. What exactly is the gap between those three different tests — and why does Java enforce only two of them?
+Where exactly is the gap between what Java checks and what a program is supposed to do — and why does Java enforce only part of it?
 
 ---
 
 ## First Intuition
 
-Most learners arrive with a working model of programs as instruction-followers. A program either runs or it crashes. If it runs, the output is either right or the computer made an error. The computer does not make errors. Therefore: if the program ran and produced output, it did what the programmer intended.
+Most learners arrive with a model of programs as instruction-followers. Either the program runs or it crashes. If it runs and produces output, the machine did its job. The programmer's intention and the machine's execution are the same thing.
 
-This model comes from everyday tools. A calculator runs an addition and returns the sum. A spreadsheet applies a formula and shows the result. Either the tool works or it does not. There is no third category.
+This model comes from working with deterministic tools. A calculator performs an addition and returns the sum. A search engine returns results or says it found nothing. There is no third option where the calculator returns a number that looks plausible but means something different than what the user asked for.
 
-Before reading further: predict what you think will happen when a Java method is called on the wrong object — say, a checkout method is accidentally called on a `Patron` instead of a `Book`. Will Java stop the program? Will Java print a warning? Will the output look noticeably different? Write your prediction down before continuing.
+> **► Planning prompt:** State this model explicitly — programs either work or crash. Name the tool or experience that built this model (calculator, spreadsheet, web form, something else). Predict what specific thing will happen when a Java method is called on the wrong object: will Java stop the program, print a warning, or produce output that looks noticeably wrong? Write the prediction before continuing.
 
 ---
 
 ## The Surprise
 
-But here is what actually happens when the checkout method is called on the wrong object: nothing unusual signals the mistake.
+But here is what happens when `book.checkOut()` is called accidentally on a different object — say, the wrong book, or the patron variable itself. Java checks whether the call is syntactically legal for the type it is made on. It does not check whether the programmer called it on the intended object. If the call is legal, the program compiles.
 
-The program compiles. Java checks that the method call is syntactically legal for the type it is called on — not that it was called on the object the programmer intended. The program runs. No exception is thrown because the call succeeded on a real object. Output appears. The output looks like a checkout record. The loan is recorded — but under the wrong patron, or against the wrong book, or with the availability flag pointing the wrong direction.
+The program runs. No exception is thrown. Output appears. The loan record looks like a checkout record. The availability flag has changed. Something has happened — just not the right thing. Java executed exactly what was written. It cannot know what was meant.
 
-Java executed exactly what the programmer wrote. The programmer wrote the wrong thing. Java cannot know the difference.
+The prediction of a warning or a crash was wrong. The program continued normally. The output diverged from the requirement without announcing that it had done so.
 
-Pause here. If Java cannot detect this error, and the runtime cannot detect this error, and the output looks superficially correct — what tool is left that can catch it? What would you check, and how?
+> **► Monitoring prompt:** What did the prediction assume about the relationship between Java's knowledge and the programmer's intent? What does this outcome contradict about that assumption? What does the original model still fail to explain — specifically, what would have to be true for Java to catch this kind of error?
 
 ---
 
 ## The Hidden Structure
 
-Therefore, there are not two categories of program errors but three. The chapter names them precisely: compilation errors, runtime errors, and silent wrong behavior.
+Therefore, there are not two categories of program failure but three.
 
-A **compilation error** means Java rejected the code before execution. The syntax was illegal — a missing semicolon, a method called on a type that does not define it, a variable referenced before declaration. Java detects these mechanically, without running a single line.
+A **compilation error** means Java rejected the code before execution. The syntax was illegal — a missing semicolon, a method called on a type that does not define it, a variable referenced before declaration. Java detects these mechanically. The program never runs.
 
-A **runtime error** means Java accepted the code but something broke during execution. A `NullPointerException` is the canonical case: a variable was declared but never assigned a real object, and then the program asked that empty variable to do something. The code looked legal at compile time. The problem became visible only when it ran.
+A **runtime error** means Java accepted the code but something broke during execution. A `NullPointerException` is the canonical case: a variable was declared but never assigned an object, and then the program asked that empty variable to do something. The code looked legal at compile time. The problem appeared only when it ran.
 
-Silent wrong behavior is the third kind. The code compiles. The runtime reports no error. The output arrives. And the output is incorrect without announcing that it is incorrect. The program's behavior diverges from the requirement quietly.
+**Silent wrong behavior** is the third kind. The code compiles. The runtime throws no exception. Output arrives. The output is incorrect without announcing that it is incorrect. The program's behavior diverges from the requirement quietly, and nothing in the system signals the divergence.
 
-**Misconception checkpoint:** It is tempting to think that a program that compiles and runs has been verified. But compilation checks grammar, and runtime checks execution — neither checks meaning. The correct model holds that meaning can only be checked by comparing program behavior against a specific requirement: what was the program actually supposed to do, and did this output satisfy that?
+**Misconception Checkpoint:**
+> "It is tempting to think that a program that compiles and runs has been verified. But compilation checks grammar, and runtime checks execution — neither checks meaning. The correct model holds that meaning can only be verified by comparing actual program behavior against a specific requirement: what was the program supposed to do, and does this output satisfy that? The key distinction is between syntactic correctness, which Java can check, and semantic correctness, which requires a human who knows the requirement."
 
-The distance between syntactic correctness and semantic correctness is where most real bugs live. Closing that gap requires human judgment, not automated tools.
+**Code Trace — Silent Wrong Behavior:**
+
+```java
+// Intended: check out book for patron Maria
+Patron maria = new Patron("Maria");
+Book dune = new Book("Dune");
+Book neuromancer = new Book("Neuromancer");
+
+// Bug: checkout called on the wrong book object
+neuromancer.checkOut();          // marks Neuromancer unavailable
+maria.addBook(dune);             // loan recorded under Dune, not Neuromancer
+
+// Result: Neuromancer is marked unavailable but not in any patron's list.
+// Dune is in Maria's list but still marked available.
+// No exception. No warning. Output looks like a checkout record.
+```
+
+Both objects exist. Both method calls are legal. Java executes both without complaint. The requirement — that the checked-out book be both marked unavailable and added to the patron's list — is violated silently.
 
 ---
 
 ## Try Looking At It This Way
 
-Consider a legal contract. That is the base domain for this analogy.
+**Target:** silent wrong behavior in a Java program
 
-A contract is a document describing an obligation: Party A will do X; Party B will do Y under condition Z. A contract can fail at two completely different levels. First, it can be grammatically invalid — missing a signature, referencing an undefined term, written in a form the court does not recognize. The court rejects it before it is ever performed. Second, it can be grammatically valid but produce an outcome that violates the intent. The words say "the tenant shall vacate by the first of the month," but the parties meant the first of the following month, and a judge reads the literal words. The contract executed exactly as written. It produced the wrong outcome.
+**Base:** a notary stamp applied to a document
 
-Now map this onto Java. A compilation error is the grammatically invalid contract — Java rejects it before execution. A runtime error is a contract clause that references a party who does not exist — execution starts but breaks when the absent party is required. Silent wrong behavior is the contract that is valid, is performed exactly as written, and produces an outcome that contradicts what the parties intended.
+**Features:**
+- The stamp certifies the document's form — that it was signed in front of a witness, that the signature is genuine.
+- The stamp does not certify the content — that the parties understood what they signed, or that the terms reflect their actual agreement.
+- The stamp can be validly applied to a document that will produce an outcome neither party intended.
 
-The key shared structure: in both domains, formal validity is not the same as semantic correctness. A document (or program) can pass every formal check and still fail to represent the intent behind it.
+**Commonalities:**
+- Both Java compilation and a notary stamp are formal validity checks — they confirm the artifact meets structural requirements. Neither can assess whether the artifact does what someone needed it to do, because that requires knowing the need.
+- Both produce a visible signal of formal approval (a successful compile, a stamped seal) that looks identical regardless of whether the underlying meaning is correct. The signal cannot distinguish.
+- Both leave the semantic question — does this mean what it should mean — to a person who knows the external requirement. No formal mechanism handles that question in either domain.
+
+**Boundaries:** A notary operates within a legal system that also includes courts, testimony, and interpretive law — so intent can sometimes be recovered after the fact. Java has no equivalent. The code only records what was written. There is no appeal to what was meant.
+
+**Conclusions:** Formal approval and semantic correctness are different properties. A program — or a document — can have one without the other. Recognizing this is not pessimism about tools; it is clarity about what each tool actually checks.
 
 ---
 
 ## Where The Analogy Breaks
 
-Unlike a contract dispute, a Java program with silent wrong behavior does not surface a "party" who can testify to original intent. In contract law, courts can hear testimony about what parties meant, examine negotiation history, and apply interpretive canons. The intent is recoverable, at least partially.
-
-In a Java program, there is no mechanism for recovering intent from the code itself. The code only records what was written. If `book.checkOut()` was called when `wrongBook.checkOut()` was intended, the code does not preserve that error — it faithfully executes the mistake. This matters because it removes the fallback that the analogy might suggest. The programmer cannot appeal to the program's "understanding" of what was meant. Verification requires external evidence: a specification, a test case, a manual trace against a known correct output. The program itself cannot be its own witness.
+Unlike a contested document, a Java program with silent wrong behavior does not surface a party who can testify to original intent. Contract law has courts, negotiation history, and interpretive canons — intent is partially recoverable. A Java program records only the code that was written. If `neuromancer.checkOut()` was called when `dune.checkOut()` was intended, the code faithfully executes the mistake and preserves no trace of the error. This matters because it removes the fallback the analogy might suggest. The programmer cannot appeal to the program's understanding of what was meant. Verification requires external evidence — a specification, a test case, a manual trace against a known correct output. The program cannot be its own witness.
 
 ---
 
 ## Small Discovery
 
-Here is a short observation exercise from a completely different domain: recipe instructions.
+Here is raw data from a domain entirely outside computing. It is a set of observations from a manufacturing quality-control line.
 
-A recipe says: "Add two cups of flour. Mix until smooth. Add one egg. Bake at 350° for 30 minutes."
+A factory inspector checks finished products before they ship. The inspector follows a checklist: dimensions within tolerance, surface finish acceptable, label applied, packaging sealed. Each item on the checklist is marked pass or fail. A batch ships when all items pass.
 
-A baker follows the recipe but adds the egg before the flour, not after. The mixing step happens. The baking step happens. The timer runs for exactly 30 minutes. A baked item comes out of the oven.
+Three months into a new product line, customer returns begin arriving. The returned units all pass the inspector's checklist when re-examined. No checklist item is wrong. Every dimension is within tolerance. Every label is applied. Every package is sealed.
 
-Look at this sequence and search for a pattern: what kind of error occurred? Was any instruction violated? Did any step fail to complete? Did the oven malfunction?
+Sit with that for a moment. Look for a pattern. Something is causing customer returns. The checklist passes every time. What is the relationship between those two facts?
 
-Now predict: when the baker checks the recipe against what she did, will she find a rule she broke, or will every step appear to have been followed?
+Now predict: where is the source of the returns, and what kind of additional information would be needed to find it?
 
-Here is what the trace reveals. Every instruction was executed. No step was skipped. The oven ran correctly. But the order of two steps was reversed — and the recipe's instructions specified an order without enforcing it. The recipe passed. The execution passed. The outcome may differ from the intended result. The recipe is the specification. The baker is the runtime. The requirement — that the steps occur in the intended order — was never checked by any mechanism in the system. Only an observer who knows what the dish should taste like can detect the divergence.
+---
+
+The investigation reveals this: the checklist was written for the previous product version. A design change altered one internal component — something not visible on the outside, not measured by any tolerance on the checklist. The checklist was complete for the old specification. The new specification included a requirement the checklist had never captured. Every unit passed every check. Every unit failed to meet a requirement the checklist did not know existed.
+
+The concept this names: **specification coverage**. A test or checklist can only catch failures that fall within what it was designed to check. A gap between the specification and the check is invisible from inside the check itself. The only way to find the gap is to compare the check against the full specification — and someone must know both.
 
 ---
 
 ## What This Changes
 
-A reader who finishes this chapter can now distinguish three different explanations for a program that "doesn't work." Before this framework, all failures collapse into the same category: something went wrong. After this framework, the question becomes precise: did Java reject the code, did execution break at runtime, or did execution complete and produce incorrect output?
+A reader who finishes this chapter can now answer a question that was unanswerable before: why does a program that compiles and runs sometimes fail to satisfy its requirement? The answer is precise. Java checks syntax. Java checks execution. Java does not check meaning. Those are three distinct tests, and only the first two are automated.
 
-That precision changes the diagnostic approach. A compilation error requires fixing syntax. A runtime error requires tracing which variable was null and when. Silent wrong behavior requires comparing actual output against a specification — and the specification must exist and be readable before the comparison can happen.
+What looks different in the code now: every method call carries two questions simultaneously. Is this call syntactically legal? And is this call being made on the right object, doing the right thing, for the right requirement? The second question is invisible to the compiler. It requires the programmer to hold the requirement in mind while reading the code — which is why the chapter frames reading code as reading a business model, not as reading syntax.
 
-This prepares the reader for the question the chapter raises next: if the programmer is the only tool that can detect silent wrong behavior, what does the programmer need to know in order to detect it? The answer points toward the next layer of this course — reading code not as syntax, but as a model of a business requirement.
+**Practice Bridge:** Take the library checkout program. Change one line so that a book is marked unavailable but not added to the patron's borrowed list. Before running, write down the exact output difference the student expects. Run the program. Compare. Where the prediction diverged from the actual output, write one sentence naming the cause. Do this before consulting AI.
+
+What this leaves open: if the programmer is the tool that catches silent wrong behavior, what does the programmer need to know to catch it? That question points directly to the next layer of this course — how to read a Java class as a model of a business entity, and how to verify that the model matches the requirement it is supposed to implement.
 
 ---
 
 ## Wonder Questions
 
-**1.** A patron borrows a book. The program records the loan under her name, but the book's availability flag is never updated to "unavailable." The checkout method ran completely without an exception. What kind of error is this, and what specific thing would a programmer need to check to find it — not fix it, just find it?
+**1.** A patron borrows a book. The loan is recorded under her name. The book's availability flag is never changed. The checkout method completed without an exception. What kind of error is this exactly — and what is the minimum evidence a programmer would need in order to detect it without already knowing the bug was there?
 
-**2.** Java was designed to catch compilation errors automatically but not silent wrong behavior. Why is the boundary drawn there? What would it take to build a system that automatically detected semantic errors — and what would such a system need to know that Java does not currently have access to?
+**2.** Java was designed to enforce syntax and execution, not meaning. What would a system need in order to automatically catch silent wrong behavior? What information would it require that Java currently does not have access to — and why is that information hard to formalize?
 
-**3.** If a program that compiles and runs can still be wrong, what counts as evidence that a program is correct? Name one piece of evidence that would be convincing and one piece that would seem convincing but is not.
+**3.** The chapter places the three-book limit inside the `Patron` class rather than the `Library` class. If the rule moved to `Library`, what kind of error would become possible that the current design prevents? Would that error be a compilation error, a runtime error, or silent wrong behavior?
 
-**4.** The chapter places the "three-book limit" rule inside the `Patron` class rather than the `Library` class. If the rule lived in `Library` instead, what kind of error would become possible — compilation, runtime, or silent — that the current design prevents?
+**4.** AI tools produce output that looks correct even when it contains silent wrong behavior. A compilation error from AI-generated code surfaces immediately. A runtime error surfaces during testing. What would silent wrong behavior look like in AI-generated code specifically — and what is the minimum a programmer would need to know to detect it before it reaches a user?
 
-**5.** AI tools produce output that looks correct even when it is not. A compilation error from AI-generated code is visible immediately. A runtime error surfaces during testing. But what would silent wrong behavior look like in AI-generated code — and what is the minimum a programmer would need to know to detect it?
+**5.** This chapter argues that the programmer's judgment is the only tool that can catch silent wrong behavior. But programmer judgment also introduces silent wrong behavior when the programmer misunderstands the requirement. What would it look like to design a development process that reduces both risks simultaneously — and what tension does that design have to navigate?
 
 ---
 
 **Precision Summary**
 
-The concept is the three-tier error taxonomy: compilation errors, runtime errors, and silent wrong behavior. It explains why a program that compiles and runs can still fail to satisfy its requirement — because Java checks syntax and execution, not meaning. It does not mean that all errors are equally hard to find, or that compiling is unimportant, or that AI tools produce more errors than human programmers. It prepares the reader to ask, for any Java artifact: what specific behavior does the requirement demand, and what evidence would demonstrate that this code produces that behavior — rather than merely asking whether the code compiles or runs.
+> **What the concept is:** A three-tier taxonomy of program failure — compilation errors (Java rejects the code), runtime errors (execution breaks), and silent wrong behavior (execution completes with incorrect output and no signal of failure).
+> **What it explains:** Why a program that compiles and runs can still fail to satisfy its requirement — because Java checks syntax and execution, not meaning, and meaning can only be verified by a person who knows the requirement.
+> **What it does NOT mean:** That compiling is unimportant, or that all errors are equally hard to find, or that silent wrong behavior is more common than other errors. It means the categories are distinct and require different diagnostic approaches.
+> **What comes next:** If the programmer is the only mechanism that catches silent wrong behavior, the programmer must be able to read code as a model of a business requirement — which is exactly what the next layer of this course teaches.

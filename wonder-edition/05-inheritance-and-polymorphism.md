@@ -3,167 +3,168 @@
 
 > **Wonder Edition:** Read this alongside the chapter, not instead of it.
 
+> **Content Note:** The chapter file is titled "Inheritance and Polymorphism" and lists those topics in its learning objectives. However, the body of the chapter teaches supply-side modeling — the design discipline of separating entity and relationship objects from transaction objects, and building the resource layer before any user-driven code runs. This Wonder Edition follows the actual content of the chapter.
+
 ---
 
 ## The Strange Question
 
-A variable is declared as type `Animal`. The object it points to is a `Dog`. The program calls `makeSound()` on the variable. Java runs the `Dog` version of the method — not the `Animal` version.
+A program runs. It takes a checkout request from a patron. It returns the right book. The test passes.
 
-The variable never knew it held a `Dog`. The compiler only saw `Animal`. No one checked which class the object belonged to at runtime.
+Then someone asks: can a librarian search the catalog before any patron logs in?
 
-How did Java know which method to run?
+The code stops working. The catalog is empty. No books exist until a patron tries to check one out.
+
+No syntax changed. No logic was wrong. The program worked exactly as designed.
+
+How did a program that passed every test fail to model the most basic fact about libraries?
 
 ---
 
 ## First Intuition
 
-Most people reach for the same answer: Java looked at the variable's declared type and picked the matching method.
+The natural way to build software is to follow the user.
 
-That is what seems to happen. The variable is `Animal`. The method exists on `Animal`. Java runs it. Simple.
+A patron arrives. The patron searches. The patron checks out. So: write a `Patron` class, give it a `search` method, and inside that method find the books. This approach feels responsive. It matches what the user experiences. It produces output immediately.
 
-The declared type is a contract — it tells the compiler what operations are legal. If `Animal` has `makeSound()`, then calling `makeSound()` on any `Animal` variable is legal. No surprise there.
+When someone builds a checkout method that also creates books, the design feels complete. The method works end to end. The test passes green.
 
-What the declared type does *not* seem to do is pick which version runs. That feels like it should also depend on the declared type. If the variable says `Animal`, the `Animal` method should run. Why would Java look further?
+The error is invisible because the program does exactly what was asked of it. No compiler complains. No exception fires. The catalog exists — it just only exists during a checkout.
 
-> **Planning Metacognitive Prompt:** Before reading on, write one sentence predicting what information Java actually uses to pick the method version at runtime. Be specific about when that decision happens — at compile time or at runtime — and why.
+> **► Planning prompt:** Before reading on, write one sentence predicting what breaks when a second kind of user — say, a librarian — needs to search the same catalog. What does the search method depend on that the librarian does not have? Write the prediction before continuing.
 
 ---
 
 ## The Surprise
 
-Here is the contradiction that breaks the intuition.
+But here is what the working program cannot do.
 
-Write two classes: `Animal` with a `makeSound()` method that prints "generic sound," and `Dog` that extends `Animal` and overrides `makeSound()` to print "bark." Declare a variable `Animal a = new Dog()`. Call `a.makeSound()`.
+Comment out every patron. Comment out every checkout. Run `main`.
 
-The compiler sees `Animal`. It allows the call. It does not complain.
+The catalog is gone. There are no books. `searchByTitle` returns nothing, or crashes, because the books were never put anywhere permanent. They were constructed inside the checkout flow and exist only while that flow runs.
 
-But the program prints "bark."
+The program modeled a transaction. It did not model a library.
 
-The `Animal` version of `makeSound()` was never called. The variable said `Animal`. The compiler agreed it was `Animal`. At no point did anyone write `Dog` where the method was called.
+A real library catalog sits on a shelf before the building opens. It exists on a Tuesday morning when no patron has arrived, when no checkout is in progress, when no screen is displaying anything. The catalog is a durable fact. The checkout is a temporary event that touches that fact.
 
-And yet: "bark."
+> **► Monitoring prompt:** Before reading on, name the assumption the design made that produced this failure. What did the program treat as ephemeral that the domain says is durable? What else in the program might share that assumption without it being obvious?
 
-The declared type did not pick the method. Something else did. The compiler did not decide. Something later decided.
-
-> **Monitoring Metacognitive Prompt:** Does this surprise you, or did you predict it? If you predicted it, name the mechanism you expected. If it surprises you, name the assumption that is now broken. Hold that broken assumption in mind — the next section will need it.
-
-The question sits open: if not the declared type, what decided? And when?
+The mismatch between the running program and the real domain sits unresolved. The code is correct. The model is wrong. These are different problems.
 
 ---
 
 ## The Hidden Structure
 
-The declared type determines what method *names* are legal to call. The actual object's class determines *which version* of that method runs.
+Therefore, the domain has two fundamentally different kinds of objects, and a design that conflates them will produce exactly this failure.
 
-These are two separate decisions, made at two separate times. The compiler handles the first at compile time — it checks that `makeSound()` exists on `Animal`. The JVM handles the second at runtime — it looks at the actual object sitting in memory, finds its class, and runs that class's version of the method.
+Some objects are durable. A book. A catalog. A supplier. A physician's schedule. These objects exist before any user action and persist after it. Their state can change, but the object itself is not created by user demand. It precedes demand.
 
-This is dynamic binding. The binding between the method call and the method body happens dynamically, at runtime, based on the object's actual type.
+Other objects are events. A checkout. A purchase order. A booking. These objects exist because a user did something. They record what changed, who requested it, and when. They depend on the durable objects — a checkout without a pre-existing book is not a transaction. It is an error.
 
-> **Misconception Checkpoint:** It is tempting to think that the declared type of a variable determines which method version runs. But the declared type only determines which method names are *accessible*. The correct model holds that the JVM dispatches method calls based on the runtime type of the object — the class used in the `new` expression — not the type of the reference variable.
+> "It is tempting to think that modeling the user's path through the system is the same as modeling the system. But the user's path only touches the demand side — the events, the transactions, the requests. The correct model holds that the supply side — the entities that exist before any request — must be built first, as its own layer, independently of any user action. The key distinction is that durable entities survive the removal of all transactions, while transaction objects do not: if commenting out every checkout empties the catalog, the supply side was never really modeled."
 
-The concept has a name: polymorphism. A single method call behaves differently depending on which object receives it. The word means "many forms." One call site, many possible behaviors, resolved at runtime.
+**Code Trace — the separation test:**
 
-Inheritance is what makes polymorphism possible. A subclass inherits the method signature from its superclass. It can override the body. The reference variable can hold any object in the inheritance hierarchy. The JVM looks at the actual object and dispatches accordingly.
+```java
+// Supply side built first — no patron exists yet
+Catalog catalog = new Catalog(100);
+catalog.addBook(new Book("Effective Java", "Joshua Bloch",
+                         "978-0-134-68599-1", true));
+catalog.addBook(new Book("Clean Code", "Robert Martin",
+                         "978-0-132-35088-4", false));
 
-Without inheritance, no shared signature exists. Without a shared signature, the compiler cannot accept the call through a superclass reference. Without dynamic binding, the runtime would not know to look at the actual object. The three mechanisms — inheritance, overriding, dynamic binding — are not three separate ideas. They are three parts of one mechanism.
+// This runs before any transaction — catalog already exists
+Book[] results = catalog.searchByTitle("Java");
+// results has one entry: "Effective Java"
+
+// Demand side comes after — it uses the catalog, does not create it
+Patron patron = new Patron("Alice", "LIB-0042");
+// patron.checkout(catalog, isbn) ...
+```
+
+The supply side builds and queries without a patron. The patron arrives after. The catalog does not know the patron exists. The catalog existed first.
 
 ---
 
 ## Try Looking At It This Way
 
-**The analogy: a theater with an understudy.**
+**Target:** supply-side modeling — the discipline of building entity and collection objects before any transaction code runs
 
-Consider a Broadway play. The playbill lists a role: "Hamlet." The theater sells tickets to see Hamlet. Every ticket buyer knows Hamlet will appear. The contract is clear.
+**Base:** a restaurant kitchen before the dining room opens
 
-Now consider two actors who can play Hamlet: the lead and the understudy. Both know the lines. Both can perform the role. From the audience's perspective, the character is Hamlet either way.
+**Features:**
+- The pantry stocked before service corresponds to the catalog preloaded in `main` before any patron is created
+- The menu items, which exist regardless of what customers order, correspond to entity objects that exist regardless of what transactions run
+- The prep cook who stocks ingredients without knowing tonight's orders corresponds to the preload block that creates books without knowing which patron will check them out
+- A customer placing an order corresponds to a transaction object using an entity — it touches the supply side but does not create it
+- The head chef checking the pantry before service corresponds to the separation test — confirming the supply side exists before demand arrives
 
-The theater is the declared type — it guarantees Hamlet appears. The actor who walks on stage is the actual object. The audience calls out "Hamlet" — one call, one name. The actor who responds is determined at showtime, not when the tickets were printed.
+**Commonalities:** In a restaurant, raw materials must exist before meals can be served. The kitchen's inventory is not generated by customer demand — it is the precondition for serving demand at all. Exactly the same relationship holds in software: entities must exist before transactions can use them, and that existence must not depend on any particular transaction running.
 
-**The base domain:** A theater role is a contract. Multiple actors can fulfill it. The audience interacts with the role, not the specific actor.
+**Boundaries:** This analogy covers the timing and independence of the supply side. It does not explain relationships between entities — it says nothing about how a book references an author, or why modeling that relationship as a separate `Author` object rather than a name string matters for long-term maintainability.
 
-**The target domain:** A superclass reference is a contract. Multiple subclass objects can fulfill it. Code interacts with the superclass interface, not the specific subclass.
-
-**Mapping the features:**
-- Theater role → declared superclass type
-- Specific actor → actual subclass object
-- Audience calling for Hamlet → code calling a method on a superclass reference
-- Actor who responds → JVM dispatching to the subclass's method version
-- Showtime decision → runtime dispatch (dynamic binding)
-
-**What the analogy explains:** The audience does not need to know which actor is performing. Code does not need to know which subclass is instantiated. Both rely on the contract — the role, the declared type — and trust the runtime to deliver the right performer.
-
-**What the analogy does not explain:** See the next section.
+**Conclusions:** The kitchen analogy makes one claim with clarity: some things must be built before anyone asks for them. A design that only builds those things when asked has mistaken a precondition for an outcome.
 
 ---
 
 ## Where The Analogy Breaks
 
-An actor decides whether to go on stage. A `Dog` object does not decide anything. Dynamic binding is mechanical, not intentional.
+Unlike a kitchen, where running out of an ingredient forces an immediate change in what can be served, a software system with a missing supply-side model can run for a long time without visibly failing. This matters because the failure mode is not an immediate error — it is a design constraint that only surfaces when the system needs to grow.
 
-More importantly: the theater analogy implies two actors compete to play the same role. In Java, a subclass does not compete with its superclass. The subclass *replaces* the superclass method for objects of its type. There is no negotiation. There is no fallback to the superclass version unless the subclass explicitly calls `super.makeSound()`.
-
-The analogy also misses casting. Code can ask at runtime whether an `Animal` reference actually holds a `Dog` — using `instanceof` — and then cast to `Dog` to call `Dog`-specific methods that are not on `Animal`. No theater analogy captures this. When the audience calls for Hamlet, they cannot also call for understudy-specific behavior the role does not define.
-
-Use the theater analogy to understand why a single call site can trigger different behaviors. Do not use it to reason about casting, `instanceof`, or `super`.
+A kitchen cannot serve pasta without pasta. A program can simulate serving books for months before anyone discovers that the catalog does not really exist as a durable object. The bug is architectural, not operational, and architectural bugs are harder to find after the code has grown large.
 
 ---
 
 ## Small Discovery
 
-Here is a small inquiry in a different domain. Work through each step before reading the next.
+**Raw data:** Researchers studying city maps noticed that street addresses in old European cities often have no logical numerical sequence. Buildings on the same block carry numbers like 4, 17, 31, 2, and 88 — in the order they were built, not in geographic order. A newcomer navigating by address alone cannot find anything. A mail carrier who knows the build history of each block can deliver mail correctly.
 
-**The raw data:** A hospital employs nurses, doctors, and administrators. All three groups clock in and out. The hospital's time-tracking system records one event per person per shift: a clock-in timestamp and a clock-out timestamp. The system was built ten years ago, before the hospital expanded.
+**Pattern search question:** The numbering system encodes one kind of information — construction sequence — but the user of that system needs a different kind of information — spatial location. Where is the mismatch between what the system records and what the system must answer?
 
-Suppose the hospital now wants to add a new kind of staff member: a traveling surgeon who works irregular schedules and bills by procedure, not by hours. The surgeon needs to clock in and out like everyone else, but also needs to log each procedure separately.
+**Guided prediction:** Before reading the next paragraph, predict: what would have to be true about the city's record-keeping system for a newcomer to navigate by address alone? Write your answer before continuing.
 
-**Pattern search:** The existing system tracks one thing for all staff: time. The new staff member needs to track two things: time and procedures. What does the existing system need to know about the new staff member type? What does it not need to know?
+---
 
-**Guided prediction:** Before reading on — predict: can the hospital add the new surgeon type to the existing time-tracking system without rewriting the clock-in and clock-out logic? What would make that possible? What would make it impossible?
+The city would need a separate index — a map — that translates addresses into locations. The addresses themselves record an event (construction order). The spatial location is a durable property of the building. These are two different kinds of facts, and conflating them inside one numbering system makes both harder to use.
 
-Write your prediction. Be specific.
-
-**The revelation:** The hospital can add the surgeon type to the time-tracking system without touching the clock-in and clock-out logic — if and only if the surgeon class inherits from the same base class (or implements the same interface) that all other staff types use. The existing system calls `clockIn()` and `clockOut()` on staff objects through a shared reference type. If `TravelingSurgeon` extends `StaffMember` and overrides nothing about clock-in behavior, the time-tracking system calls its `clockIn()` exactly as it calls everyone else's.
-
-The procedure logging is new behavior. It exists on `TravelingSurgeon` alone. The time-tracking system never calls it — it only calls the inherited methods. Code elsewhere in the hospital system, which *knows* it has a `TravelingSurgeon`, can call the procedure-logging methods directly.
-
-The discovery: inheritance lets a system grow without touching the code that already works. The existing time-tracking logic is closed for modification. The surgeon type is open for extension. This is not a coincidence — it is why the mechanism exists.
+The core concept made explicit: when a system records events (transactions) in the same place it should record durable properties (entities), both become harder to query. The address-as-construction-sequence is not wrong data — it is correct data stored in a structure that cannot answer the question users actually need answered. A library system that stores books only inside checkout records has made the same error: the data exists, but the structure cannot answer the question "what books are available?" without running a checkout.
 
 ---
 
 ## What This Changes
 
-A reader who has worked through this section can now explain three things that were previously invisible.
+A reader who has worked through this section can now answer the question the program could not.
 
-First: why a method call on a superclass reference runs the subclass method. The declared type governs which calls are legal. The actual object's class governs which body runs. These decisions happen at different times.
+Can a librarian search the catalog before any patron logs in? Yes — if the catalog is built as a first-class object in the preload block, it exists before any patron is created and can answer queries from anyone.
 
-Second: why adding a new subclass does not require rewriting the code that uses the superclass reference. The existing code makes no assumptions about which specific subclass is present. It only assumes the contract defined by the superclass is fulfilled.
+Looking at existing code looks different now. A method that creates resource objects inside a transaction is not just poorly organized — it is a structural failure. The resource should exist before the method runs. If it does not, the method is secretly doing two jobs: managing resources and recording events.
 
-Third: why polymorphism is not just a naming convention or a style preference. It is the mechanism that lets one piece of code work correctly with objects it has never seen, provided those objects fulfill a known contract.
+**Practice Bridge:** In the current project, find the class that plays the role of the catalog — the collection that holds entities and answers queries. If no such class exists yet, build one. Preload it in `main` before any transaction object is created. Then run the separation test: comment out every transaction and confirm the collection is still queryable.
 
-The question that opens next: if code can hold any subclass in a superclass reference, how does code safely access behavior that only exists on one specific subclass? That is the question `instanceof` and casting answer — and they carry risks that the module's next layer addresses.
+The open question: this module builds a supply side that stays fixed after startup. What happens when entities need to change — when a book goes from available to checked out — and that change must survive across sessions? That is the persistence question, and it is what the next layer of the course builds toward.
 
 ---
 
 ## Wonder Questions
 
-1. The JVM uses the actual runtime type to dispatch a method call. But the compiler uses the declared type to check whether the call is legal. What happens when a subclass defines a method that does not exist on the superclass — can a superclass reference ever reach it? Why or why not?
+1. The separation test says: comment out every transaction and confirm the supply side still works. But in a real project, transactions often populate the supply side with new data — new books are added by librarian transactions, not just by startup code. Does the separation test still apply? What exactly is it testing?
 
-2. Two classes both define `makeSound()`, but neither inherits from the other. A method takes an `Object` parameter — the root of all Java classes — and calls `makeSound()` on it. What happens? What does this reveal about what polymorphism actually requires?
+2. The chapter says entities are durable and transactions are temporary. But a purchase order eventually becomes a historical record — it stops being active but never gets deleted. Does "durable" mean the same thing for an entity and for an archived transaction? What is the actual distinction?
 
-3. A subclass overrides a method from its superclass. Inside the override, it calls `super.makeSound()`. The superclass version runs first, then the subclass adds its own behavior. Who decides the order? Is there a case where this order is wrong?
+3. The `Author` class exists as a separate object so that author data can be updated in one place and the change propagates everywhere. But the `Book` holds an array of `Author` references. If the array is fixed at construction time, can the book ever have a new author added? What does this reveal about the difference between modeling a relationship and modeling a mutable relationship?
 
-4. The hospital's time-tracking system works without knowing about `TravelingSurgeon`. But if the hospital adds one hundred new staff types over ten years, and some of them override `clockIn()` in subtle ways, how does a maintainer know which version of `clockIn()` actually runs for a given staff member? Is that a problem with polymorphism, or a problem with something else?
+4. Two patrons check out different books simultaneously. The chapter says a transaction-creates-resource design means the two transactions "do not share a catalog — they share a fiction of one." What would have to be true about the program's execution for both transactions to see each other's changes to entity state? What prevents it in the broken design?
 
-5. Java allows a variable declared as `Object` to hold any Java object. Every class inherits from `Object`. Does this mean every Java program already uses polymorphism, even if no one wrote a subclass? What is missing from that claim?
+5. The chapter identifies four artifacts: entity class, collection class, preload block, query method. A student builds all four but the query method modifies the entity it finds — it changes the book's `available` field. Is the separation still intact? What rule does that violate?
 
 ---
 
 > **Precision Summary**
 >
-> **What this concept is:** Dynamic binding is the mechanism by which Java selects a method body at runtime based on the actual type of the object, not the declared type of the reference variable.
+> **What the concept is:** Supply-side modeling is the design discipline of representing durable resources — entities and their relationships — as independent objects that exist before any user transaction runs.
 >
-> **What it explains:** How a single method call on a superclass reference can produce different behavior depending on which subclass object is present — without any conditional logic at the call site.
+> **What it explains:** Why a program that correctly handles user actions can still fail to model the domain — and why the failure only surfaces when the system needs to grow, not when it first runs.
 >
-> **What it does NOT mean:** It does not mean the declared type is irrelevant. The declared type determines which method names are legal to call. Dynamic binding only operates within that boundary.
+> **What it does NOT mean:** It does not mean transactions are unimportant or that user flows are the wrong starting point for understanding requirements. It means that the objects the user's flow depends on must exist independently of that flow.
 >
-> **What comes next:** When code needs behavior that exists only on a specific subclass — not on the declared superclass type — it must check the object's runtime type explicitly, using `instanceof`, and cast before calling. That is where the mechanism gains power and gains risk in equal measure.
+> **What comes next:** A static supply side answers queries but cannot survive a restart. The next question is persistence: how entity state is stored and restored across sessions, and what changes when multiple users can modify the same entity simultaneously.
