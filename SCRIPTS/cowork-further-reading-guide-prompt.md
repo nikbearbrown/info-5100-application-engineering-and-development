@@ -19,6 +19,12 @@ rather than assume it.
 - A guide disconnected from the chapter's learning objectives (students have
   no reason to engage)
 - More than 6 total resources (cognitive overload; students stop reading)
+- A Further-tier resource with no level or prerequisite note (hard resources
+  without scaffolding cause students to abandon the entire guide, not just skip
+  that one item — they read it as "this guide is not for me")
+- Framing that implies "good students read everything" without giving
+  permission to skip or choose — students who cannot finish the list will
+  often not start it
 
 ---
 
@@ -60,8 +66,16 @@ exam, project, or the next module. May require slightly more background.
 
 **Tier 3 — Further (1–2 resources)**
 Exploratory, stretch, or professional orientation. May be more challenging.
-Clearly labeled as such. Intended for students who want to go beyond the
-requirement.
+This is the stretch lane. Its annotation **must** include:
+- An explicit level note: "This is graduate-level / specialist / assumes
+  familiarity with X"
+- The prerequisite: what a student needs to already understand before this
+  resource rewards them
+- The payoff: what specifically they gain that they cannot get from the
+  Recommended tier
+
+Without all three of these, a difficult Further-tier resource signals that
+the whole guide is not meant for ordinary students. That causes abandonment.
 
 ### Resource selection checklist
 
@@ -102,6 +116,12 @@ Name the knowledge gap this guide addresses that the chapter did not close.
 State specifically what the student gains from further reading here. Be honest
 about level if the resources are challenging.
 
+The framing must do two distinct things:
+
+**1. Motivate** — name the knowledge gap and what the student gains from
+closing it. Be gain-framed ("this will let you..."), not obligation-framed
+("you should also read...").
+
 **Do not write:** "The following resources provide additional information on
 the topics covered in this chapter."
 
@@ -109,6 +129,17 @@ the topics covered in this chapter."
 [narrow context]. These resources extend that foundation to [broader context]
 and to the failure modes that appear when [specific condition]. The Key
 resource is worth reading before attempting [specific project task]."
+
+**2. Instruct** — tell students how to use the guide. Define what each tier
+means and what is expected of them. Should they read only the Key item? All
+core items? Choose one from Recommended based on their project? Students who
+cannot answer "what am I supposed to do with this?" will default to skipping
+the entire guide. One or two sentences is enough:
+
+> "Read the Key resource before the project milestone. Choose one Recommended
+> resource based on which concept you found least clear. The Further item is
+> for students who want to go deeper — it assumes you are comfortable with
+> [prerequisite] and will take about 90 minutes."
 
 ### For each resource, write an annotation
 
@@ -163,6 +194,13 @@ Before finalizing, check:
    rewrite it.
 7. Are all resources real and verifiable? Flag any you are uncertain about
    rather than including them.
+8. Does the Further-tier annotation include an explicit level note,
+   prerequisite, and payoff — not just a description of content?
+9. Does the framing text tell students what they are expected to read and
+   how to choose, not just why reading further is worthwhile?
+10. Does the framing or the tier structure give students explicit permission
+    not to read everything? If not, add it. A guide that implies total
+    coverage is required will be abandoned by most students.
 
 ---
 
@@ -171,14 +209,18 @@ Before finalizing, check:
 ```markdown
 ## Further Reading — [Chapter/Module Title]
 
-[2–3 sentence framing: what knowledge gap this guide addresses, what the
-student gains, honest level note if needed.]
+[Motivation: 2–3 sentences naming the knowledge gap and what the student
+gains from closing it.]
+
+[Usage instructions: 1–2 sentences defining what each tier means and what
+the student is expected to read. Give explicit permission to not read
+everything.]
 
 ### Key
 
 **[Exact resource title]** — [Author(s), Year]
-[3–7 sentence annotation covering: scope (specific section/timestamp),
-learning outcome link, engagement instruction.]
+[3–7 sentence annotation: scope (specific section/timestamp), learning
+outcome link, engagement instruction.]
 
 ### Recommended
 
@@ -191,7 +233,9 @@ learning outcome link, engagement instruction.]
 ### Further
 
 **[Exact resource title]** — [Author(s), Year]
-[3–7 sentence annotation including honest note about level or context.]
+[3–7 sentence annotation. Must include: (1) explicit level/difficulty note,
+(2) prerequisite — what the student needs to already understand, (3) specific
+payoff — what this resource gives that the Recommended tier does not.]
 
 ---
 
