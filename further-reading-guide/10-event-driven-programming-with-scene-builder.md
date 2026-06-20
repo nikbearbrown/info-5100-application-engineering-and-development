@@ -1,0 +1,29 @@
+# Module 10 — Event-Driven Programming with Scene Builder: Further Reading
+
+This chapter establishes why the model-view boundary exists and what it looks like in a `TableView`. What it does not cover is how Scene Builder's FXML workflow actually connects to Java controller classes — the `@FXML` annotation, `FXMLLoader`, and the injection mechanism that makes Scene Builder usable in practice are absent from the chapter text. These resources close that gap and extend the chapter's structural reasoning to two areas the project will demand: the FXML controller wiring the assessment requires, and the `ObservableList` mechanism that makes a `TableView` update automatically when model data changes. Read the Key resource before attempting Exercise 4 (the catalog view milestone). Choose one Recommended resource based on which concept felt least clear after the chapter — FXML wiring or the event system. The Further item is for students who want to understand why MVC has so many variants in professional codebases; it assumes comfort with the three-layer model and is not required for any assessment.
+
+### Key
+
+**"JavaFX Tutorial — JavaFX FXML"** — Jakob Jenkov, Jenkov.com (continuously updated, last reviewed 2024)
+
+I included this because the chapter names Scene Builder throughout — including in both assessments — but never explains the FXML mechanism that Scene Builder produces. This tutorial covers exactly that seam: how Scene Builder saves a `.fxml` file, how `FXMLLoader` parses that file at runtime, and how the `@FXML` annotation injects layout nodes into your controller's fields. Read the "FXML" and "FXMLLoader" pages at [https://jenkov.com/tutorials/javafx/fxml.html](https://jenkov.com/tutorials/javafx/fxml.html); each page is 10–15 minutes. As you read, map the injection mechanism back to the chapter's claim that "the controller is the only layer that talks to both" — FXML injection is what makes that claim true in Scene Builder projects. Skip the "FXML Namespaces" subsection on first pass; it is not needed for the semester project.
+
+### Recommended
+
+**"Introduction to FXML"** — OpenJFX Documentation, OpenJFX.io (JavaFX 21, 2023)
+
+The authoritative reference for the FXML language that Scene Builder generates. The scope that matters for this module is the "Controllers" section, which specifies exactly how `fx:controller`, `@FXML`, and `initialize()` interact — the three artifacts that connect a Scene Builder layout file to a Java class. I included this alongside the Jenkov tutorial because the official documentation answers the edge cases the tutorial elides: what happens when an `@FXML` field is `null` at `initialize()`, and how the `initialize()` method signature must be declared. Read the "Controllers" section ([https://openjfx.io/javadoc/21/javafx.fxml/javafx/fxml/doc-files/introduction_to_fxml.html](https://openjfx.io/javadoc/21/javafx.fxml/javafx/fxml/doc-files/introduction_to_fxml.html)) after the Jenkov tutorial; treat it as a reference to consult when something does not wire up correctly rather than a linear read.
+
+**"JavaFX Tutorial — TableView"** — Jakob Jenkov, Jenkov.com (continuously updated, last reviewed 2024)
+
+The chapter explains the cell value factory conceptually but does not show the full `TableView` setup: `ObservableList`, `TableColumn` type parameters, and the distinction between `setCellValueFactory` using `PropertyValueFactory` versus a lambda. This tutorial covers all three at [https://jenkov.com/tutorials/javafx/tableview.html](https://jenkov.com/tutorials/javafx/tableview.html). The scope that matters is the "TableView Model" and "TableColumn Cell Value Factory" sections — together about 20 minutes. Read this resource before writing Exercise 4 (the catalog view). Pay specific attention to the `ObservableList` constructor call: understanding why `FXCollections.observableArrayList()` is required — rather than a plain `ArrayList` — closes the gap between the chapter's description of "the table reflects the model" and what you actually have to write in Java.
+
+### Further
+
+**"GUI Architectures"** — Martin Fowler, martinfowler.com (2006, available at [https://martinfowler.com/eaaDev/uiArchs.html](https://martinfowler.com/eaaDev/uiArchs.html))
+
+This is specialist-level reading that assumes you are already comfortable with the three-layer model this chapter teaches. The prerequisite is that you can accurately classify a responsibility as model, view, or controller in your own code — if Exercise 1 still feels uncertain, return to this resource after Module 11. The article is a practitioner's analysis of why MVC fragments into so many variants in real codebases: Fowler traces the progression from original MVC through Supervising Controller, Passive View, and Presentation Model, showing what problem each variant solves and what it trades away. The payoff that the Recommended tier cannot give you is this: understanding why the clean MVC the chapter describes breaks down under two pressures — complex view state and testability requirements — and what professional architects do when it does. This matters for your career because most production JavaFX and Android codebases use a variant (MVP or MVVM), not the canonical form. Read the introduction and the "MVC" and "Supervising Controller" sections (roughly 45 minutes); the later sections can wait until you have shipped a multi-screen application and started to feel the friction Fowler is describing.
+
+---
+
+> **Assessment connection:** The Key resource (Jenkov FXML tutorial) directly supports the "Optional Exercise: Creating a Java Application With an Interaction" assessment, which requires wiring a Scene Builder layout to a Java controller. Without understanding `@FXML` injection and `FXMLLoader`, the controller fields will be `null` at runtime and no event handler will fire — a failure mode the chapter does not warn about and the tutorial specifically explains.
