@@ -15,10 +15,20 @@ a chapter's learning beyond what the main text covers. It is not a bibliography
 and not a syllabus reading list (which is required). It is an invitation to go
 deeper — and it must earn that engagement rather than assume it.
 
-Research consistently shows that only 17–27% of students engage with
-supplementary reading without accountability structures. That number rises
-significantly when guides are annotated, connected to assessments, and written
-with explicit framing that explains why each resource was chosen. A guide
+A further reading guide is distinct from an annotated bibliography. An
+annotated bibliography is an academic task: a researcher demonstrating mastery
+of a literature. A further reading guide is an instructional tool: an
+instructor building a scaffold for a student who has not yet mastered the
+field. The tone, structure, and selection logic are different in every
+dimension.
+
+Empirical data on engagement is instructive. A large-scale RLMS evaluation
+at the University of Huddersfield found that 76.6% of students used reading
+lists "a lot" or "sometimes," and 87.4% rated them useful — but 32% of
+students still requested better lecturer curation, and 61% demanded digital
+(eBook) formats over print. The gap between perceived usefulness and actual
+engagement closes when guides are annotated, connected to assessments, and
+written with framing that explains why each resource was chosen. A guide
 without annotation is almost always ignored.
 
 ---
@@ -42,15 +52,22 @@ Do not create a further reading guide if:
 Organize every guide into exactly three tiers. Label them explicitly. Students
 need to know which items are load-bearing and which are exploratory.
 
-| Tier | Label | Purpose | Quantity |
-|------|-------|---------|----------|
-| 1 | **Key** | Directly supports meeting core learning outcomes; a student who skips this has a gap | 1–2 items |
-| 2 | **Recommended** | Extends and deepens the chapter's main concept; worth reading before an exam or project | 2–3 items |
-| 3 | **Further** | Exploratory, stretch, or professional orientation; save for later in the course or career | 1–3 items |
+| Tier | Label | Purpose | Bloom's Level | Quantity |
+|------|-------|---------|--------------|----------|
+| 1 | **Key** | Directly supports meeting core learning outcomes; a student who skips this has a gap | Remembering / Understanding | 1–2 items |
+| 2 | **Recommended** | Extends and deepens the chapter's main concept; worth reading before an exam or project | Applying / Analyzing | 2–3 items |
+| 3 | **Further** | Exploratory, stretch, or professional orientation; save for later in the course or career | Evaluating / Creating | 1–2 items |
 
-Do not exceed 3 items per week per module in total across all tiers. Lists
-beyond this threshold trigger avoidance. Fewer, better-chosen resources
-consistently outperform comprehensive lists.
+The Bloom's column is a design constraint, not a label. Key resources should
+be accessible to a student who just finished the chapter (comprehension level).
+Recommended resources can push toward analysis and application. Further
+resources may require students to evaluate conflicting views or synthesize
+across sources — this is by design, but it must be explicit in the annotation.
+
+Do not exceed 3–5 total resources per module. Lists beyond this threshold
+trigger avoidance (Cognitive Load Theory: extraneous cognitive load from
+undifferentiated choice). Fewer, better-chosen resources consistently
+outperform comprehensive lists.
 
 ### Organization Within Tiers
 
@@ -72,26 +89,43 @@ engage with it.
 
 ### Required Elements in Every Annotation
 
-Each annotation must answer three questions in this order:
+Each annotation must address three elements:
 
-1. **Scope** — What does this resource cover, and which specific part matters
-   for this chapter? Name the chapter, section, or timestamp. "This book"
-   is not scope. "Chapter 3, pages 44–61, on hash collision attacks" is scope.
+1. **Ontological value** — What is this resource's contribution to the field,
+   and where does it sit in the broader conversation? Is it foundational,
+   contested, a recent revision of an older claim? This gives the student
+   context before they start reading.
 
-2. **Learning outcome link** — How does this resource support a stated course
-   objective? Connect it to something the student is already trying to do.
-   "This deepens the distinction between authentication and authorization
-   introduced in Module 6" is a learning outcome link.
+2. **Pedagogical connection** — How does this resource connect to the chapter's
+   concepts or assessments? "Chapter 3, pages 44–61, on hash collision attacks,
+   directly extends the authentication model introduced in Module 6" is a
+   pedagogical connection. "This is useful" is not.
 
-3. **Engagement instruction** — What should the student do with this resource?
-   Read deeply? Skim? Watch only the first 8 minutes? Compare to the textbook
-   treatment? Students who do not know how to engage with a resource skip it.
+3. **Strategic guidance (directional scaffolding)** — What specific reading
+   strategy should the student use? "Review the methodology in Section 2 but
+   focus primarily on the discussion in Section 5" is strategic guidance. "Read
+   this carefully" is not. Students who receive no reading strategy skip
+   resources that require more than a surface skim.
+
+### Presentation format
+
+Present the citation, annotation, and access link as one cohesive visual unit.
+Do not separate the citation from the annotation with a section break, a line
+of white space, or a different page. CLT's split-attention effect shows that
+learning degrades when students must mentally integrate information distributed
+across space. The resource title, author, annotation, and link should be
+immediately adjacent.
 
 ### Length
 
-3–7 sentences for a descriptive annotation. Longer (up to 200 words) only
-when the resource requires explicit scaffolding — for example, a dense academic
-paper that rewards effort but requires guidance on how to read it.
+100–150 words per annotation. This is an empirically grounded target: a JMIR
+Medical Informatics study (2024) found that human-written annotations average
+90 words (SD 36.8) and score significantly higher on readability than
+AI-generated annotations, which average 113 words but score far lower on
+the Flesch Reading Ease scale (5.76 vs. 15.3 for humans). Concise, readable
+annotations outperform longer, denser ones. Go up to 200 words only when the
+resource is a dense empirical paper that requires a conceptual buffer — and in
+that case, include a glossary of key terms used in the paper.
 
 The quality criterion: an annotation that could describe three different
 resources equally well has failed. Every annotation should be specific enough
@@ -137,6 +171,13 @@ just finished the chapter. Further tier resources may challenge the student
 and can assume more background. Do not place a graduate-level paper in the
 Key tier because it is canonical. Canonical is not the same as accessible.
 
+**Canonical sources require accessible pairing.** Every field has foundational
+works — dense, jargon-heavy, written for specialists. Include them, but always
+pair them with an accessible secondary source (a review article, a simplified
+translation, a textbook chapter that explains the same ideas for novices). A
+canonical source placed alone in the Key tier without scaffolding produces
+immediate student frustration and total disengagement.
+
 ### 4. Specific, not general
 
 A resource that covers twenty topics is not a further reading resource — it
@@ -157,6 +198,15 @@ Review the list as a whole for author diversity. A list drawn exclusively from
 one demographic, institution, or decade signals a curated canon rather than a
 field. Intentional inclusion of authors from underrepresented backgrounds is
 a standard of quality in open textbook development.
+
+### 7. Consider student-authored materials
+
+For introductory modules, high-quality undergraduate research journal articles,
+peer-vetted OER summaries, or annotated student projects can be more effective
+than professional publications. Beginning students often identify what other
+beginners need better than experts do. Student-authored materials also signal
+academic belonging — students see themselves as capable of producing the kind
+of work the discipline values.
 
 ---
 
@@ -188,6 +238,21 @@ over videos that put narration over slides of text.
 Practical composition target (practitioner consensus, not empirical):
 60–70% text, 20–30% visual, 10% multimedia — adjusted for discipline.
 
+### Media-to-learning-goal alignment
+
+Select format based on the cognitive task, not variety for its own sake:
+
+| Learning goal | Best resource type | Mechanism |
+|---------------|-------------------|-----------|
+| Conceptual understanding | Animation, short video with human narration, interactive digital model | Reduces decoding load so working memory can process the concept |
+| Critical skill-building | Peer-reviewed articles, scholarly monographs, primary documents | Requires active reading, evidence evaluation, close analysis |
+| Professional orientation | Case studies, industry reports, professional guidelines | Bridges abstract academic knowledge to applied practice |
+
+Video with human narration outperforms slides with voiceover (Mayer's
+redundancy principle: on-screen text competes with narration for the verbal
+channel). Prefer videos that show, animate, or demonstrate over videos that
+read text aloud.
+
 ---
 
 ## Framing Text
@@ -197,20 +262,30 @@ closes the tab. Research on reading motivation shows that gain-framed language
 ("this will expand your ability to...") outperforms loss-framed language
 ("failure to read this will result in...") for optional materials.
 
-Write an opening that:
-- Names the knowledge gap the guide addresses that the chapter did not close
-- Explains specifically what the student gains from further reading in this
-  area — not in general
-- Is honest about level: "These resources are challenging and intended for
-  students who want to go beyond the project requirement"
+Write a narrative introduction of 100–150 words (not a sentence, not a list of
+bullet points). The opening must do three things:
+
+1. **Activate prior knowledge** — connect to what the student just learned in
+   the chapter before pointing outward. Gagné's instructional design framework
+   identifies this as a prerequisite for effective learning: the brain needs
+   an existing schema to attach new information to.
+
+2. **Frame the field as alive** — present the discipline not as settled facts
+   but as an ongoing conversation. Point to a current debate, a recent
+   methodological shift, or an unresolved question the chapter did not address.
+   Students who believe a field is static have no reason to keep reading.
+
+3. **Create curiosity over compliance** — use language that positions reading
+   as an invitation to a practitioner's conversation, not a chore. "These
+   resources take you inside the decision that shaped how databases handle
+   concurrency today" creates pull. "Additional resources are provided below"
+   does not.
 
 Do not open with: "The following resources provide additional information on
-the topics covered in this chapter." This sentence teaches nothing and creates
-no motivation.
+the topics covered in this chapter." This sentence does none of the above.
 
-Do not use the word "optional" without an explanation of what optional means
-here. Students interpret "optional" as "skip this." If the resources are worth
-including, explain the gain.
+Do not use the word "optional" without specifying what the student gains. They
+will read "optional" as "skip this" unless told otherwise.
 
 ---
 
@@ -221,9 +296,19 @@ students. Reading guides tied to a quiz question, discussion prompt, or project
 component are used significantly more. This is the single highest-leverage
 change a curriculum designer can make.
 
-Minimum viable assessment connection: one wonder question per chapter that
-a Key-tier resource directly helps answer, with the guide telling the student
-which question it helps with.
+Minimum viable assessment connections (two, at different tiers):
+
+- **Key tier**: tie at least one resource to a specific concept the student
+  must explain in the next assessment or discussion prompt. Tell the student
+  explicitly which task it supports.
+- **Further tier**: align at least one stretch resource directly to a graded
+  assignment, term essay, or project milestone. Students engage with
+  challenging resources when they can see the payoff. Without this connection,
+  the Further tier is almost universally ignored.
+
+The guide should name the connection explicitly, not leave it implicit. "This
+resource will help you answer Question 3 on the mid-term" closes the loop
+between reading and assessment accountability.
 
 ---
 
@@ -232,39 +317,113 @@ which question it helps with.
 For open-access or online course contexts:
 
 - **Host materials with the textbook** where possible rather than linking to
-  external sites. External links break; hosted materials persist.
-- **Use DOIs** for all academic content. A DOI link will resolve to the
-  current location even when publishers reorganize their sites.
-- **Meet WCAG 2.1 AA** accessibility standards for all materials you create
-  (e.g., tables, infographic PDFs). For externally hosted resources, note
-  known accessibility limitations in the annotation.
+  external sites. External links break; hosted materials persist. Open-licensed
+  OER materials may be legally downloaded and hosted in the LMS under Creative
+  Commons terms — this is permitted and shields the resource from external
+  shutdowns.
+
+- **Use DOIs** for all academic content. A DOI link will resolve to the current
+  location even when publishers reorganize their sites. Note: a 2022 study by
+  Marshal A. Miller analyzing 2,500 peer-reviewed articles over ten years found
+  36% of hyperlinks broken and 37% of DOIs inactive — link rot is worse than
+  most instructors assume.
+
+- **Use the Wayback Machine or Internet Archive** for web resources without
+  DOIs. Add a backup archive URL (web.archive.org) alongside the live URL so
+  students can recover the resource if the live link dies.
+
+- **Embed guides in the LMS** rather than publishing as standalone documents.
+  LMS-integrated reading lists (e.g., Talis Aspire, Leganto) that appear
+  inside the weekly workflow are used significantly more than guides hosted
+  separately. The split-attention effect applies at the course level: students
+  who must switch context to find the reading list lose momentum.
+
+- **Deploy social annotation** where possible. Tools like Hypothesis and
+  Perusall let students annotate, highlight, and discuss supplementary articles
+  directly in the digital text. This makes engagement visible to the instructor,
+  reduces the isolation of asynchronous reading, and fosters collaborative
+  knowledge construction. It also closes the accountability gap: annotations
+  become evidence of engagement.
+
+- **Meet WCAG 2.1 AA** accessibility standards for all materials you create.
+  For externally hosted resources, note known accessibility limitations in the
+  annotation.
+
 - **License compatibility**: Clearly state the license for any resources you
   create. For resources you link to, note if there are use restrictions.
-- **Review annually**: Set a calendar reminder to check all links and confirm
-  resources are still available, current, and accessible before each semester.
+
+- **Review semi-annually**: Check all links, confirm resources are current and
+  accessible, and update or remove outdated items before each term. Annual
+  review is insufficient for fast-moving fields and digital resources with
+  high link-rot rates.
+
+### Open pedagogy
+
+In OER contexts, consider involving students in building and annotating the
+guide itself. Successive cohorts can add multicultural resources, write
+collaborative annotations, and flag outdated materials. Because beginning
+students often identify what other beginners need more accurately than experts
+do, student-curated additions can be more effective than instructor additions
+for introductory sections. When students contribute, clearly mark their
+contributions and apply the same verification standards as instructor-authored
+content.
 
 ---
 
 ## AI Assistance
 
-LLM-generated reading lists and annotations have documented failure modes:
+### What the empirical record shows
 
-- **Hallucinated citations**: LLMs fabricate plausible-looking titles and
-  authors that do not exist. Every AI-suggested citation must be verified
-  against a real library catalog or DOI resolver before use.
-- **Misrepresented significance**: LLMs cannot reliably distinguish between
-  foundational, contested, and marginal work in a field.
-- **Annotation errors**: LLM-generated annotations contain substantive errors
-  in 31–50% of cases (arXiv:2503.22040).
+A rigorous JMIR Medical Informatics study (2024) compared human annotators
+against ChatGPT 3.5, 4, and 5 on accuracy, readability, and thematic coverage:
 
-Permitted uses of AI in guide development:
-- Generating category headers or organizational scaffolding
-- Summarizing human-written annotations for length
-- Suggesting search terms to find resources (not resources themselves)
+| Metric | Human | AI (combined) | Implication |
+|--------|-------|---------------|-------------|
+| Mean word count | 90 words | 113 words | AI writes longer but less readable annotations |
+| Flesch Readability | 15.3 | 5.76 | Human annotations are significantly easier to read |
+| Capture of main points | Baseline | Comparable | AI can summarize topics adequately |
+| Factual error rate | Low (baseline) | High (hallucinations) | AI has significantly higher odds of factual errors |
+| Quality/context summary | Low consistency | High consistency | AI over-summarizes quality markers it cannot actually assess |
 
-Do not use AI as the primary generator of resource lists or annotations without
-expert review of every item. If AI was used in any capacity, disclose this
-to students.
+The upshot: AI can match human performance on identifying topics but
+substantially underperforms on accuracy and readability. AI annotations also
+tend toward a generic, passive voice that fails to engage students.
+
+### Documented failure modes
+
+- **Citation hallucinations**: LLMs fabricate plausible-looking titles, authors,
+  publishers, DOIs, and page ranges that do not exist. Every AI-suggested
+  citation must be verified against a real library catalog or DOI resolver
+  before use.
+- **Misrepresented significance**: LLMs cannot reliably distinguish foundational
+  from contested from marginal work.
+- **Annotation errors**: Factual errors in AI-generated annotations (sample
+  sizes, statistical results, conceptual claims) are documented at high rates.
+- **Voice mismatch**: AI annotations default to dense, passive, formulaic
+  language. Students find them harder to read and less compelling than
+  human-written annotations.
+
+### Best-practice AI workflow
+
+Do not use AI as the primary generator. Use it as a drafting assistant with
+mandatory human verification at every step:
+
+1. **Prime the model**: Provide exemplar annotations and style instructions
+   before asking for output. An AI working without exemplars defaults to
+   generic patterns.
+
+2. **Use targeted prompts**: "Summarize the methodology in Section 2 and the
+   primary finding in Section 5 of this article in exactly 120 words. Note any
+   limitations the authors themselves acknowledged." Specificity produces
+   better output and makes errors easier to catch.
+
+3. **Verify every item**: Check every AI-generated citation against a live
+   library catalog or DOI resolver. Check all statistics, author affiliations,
+   and qualitative claims against the original source. Do not pass through
+   AI output that you have not independently confirmed.
+
+4. **Disclose**: If AI was used in any capacity, tell students. Modeling
+   responsible AI use in course materials is itself a learning outcome.
 
 ---
 
@@ -272,14 +431,17 @@ to students.
 
 | Failure | Why it happens | Fix |
 |---------|---------------|-----|
-| Guide is never opened | No connection to assessment, no annotation | Tie one item to a graded prompt; annotate every resource |
-| Links break within a semester | Raw URLs without persistent identifiers | Use DOIs; use Perma.cc for web resources |
-| Students feel overwhelmed | More than 3 items per week | Cut to the highest-value resources per tier |
-| Guide is too generic | Descriptions that apply to any chapter | Every annotation must be specific enough to identify the resource without its title |
+| Guide is never opened | No connection to assessment, no annotation | Tie Key tier to a concept question; tie Further tier to a graded task |
+| Links break within a semester | Raw URLs without persistent identifiers | Use DOIs; use Wayback Machine archive URLs as backup |
+| Students feel overwhelmed | More than 5 items total | Cut to the highest-value resources per tier |
+| Guide is too generic | Descriptions that apply to any chapter | Rewrite until removing the resource title still identifies the resource |
+| Canonical source inaccessible | Placed in Key tier without scaffolding | Pair every canonical source with an accessible secondary source |
 | Wrong level | Key-tier resources assume graduate preparation | Test each resource against a student who just finished the chapter |
-| Outdated materials | List not reviewed annually | Annual review scheduled before each semester |
-| Homogeneous authorship | Default to historical canon | Actively audit for author diversity before publishing |
-| Paywalled resources inaccessible | Not verified through institutional library | Confirm access for every paywalled item |
+| Outdated materials | List not reviewed each term | Semi-annual review before each semester |
+| Homogeneous authorship | Default to historical canon | Audit author list for diversity before publishing |
+| Paywalled resources inaccessible | Not verified through institutional library | Confirm access for every paywalled item; prioritize open-access |
+| Guide feels like administration | Framing text is generic or missing | Write 100–150 word narrative framing; name the living debate |
+| AI annotation errors | Treating AI as autonomous author | Verify every AI-generated citation, stat, and claim against original source |
 
 ---
 
@@ -287,23 +449,29 @@ to students.
 
 Before publishing a further reading guide, verify:
 
-1. Does every resource have an annotation with scope, learning outcome link,
-   and engagement instruction?
-2. Does every annotation name a specific chapter, page range, or timestamp —
+1. Does every annotation include ontological value, pedagogical connection,
+   and strategic guidance (directional scaffolding)?
+2. Is each annotation 100–150 words? (Go up to 200 only for stretch resources
+   that require a conceptual buffer.)
+3. Does every annotation name a specific chapter, page range, or timestamp —
    not just a title?
-3. Is the total per-module item count ≤ 3 per week?
-4. Is every resource accessible (no broken links, no inaccessibility barriers,
-   no unverified paywalls)?
-5. Are all URLs either DOIs or Perma.cc-archived?
-6. Is the opening framing text gain-framed, specific to this chapter's gap,
-   and honest about level?
-7. Is at least one Key-tier resource tied to a specific assessment or
-   wonder question?
-8. Does the author list across the full guide reflect disciplinary diversity?
-9. If AI was used to suggest any resources, has every item been independently
-   verified?
-10. Could any annotation apply equally well to a different resource? If yes,
+4. Are the citation, annotation, and access link presented as one cohesive
+   visual unit — not split across different sections or pages?
+5. Is the total resource count 3–5? No more than 5 across all tiers.
+6. Is at least one canonical source paired with an accessible secondary source?
+7. Is every resource accessible (no broken links, no unverified paywalls,
+   no inaccessibility barriers)?
+8. Does every URL have a DOI or an Internet Archive backup link?
+9. Is the opening framing 100–150 words, narrative, and curiosity-framing
+   (living debate, not list of topics)?
+10. Is at least one Key-tier resource tied to a specific concept or discussion
+    prompt? Is at least one Further-tier resource tied to a graded assignment?
+11. If AI was used to suggest any resources, has every citation, statistic, and
+    qualitative claim been independently verified against the original source?
+12. Does the author list reflect disciplinary diversity?
+13. Could any annotation apply equally well to a different resource? If yes,
     rewrite it.
+14. Is a semi-annual review date calendared?
 
 ---
 
@@ -312,25 +480,36 @@ Before publishing a further reading guide, verify:
 ```markdown
 ## Further Reading — [Chapter/Module Title]
 
-[2–3 sentence framing: what knowledge gap this guide addresses and what
-the student gains from reading further here.]
+[100–150 word narrative framing: what the field's living debate is, what
+knowledge gap the chapter left open, and what the student gains from engaging
+with it now. Write as an invitation to a practitioner's conversation, not an
+administrative notice.]
 
 ### Key
 
-**[Resource title]** — [Author, Year]
-[3–7 sentence annotation: scope (specific section/timestamp), learning
-outcome link, engagement instruction.]
+**[Exact resource title]** — [Author(s), Year] | [DOI or archive URL]
+[100–150 word annotation: (1) ontological value — what this resource
+contributes to the field; (2) pedagogical connection — how it links to this
+chapter's concept or assessment; (3) strategic guidance — which section to
+focus on and how to read it. Annotation and link appear together as one unit.]
+
+> Supports: [specific concept question, discussion prompt, or project task]
 
 ### Recommended
 
-**[Resource title]** — [Author, Year]
-[3–7 sentence annotation.]
+**[Exact resource title]** — [Author(s), Year] | [DOI or archive URL]
+[100–150 word annotation.]
 
-**[Resource title]** — [Author, Year]
-[3–7 sentence annotation.]
+**[Exact resource title]** — [Author(s), Year] | [DOI or archive URL]
+[100–150 word annotation.]
 
 ### Further
 
-**[Resource title]** — [Author, Year]
-[3–7 sentence annotation including honest level note.]
+**[Exact resource title]** — [Author(s), Year] | [DOI or archive URL]
+[100–150 word annotation. Include honest level note: "This resource assumes
+familiarity with [X] and is intended for students who want to go beyond the
+project requirement." If paired with a canonical source, name the canonical
+source and explain why this accessible companion unlocks it.]
+
+> Supports: [specific graded assignment, essay prompt, or project milestone]
 ```
