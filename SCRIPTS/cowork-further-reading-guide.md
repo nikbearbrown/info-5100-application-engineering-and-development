@@ -22,6 +22,15 @@ instructor building a scaffold for a student who has not yet mastered the
 field. The tone, structure, and selection logic are different in every
 dimension.
 
+Reading lists — and further reading guides as a sub-type — are not neutral
+appendices. Katharine Schucan Bird's 2020 article in Higher Education describes
+them as "representation devices": they shape what students think matters, how
+they allocate effort, and which voices and knowledge traditions are made
+visible. A guide composed entirely of works by one demographic, institution, or
+decade is not just a diversity gap — it is a claim about whose work counts.
+This means curation is always a value-laden act, and designers should treat it
+as one.
+
 Empirical data on engagement is instructive. A large-scale RLMS evaluation
 at the University of Huddersfield found that 76.6% of students used reading
 lists "a lot" or "sometimes," and 87.4% rated them useful — but 32% of
@@ -30,6 +39,14 @@ students still requested better lecturer curation, and 61% demanded digital
 engagement closes when guides are annotated, connected to assessments, and
 written with framing that explains why each resource was chosen. A guide
 without annotation is almost always ignored.
+
+One counterintuitive finding: students often regard supplementary reading
+guides as more important for their learning than lecturers do (Brewerton,
+2014). Brewerton also found that some students were unsure how to use reading
+lists, while others were unaware they existed at all. This means **discoverability
+and usage clarity are quality criteria**, not just content quality. A guide
+that is not easy to find, or that does not tell students how to use it, has
+failed before a student reads the first entry.
 
 ---
 
@@ -71,13 +88,26 @@ outperform comprehensive lists.
 
 ### Organization Within Tiers
 
-Organize by when the material is relevant, not by resource type. A student
-asking "what should I read after lecture 4?" needs chronological relevance,
-not a sorted list of articles and then books. Within a tier, you may group
-by subtopic if a chapter covers more than one concept.
+Five organizational schemes have support in the literature, with varying
+levels of empirical backing:
 
-Do not organize by resource type (articles, then books, then videos). There
-is no evidence that this improves use and it obscures relevance.
+| Scheme | Best for | Empirical backing |
+|--------|----------|------------------|
+| **Core vs. optional extension** | Any guide; gives students permission not to read everything | Strong — students disengage from guides that imply they must read all of it |
+| **By subtopic** | Chapters covering multiple conceptual branches | Strong — helps students map conceptual relationships |
+| **By week / session** | Courses where further reading feeds seminar preparation | Strongest empirical support overall; aligns with student study schedules |
+| **By level** (intro / intermediate / specialist) | Heterogeneous cohorts with wide prior-knowledge variation | Instructional-design logic; weaker direct experimental evidence |
+| **By function** (overview / theory / debate / methods / primary source) | Advanced modules where students choose a research angle | Instructional-design logic; practitioner-supported |
+
+Do not organize by resource type (articles, then books, then videos) without
+thematic grouping within each type. That structure obscures relevance and
+forces students to make relevance judgments the guide should already have made.
+
+**Label consistency matters.** Siddall's empirical work on reading-list labels
+found that terms like "core," "recommended," and "background" fail in practice
+because instructors interpret them inconsistently across courses. Students
+wanted a common standard. Whatever labels you choose, define them once in the
+framing text and apply them identically across every chapter of the same course.
 
 ---
 
@@ -139,6 +169,17 @@ this because the chapter skips the failure-mode analysis that this article
 covers in detail." First-person framing humanizes the guide and signals that
 curation was intentional, not automated.
 
+### Over-scaffolding risk
+
+Annotations can over-scaffold. Piscioneri and Hlavac's "Minimalist Reading
+Model" was appreciated by many students but criticized by others as "dumbing
+down" the material and encouraging passive habits. The aim of an annotation
+is to give a point of entry — not to pre-digest the source so thoroughly that
+the student does not need to read it. A good annotation says: here is the door
+and here is where you should start. It does not walk the student through every
+room. This especially applies to stretch resources in the Further tier: name
+the prerequisite, name the payoff, then let the student do the work.
+
 ---
 
 ## Resource Selection Criteria
@@ -178,6 +219,15 @@ translation, a textbook chapter that explains the same ideas for novices). A
 canonical source placed alone in the Key tier without scaffolding produces
 immediate student frustration and total disengagement.
 
+**Design for two lanes.** A good guide implicitly serves two types of
+students: those who need reinforcement and confidence-building, and those
+ready for specialist or stretch literature. The Key and Recommended tiers
+are the confidence-building lane — they should be accessible to a student
+who just finished the chapter. The Further tier is the stretch lane. Label
+it explicitly and state the prerequisites. Without this framing, a difficult
+Further-tier resource is not read as "this is optional and hard" — it is read
+as "this whole guide is not for me," and the student abandons the entire guide.
+
 ### 4. Specific, not general
 
 A resource that covers twenty topics is not a further reading resource — it
@@ -199,7 +249,29 @@ one demographic, institution, or decade signals a curated canon rather than a
 field. Intentional inclusion of authors from underrepresented backgrounds is
 a standard of quality in open textbook development.
 
-### 7. Consider student-authored materials
+### 7. Weight open access appropriately — but realistically
+
+Prioritize open-access or library-licensed resources when quality is comparable.
+Access barriers reliably reduce actual use. However: Tlili et al.'s 2023
+meta-analysis in the International Journal of Educational Technology in Higher
+Education found a statistically significant but negligible overall effect of
+OER on learning achievement. Open access is not a magic learning intervention.
+It removes a common barrier to use — which for a further reading guide matters
+enormously, since a paywalled source is pedagogically useless if students
+cannot retrieve it. But "this is open access" is not itself a quality argument.
+
+### 8. Use primary sources for disciplinary inquiry
+
+For humanities, social science, and professional fields: primary sources
+(original documents, archival materials, historical records, legal texts) have
+distinctive value that secondary literature cannot substitute. Ithaka S+R's
+research on teaching with primary sources, and the Library of Congress guidance
+on primary-source pedagogy, both find that primary sources promote inquiry,
+critical thinking, and historical thinking in ways that secondary summaries do
+not. Where the chapter teaches students to think like practitioners in a
+discipline, a primary source gives them something to do that thinking with.
+
+### 9. Consider student-authored materials
 
 For introductory modules, high-quality undergraduate research journal articles,
 peer-vetted OER summaries, or annotated student projects can be more effective
@@ -281,6 +353,13 @@ bullet points). The opening must do three things:
    concurrency today" creates pull. "Additional resources are provided below"
    does not.
 
+4. **Explain how to use the guide**: Tell students what the categories mean
+   and what is expected — should they read one item, all core items, or choose
+   based on their project angle? Motivational framing and usage instruction are
+   different things. Students who want to use the guide correctly cannot do so
+   without both. Define your category labels once in the framing text, apply
+   them consistently across every chapter.
+
 Do not open with: "The following resources provide additional information on
 the topics covered in this chapter." This sentence does none of the above.
 
@@ -295,6 +374,14 @@ Reading guides that are not connected to assessments are used by 17–27% of
 students. Reading guides tied to a quiz question, discussion prompt, or project
 component are used significantly more. This is the single highest-leverage
 change a curriculum designer can make.
+
+Low-stakes guided reading questions tied to supplementary resources
+significantly increase reading compliance (Holbrook & Cassell, 2024, Christian
+Business Academy Review) and make students feel more prepared and engaged.
+Carl Wieman's research similarly shows that pre-class reading rises sharply
+when tied to meaningful accountability structures — not high-stakes assessment,
+just visible payoff. The mechanism is not threat of consequence; it is the
+removal of the "why bother?" question.
 
 Minimum viable assessment connections (two, at different tiers):
 
@@ -328,9 +415,14 @@ For open-access or online course contexts:
   36% of hyperlinks broken and 37% of DOIs inactive — link rot is worse than
   most instructors assume.
 
-- **Use the Wayback Machine or Internet Archive** for web resources without
-  DOIs. Add a backup archive URL (web.archive.org) alongside the live URL so
-  students can recover the resource if the live link dies.
+- **Use Perma.cc or the Wayback Machine** for web resources without DOIs.
+  Note the distinction: link rot means a URL is broken; *reference rot* means
+  a URL still resolves but no longer displays the cited content (the page was
+  updated or the content moved). Perma.cc was specifically created to address
+  both forms by capturing a snapshot of the page at citation time. The Wayback
+  Machine (web.archive.org) provides retrospective snapshots. For forward-looking
+  stability, Perma.cc is preferred. For resources already cited, the Wayback
+  Machine can rescue a dead or changed URL.
 
 - **Embed guides in the LMS** rather than publishing as standalone documents.
   LMS-integrated reading lists (e.g., Talis Aspire, Leganto) that appear
@@ -351,6 +443,12 @@ For open-access or online course contexts:
 
 - **License compatibility**: Clearly state the license for any resources you
   create. For resources you link to, note if there are use restrictions.
+
+- **Publish early** — before the semester begins, not the week of the chapter.
+  Students who need alternative formats (large print, screen-reader-compatible
+  PDFs, audio versions) need time to request them. Publishing early also allows
+  students to begin reading before the week it is formally assigned, which
+  matters for students managing heavier course loads.
 
 - **Review semi-annually**: Check all links, confirm resources are current and
   accessible, and update or remove outdated items before each term. Annual
@@ -387,7 +485,13 @@ against ChatGPT 3.5, 4, and 5 on accuracy, readability, and thematic coverage:
 
 The upshot: AI can match human performance on identifying topics but
 substantially underperforms on accuracy and readability. AI annotations also
-tend toward a generic, passive voice that fails to engage students.
+tend toward a generic, passive voice that fails to engage students. The
+hallucination problem is well-documented across multiple independent studies:
+Walters (2023, Scientific Reports), Chelli et al. (2024), and Linardon et al.
+(2025) all document citation fabrication and reference inaccuracy; Nature
+reported in 2026 that hallucinated citations were already polluting the
+scientific literature at scale. This is not a solvable problem with better
+prompting — it is a structural limitation of how language models generate text.
 
 ### Documented failure modes
 
@@ -441,6 +545,9 @@ mandatory human verification at every step:
 | Homogeneous authorship | Default to historical canon | Audit author list for diversity before publishing |
 | Paywalled resources inaccessible | Not verified through institutional library | Confirm access for every paywalled item; prioritize open-access |
 | Guide feels like administration | Framing text is generic or missing | Write 100–150 word narrative framing; name the living debate |
+| Guide signals "good students read everything" | No explicit permission not to read all items | Define core vs. optional explicitly; make realistic claim on student time |
+| Students don't know the guide exists | Published late or buried in LMS | Publish before semester start; place in weekly workflow, not appendix |
+| Labels mean different things chapter to chapter | No shared label definitions | Define categories once in course introduction; apply identically everywhere |
 | AI annotation errors | Treating AI as autonomous author | Verify every AI-generated citation, stat, and claim against original source |
 
 ---
@@ -471,7 +578,14 @@ Before publishing a further reading guide, verify:
 12. Does the author list reflect disciplinary diversity?
 13. Could any annotation apply equally well to a different resource? If yes,
     rewrite it.
-14. Is a semi-annual review date calendared?
+14. Is the guide published early enough for students needing alternative
+    formats to request them before the chapter is due?
+15. Does the framing text define the category labels and tell students how to
+    use the guide (which items to read, how to choose)?
+16. Is there a stretch resource in the Further tier that explicitly names its
+    prerequisites and payoff — so a student who is not ready can set it aside
+    without concluding the whole guide is not for them?
+17. Is a semi-annual review date calendared?
 
 ---
 
