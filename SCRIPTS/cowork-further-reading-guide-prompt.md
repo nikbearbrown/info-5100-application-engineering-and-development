@@ -9,198 +9,270 @@ extends a chapter's learning beyond what the main text covers — organized by
 priority tier, connected to learning outcomes, and written to earn engagement
 rather than assume it.
 
-**Generation failure modes to avoid:**
-- A guide with bare citations and no annotations (functionally equivalent to
-  no guide at all)
-- A guide with annotations that could describe any resource in the field
-  (too generic to be useful)
-- Resources that cannot be verified (AI hallucination risk: every title must
-  be real, verifiable, and locatable)
-- A guide disconnected from the chapter's learning objectives (students have
-  no reason to engage)
-- More than 6 total resources (cognitive overload; students stop reading)
-- A Further-tier resource with no level or prerequisite note (hard resources
-  without scaffolding cause students to abandon the entire guide, not just skip
-  that one item — they read it as "this guide is not for me")
-- Framing that implies "good students read everything" without giving
-  permission to skip or choose — students who cannot finish the list will
-  often not start it
+---
+
+## BEFORE YOU BEGIN — FOUR RULES THAT OVERRIDE EVERYTHING ELSE
+
+**Rule 1 — Verify before including.**
+Every resource you name must be real and independently confirmable: exact
+title, exact author(s), exact publication year and venue. Do not include a
+resource you cannot confirm exists. If uncertain, use a different resource.
+Do not write "this citation needs checking" — that is draft metadata, not a
+guide entry. If you cannot verify it, exclude it silently and choose something
+you can verify.
+
+**Rule 2 — No draft metadata in the output.**
+The following phrases must never appear in the final guide:
+"not included due to verification uncertainty" · "could not be verified" ·
+"originally planned resource was replaced" · "In its place:" ·
+"this citation requires further checking."
+These are editorial process notes. Students must never see them. The output
+contains only the resources being recommended, each starting with the exact
+resource title.
+
+**Rule 3 — Page numbers must match the actual edition cited.**
+Do not cite page ranges from memory or inference. If you can confirm a page
+range against the actual edition, include it. If you cannot, name the section
+or chapter title instead — section titles are stable across editions; page
+numbers are not. A wrong page number is a factual error that sends students
+to the wrong place.
+
+**Rule 4 — Version consistency.**
+If the chapter uses Java 21, cite Java 21 documentation. If the chapter uses
+JavaFX 21, cite JavaFX 21 documentation. Do not cite Java 8 or JavaFX 2
+documentation for a Java 21 course, even if the underlying behavior is similar.
+Version inconsistencies erode student trust.
 
 ---
 
-## STEP 0 — IDENTIFY THE CHAPTER'S KNOWLEDGE GAPS
+## STEP 0 — ALIGNMENT CHECK
 
-Before selecting any resources, identify what the chapter does NOT cover that
-a student who masters this chapter would benefit from knowing.
+Read the chapter title and the first three paragraphs of the chapter body.
 
-Read the chapter and extract:
+**Ask:** Does the chapter's actual content match its title?
+
+Apply a low threshold — if the chapter's primary concept is not what the title
+names, add the following notice immediately after the guide title, as the first
+element of the output:
+
+> **Content note:** Despite the title "[module title]," this chapter covers
+> [actual content]. This guide addresses the actual chapter content.
+
+**Do not skip this check.** Missing a content mismatch notice leaves students
+who arrived expecting the titled topic disoriented about what they are reading.
+
+---
+
+## STEP 1 — IDENTIFY THE CHAPTER'S KNOWLEDGE GAPS
+
+Before selecting any resources, extract:
 
 1. **Learning objectives** — what the student must be able to do after the
-   chapter. State as actions, not topics.
+   chapter. State as actions ("distinguish X from Y in a running program"),
+   not topics ("understand X").
 
 2. **Implicit limits** — what does the chapter touch but not explain? What does
-   it name without defining? What does it assume without justifying?
+   it name without defining? What does it assume without justifying? These
+   create the guide's most important resources.
 
-3. **Practical extension** — what would a student who wants to apply this
-   concept professionally need to know that the chapter does not teach?
+3. **Practical extension** — what would a student applying this professionally
+   need to know that the chapter does not teach?
 
 4. **Conceptual depth** — what would a student who wants to understand the
    underlying theory need to read?
 
-Do not begin selecting resources until all four gaps are named.
+Do not begin selecting resources until all four are named. Resources chosen
+before this analysis tend to reflect the author's knowledge rather than the
+student's gaps.
 
 ---
 
-## STEP 1 — SELECT RESOURCES
+## STEP 2 — SELECT RESOURCES
 
-Select 4–6 total resources across three tiers. Do not exceed this count.
+Select **4–6 total resources** across three tiers. Do not exceed 6.
 
-**Tier 1 — Key (1–2 resources)**
+### Tier 1 — Key (1–2 resources)
 Directly supports meeting the chapter's core learning objective. A student
 who skips this has a meaningful gap. Must be accessible to a student who
-just finished the chapter. No graduate-level material in this tier.
+just finished the chapter. No graduate-level or specialist material here.
 
-**Tier 2 — Recommended (2–3 resources)**
-Extends and deepens the chapter's main concept. Worth reading before an
-exam, project, or the next module. May require slightly more background.
+### Tier 2 — Recommended (2–3 resources)
+Extends and deepens the chapter's main concept. Worth reading before a project
+or the next module. May require slightly more background than the Key resource.
 
-**Tier 3 — Further (1–2 resources)**
-Exploratory, stretch, or professional orientation. May be more challenging.
-This is the stretch lane. Its annotation **must** include:
-- An explicit level note: "This is graduate-level / specialist / assumes
-  familiarity with X"
-- The prerequisite: what a student needs to already understand before this
-  resource rewards them
-- The payoff: what specifically they gain that they cannot get from the
-  Recommended tier
+### Tier 3 — Further (1–2 resources)
+This is the stretch lane: exploratory, specialist, or professional orientation.
+May be genuinely challenging. Must be explicitly marked as such — see annotation
+rules below. Intended for students who want to go beyond the project requirement.
 
-Without all three of these, a difficult Further-tier resource signals that
-the whole guide is not meant for ordinary students. That causes abandonment.
+Without explicit labeling, a difficult Further resource is not read as
+"this is optional and hard" — it is read as "this guide is not for me," and
+the student abandons the entire guide.
 
 ### Resource selection checklist
 
-Before including any resource, confirm:
+Before including any resource:
 
-- [ ] **Real and verifiable** — the title, author, and publication exist and
-  can be located through a library catalog or DOI resolver. Do not include
-  a resource you cannot verify. If uncertain, use a different resource.
+- [ ] **Real and verifiable** — title, author(s), year, publication all
+  confirmed. Not inferred, not paraphrased, not a similar title. If uncertain,
+  exclude it and choose something you can confirm.
 
-- [ ] **Accessible** — not paywalled without institutional access; URL loads;
-  accessible format (not a scan). If paywalled, note that institutional
-  access is typically available.
+- [ ] **Accessible** — not paywalled without institutional access; URL loads
+  and is current; format is accessible (not a scanned PDF). If paywalled, note
+  "available via institutional library access."
 
-- [ ] **Specific** — if a book, name the chapter or page range. If a video,
-  name the timestamp range. A resource that covers twenty topics is not a
-  further reading resource.
+- [ ] **Specific** — if a book, name the chapter or section title (and page
+  range only if confirmed against the actual edition). If a video, name the
+  timestamp range.
 
-- [ ] **Current** — for STEM fields, prefer resources published within the
-  last 5–10 years. If a dated resource is irreplaceable, say why.
+- [ ] **Version-consistent** — documentation, tutorials, and API references
+  must match the course's actual runtime and framework version.
 
-- [ ] **Right level for its tier** — Key and Recommended resources must be
-  accessible to a student who just finished the chapter.
+- [ ] **Current** — for STEM fields, prefer resources within the last 5–10
+  years unless the foundational text has no current equivalent.
 
-### Do not use AI to generate citations
-
-LLM-generated resource lists contain hallucinated titles, authors, and
-publishers at high rates. Every resource in this guide must be one you can
-describe from actual content knowledge or can locate through a search. If you
-are uncertain whether a resource exists, flag it and use a different one.
+- [ ] **Right level for the tier** — Key and Recommended must be accessible
+  to a student who just finished the chapter.
 
 ---
 
-## STEP 2 — WRITE THE GUIDE
+## STEP 3 — WRITE THE GUIDE
 
-### Opening framing (2–3 sentences)
+### Opening framing (100–150 words, narrative prose — not bullet points)
 
-Name the knowledge gap this guide addresses that the chapter did not close.
-State specifically what the student gains from further reading here. Be honest
-about level if the resources are challenging.
+The framing does two distinct jobs. Both are required.
 
-The framing must do two distinct things:
+**Job 1 — Motivate.**
+Name the knowledge gap the chapter left open. Frame it as a living debate or
+open question, not a list of topics. Students who believe a field is settled
+have no reason to read further. Be gain-framed ("this will let you..."), not
+obligation-framed ("you should also...").
 
-**1. Motivate** — name the knowledge gap and what the student gains from
-closing it. Be gain-framed ("this will let you..."), not obligation-framed
-("you should also read...").
+Do not write: "The following resources provide additional information on the
+topics covered in this chapter."
 
-**Do not write:** "The following resources provide additional information on
-the topics covered in this chapter."
+**Job 2 — Instruct.**
+Tell students what each tier means and what they are expected to do. Should
+they read only the Key item? Choose one Recommended resource based on their
+project angle? The Further item is for whom? Students who cannot answer "what
+am I supposed to do with this?" default to skipping the guide.
 
-**Do write something like:** "This chapter introduces [concept] as it works in
-[narrow context]. These resources extend that foundation to [broader context]
-and to the failure modes that appear when [specific condition]. The Key
-resource is worth reading before attempting [specific project task]."
+Give explicit permission not to read everything. A guide that implies total
+coverage is required will be abandoned by most students.
 
-**2. Instruct** — tell students how to use the guide. Define what each tier
-means and what is expected of them. Should they read only the Key item? All
-core items? Choose one from Recommended based on their project? Students who
-cannot answer "what am I supposed to do with this?" will default to skipping
-the entire guide. One or two sentences is enough:
-
+Example of good instruction:
 > "Read the Key resource before the project milestone. Choose one Recommended
-> resource based on which concept you found least clear. The Further item is
-> for students who want to go deeper — it assumes you are comfortable with
-> [prerequisite] and will take about 90 minutes."
+> resource based on which concept felt least clear. The Further item is for
+> students who want to go beyond the requirement — it assumes familiarity with
+> [prerequisite] and takes about 90 minutes."
 
-### For each resource, write an annotation
+### For each resource, write an annotation (100–150 words)
 
-Every annotation must include all three of these elements:
+Every annotation must contain all three of these, in this order:
 
-1. **Scope** — which specific part of the resource matters for this chapter?
-   Name the chapter, section, or timestamp. "Chapter 3, pages 44–61" is scope.
-   "This book" is not.
+1. **Ontological value** — what this resource contributes to the field and
+   where it sits in the broader conversation. Is it foundational, contested,
+   a recent revision? Context before content.
 
-2. **Learning outcome link** — how does this resource support a stated course
-   objective? "This deepens the distinction between X and Y introduced in this
-   chapter" is a learning outcome link. "This is useful" is not.
+2. **Pedagogical connection** — how it connects specifically to this chapter's
+   concepts or assessments. Name the concept, exercise, or lab it supports.
+   "This is useful" is not a pedagogical connection.
 
-3. **Engagement instruction** — what should the student do with this resource?
-   Read deeply? Skim? Watch only the first 8 minutes? Compare to the textbook
-   treatment? Students who do not know how to engage skip it.
-
-**Length:** 3–7 sentences. Longer (up to 200 words) only when the resource
-requires scaffolding to use effectively.
-
-**Voice:** First person where the instructor chose the resource. "I included
-this because the chapter skips the failure-mode analysis that this resource
-covers." First-person framing signals intentional curation.
+3. **Strategic guidance** — what the student should do with this resource.
+   Which section to focus on. How to read it (skim / read deeply / compare to
+   textbook / watch only first 8 minutes). Students who receive no reading
+   strategy skip resources that require more than a surface skim.
 
 **Quality test:** Could this annotation describe a different resource equally
 well? If yes, rewrite it. The annotation must be specific enough that removing
-the title would still identify what was recommended.
+the resource title still identifies what was recommended.
 
----
+**Voice:** First person. "I included this because the chapter skips the
+failure-mode analysis this article covers." First-person framing signals
+intentional curation, not automated output.
 
-## STEP 3 — CONNECT TO ASSESSMENT
+### Further tier annotation — additional requirements
 
-Name one wonder question or project task that a Key-tier resource directly
-helps answer or accomplish. State it explicitly in the guide so the student
-knows why reading this resource matters now.
+The Further tier annotation must also convey three additional things, woven
+into the annotation as cohesive prose:
+
+- **Level note**: who this is written for and how difficult it is ("this is
+  specialist literature written for practitioners, not a student text")
+- **Prerequisite**: what the student must already understand before this
+  resource rewards them — name the specific concept, not "some background in X"
+- **Payoff**: what specifically this gives that the Recommended tier does not
+
+Do NOT format these as three separate labeled paragraphs with "**Level note:**",
+"**Prerequisite:**", "**Payoff:**" headers. That fragments the annotation, makes
+the resource count ambiguous, and reads as a form, not prose. Weave them in.
+
+### Access information
+
+Every resource entry must include one of: DOI · ISBN · stable institutional URL
+· Perma.cc archived URL · Wayback Machine backup URL. A bare title with no
+access path is incomplete. If the resource is a print book with no DOI, include
+the ISBN and note "available via institutional library."
+
+### Assessment connection
+
+For the Key-tier resource, add a single line naming the specific concept,
+exercise, or project task this resource directly supports:
+
+> Supports: [name the specific lab, exercise, assessment, or project task]
 
 ---
 
 ## STEP 4 — EDITING PASS
 
-Before finalizing, check:
+Before finalizing, check every item:
 
-1. Does every resource have an annotation with scope, learning outcome link,
-   and engagement instruction?
-2. Does every annotation name a specific chapter, page range, or timestamp?
-3. Is the total resource count between 4 and 6?
-4. Is the opening framing gain-framed, specific to this chapter's gap, and
-   honest about level?
-5. Is at least one Key-tier resource connected to a specific assessment or
-   project task?
-6. Could any annotation apply equally well to a different resource? If yes,
-   rewrite it.
-7. Are all resources real and verifiable? Flag any you are uncertain about
-   rather than including them.
-8. Does the Further-tier annotation include an explicit level note,
-   prerequisite, and payoff — not just a description of content?
-9. Does the framing text tell students what they are expected to read and
-   how to choose, not just why reading further is worthwhile?
-10. Does the framing or the tier structure give students explicit permission
-    not to read everything? If not, add it. A guide that implies total
-    coverage is required will be abandoned by most students.
+**Structure**
+1. Are all three tiers present?
+2. Is total resource count 4–6?
+3. Key: 1–2. Recommended: 2–3. Further: 1–2.
+
+**Content mismatch**
+4. Is there a content mismatch notice if the chapter title diverges from
+   actual content? (Low threshold — when in doubt, add it.)
+
+**Framing**
+5. Is the framing 100–150 words of narrative prose (not a bullet list)?
+6. Does it name the knowledge gap as a living debate, not a topic list?
+7. Does it tell students what to read and how to choose?
+8. Does it give explicit permission not to read everything?
+
+**Annotations**
+9. Does every annotation have ontological value, pedagogical connection, and
+   strategic guidance?
+10. Is every annotation 100–150 words? (200 max for stretch resources only.)
+11. Does every annotation name a specific section, chapter, or timestamp —
+    not just "this book covers X"?
+12. Could any annotation describe a different resource equally well? If yes,
+    rewrite it.
+13. Is the citation, annotation, and access info presented as one cohesive
+    unit per resource?
+
+**Further tier**
+14. Does the Further annotation convey level, prerequisite, and payoff — as
+    woven prose, not three labeled paragraphs?
+15. Could a student not ready for the Further resource set it aside without
+    concluding the whole guide is not for them?
+
+**Access and identifiers**
+16. Does every resource have a DOI, ISBN, or archive/stable URL?
+17. Are all documentation URLs version-consistent with the course?
+18. Are all page numbers verified against the actual cited edition? (If not
+    confirmed, use section/chapter title instead.)
+
+**Assessment connection**
+19. Does the Key tier have an explicit "Supports:" line naming a specific
+    task or exercise?
+
+**Draft hygiene**
+20. Does the guide contain any of the following? If yes, remove before
+    outputting: "not included due to...", "could not be verified", "In its
+    place:", "this citation needs checking", "originally planned resource."
+    These are never student-facing.
 
 ---
 
@@ -209,38 +281,36 @@ Before finalizing, check:
 ```markdown
 ## Further Reading — [Chapter/Module Title]
 
-[Motivation: 2–3 sentences naming the knowledge gap and what the student
-gains from closing it.]
+[Content mismatch notice — add if title diverges from content. Low threshold.]
 
-[Usage instructions: 1–2 sentences defining what each tier means and what
-the student is expected to read. Give explicit permission to not read
-everything.]
+[100–150 word narrative framing. First: name the knowledge gap as a living
+debate or open question. Then: tell students exactly what to read and how to
+choose. Give explicit permission to skip the Further tier.]
 
 ### Key
 
-**[Exact resource title]** — [Author(s), Year]
-[3–7 sentence annotation: scope (specific section/timestamp), learning
-outcome link, engagement instruction.]
+**[Exact resource title]** — [Author(s), Year] | [DOI / ISBN / archive URL]
+[100–150 word annotation: (1) what it contributes and where it sits in the
+field; (2) which specific exercise or concept it supports and how; (3) which
+section to focus on and what reading strategy to use.]
+
+> Supports: [specific named exercise, lab, concept question, or project task]
 
 ### Recommended
 
-**[Exact resource title]** — [Author(s), Year]
-[3–7 sentence annotation.]
+**[Exact resource title]** — [Author(s), Year] | [DOI / ISBN / archive URL]
+[100–150 word annotation with all three elements.]
 
-**[Exact resource title]** — [Author(s), Year]
-[3–7 sentence annotation.]
+**[Exact resource title]** — [Author(s), Year] | [DOI / ISBN / archive URL]
+[100–150 word annotation with all three elements.]
 
 ### Further
 
-**[Exact resource title]** — [Author(s), Year]
-[3–7 sentence annotation. Must include: (1) explicit level/difficulty note,
-(2) prerequisite — what the student needs to already understand, (3) specific
-payoff — what this resource gives that the Recommended tier does not.]
-
----
-
-> **Assessment connection:** [Name the specific wonder question or project
-> task that the Key resource directly helps with.]
+**[Exact resource title]** — [Author(s), Year] | [DOI / ISBN / archive URL]
+[100–150 word annotation. Weave in (without using labeled paragraph headers):
+who it is written for and how hard it is; what the student must already
+understand before it rewards them (specific named concept); what specifically
+it gives that the Recommended tier does not.]
 ```
 
 ---

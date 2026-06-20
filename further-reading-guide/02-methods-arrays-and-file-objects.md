@@ -1,35 +1,37 @@
-# Module 2 — Methods, Arrays, and File Objects: Further Reading
+## Further Reading — Methods, Arrays, and File Objects
 
-This chapter builds the reference-vs-object mental model carefully, but the module's assessed work — writing methods, searching arrays, and reading and writing files — goes well beyond what the chapter text covers. These resources close those gaps: the Key resource prepares you for the array and file I/O exercises directly; the Recommended resources deepen your understanding of method design and the `equals()`/`==` distinction introduced in Exercise 7; the Further resource explains why Java made the design choices it did, which is the kind of understanding that makes debugging feel like reasoning rather than guessing.
+> **Content note:** Despite the title "Methods, Arrays, and File Objects," this chapter covers the reference-versus-object mental model: how Java allocates objects on the heap, how reference variables on the stack point to those objects, and what happens when two variables share a reference. Arrays and file objects appear only in the assessment table as separate exercises. This guide addresses the actual chapter content.
 
-Read the Key resource before attempting the "Searching an Array" and "Reading from a File" assessments. Choose one Recommended resource based on whichever concept felt least settled after the chapter — method return types, or the identity-vs-equality gap. The Further item is optional; it is listed for students who want to understand *why* Java works this way, not just *that* it does.
+The chapter gives you the mental model but leaves two gaps that will surface the moment you move to method calls and domain-class design. The first gap is Java's parameter-passing convention: when you pass a `Patron` object to a method, does the method receive the object or the reference? The answer determines whether a method can mutate the original or only a local copy — and the chapter never addresses it. The second gap is `equals()`. The chapter notes that `==` tests reference equality, flags `equals()` as research territory in Exercise 7, and stops. But every domain class you write will eventually need content equality, and implementing it correctly requires understanding the contract inherited from `Object`.
 
-### Key
-
-**The Java™ Tutorials: "Arrays" and "The switch Statement" — Learning the Java Language trail** — Oracle, continuously updated (Java SE 21 edition)
-[https://docs.oracle.com/javase/tutorial/java/nutsandbolts/arrays.html](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/arrays.html)
-
-I included this because the chapter covers objects and references but leaves arrays largely unaddressed, yet three of the module's seven assessments require array traversal and file I/O. The "Arrays" section of Oracle's official tutorial (one short page plus the immediately following "Summary of Variables" section) covers array declaration, initialization with `new`, index-based access, and `array.length` — exactly the mechanics needed for the "Searching an Array" exercise. Read the Arrays page and the "Reading from a File" tutorial section (under the "Basic I/O" trail at [https://docs.oracle.com/javase/tutorial/essential/io/scanning.html](https://docs.oracle.com/javase/tutorial/essential/io/scanning.html)) before the file I/O assessments; skim rather than memorize, and keep the page open while writing your first `Scanner`-based file reader. This is official documentation: it will not go out of date between semesters, and it is the reference your instructor will use when grading for correctness.
-
-### Recommended
-
-**Effective Java, 3rd Edition — Chapter 3: "Methods Common to All Objects"** — Joshua Bloch, 2018, Addison-Wesley
-(Items 10–14, pages 49–90; available through most university library systems via O'Reilly Learning)
-
-Exercise 7 asks you to implement `equals()` and explain why Java does not make `==` do content equality by default. Bloch's Item 10 ("Obey the general contract when overriding equals") is the definitive treatment of this question — it names the five properties a correct `equals()` must satisfy (reflexivity, symmetry, transitivity, consistency, non-nullity) and shows exactly how a naive implementation breaks each one. Read Items 10 and 11 (which covers `hashCode()`, the method that must be overridden alongside `equals()`) before submitting Exercise 7. You do not need the rest of Chapter 3 for this module. Bloch writes for practicing developers, not beginners, but Items 10–11 are self-contained enough that a student who has completed this module's chapter can follow them — go slowly on the contract properties and you will be fine.
-
-**Head First Java, 3rd Edition — Chapter 4: "How Objects Behave: Object State Affects Method Behavior"** — Kathy Sierra and Bert Bates, 2022, O'Reilly Media
-(Chapter 4, pages 95–130; also available in print and via O'Reilly Learning)
-
-The chapter you just read explains *what* methods are and establishes the reference model; this chapter of Head First Java shows *how* methods and instance state interact — specifically, how a method can read and modify the fields of the object it belongs to, what return types mean in practice, and how parameter passing works when objects (references) are passed rather than primitives. I included it because the "Methods" and "getDouble() Methods" assessments require you to design methods with specific return types and input-validation logic, and students who skip this often treat methods as arbitrary syntax rather than as behaviors owned by specific objects. Read the chapter once through at conversational pace; the visual layout is intentional and the puzzles embedded in the chapter are worth doing rather than skipping.
-
-### Further
-
-**The Java Virtual Machine Specification, Java SE 21 Edition — Chapter 2: "The Structure of the Java Virtual Machine"** — Oracle, 2023
-[https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-2.html](https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-2.html)
-
-*Level note: This is a language specification written for compiler implementors and advanced language engineers. It is not a tutorial and does not adapt to novice readers.* Prerequisite: you should be fully comfortable with the stack/heap mental model from this chapter, have completed all seven exercises, and understand what a reference variable holds and why `==` tests addresses rather than content. The payoff that the Recommended tier cannot give you: this document explains precisely where the stack ends and the heap begins in the JVM's memory model (Section 2.5), what the method area is, and why garbage collection works the way it does — the questions Exercise 6 raises ("what happens when no reference points to an object?") are answered here with full technical precision. Read Sections 2.5.1 (the Java Virtual Machine Stacks), 2.5.3 (the Heap), and 2.6 (Frames) — roughly 8 pages total — and nothing else from this document on a first pass. Return to it when you feel the mental model you have is a simplification you want to replace with the real thing.
+Read the Key resource before Exercise 7 or any lab where you pass objects to methods. Choose one Recommended resource based on your stumbling point: the Oracle tutorial if parameter passing confused you during tracing, or Bloch's Item 10 if you want to implement `equals()` correctly before the next module. The Further resource is specialist territory — set it aside unless you want to understand why the informal model works, not just that it does. You are not expected to read all of this.
 
 ---
 
-> **Assessment connection:** The Key resource's Arrays page and Basic I/O scanning tutorial directly support the "Searching an Array" and "Reading from a File" assessments. Before writing your first array-traversal loop or `Scanner`-based file reader, read those two Oracle tutorial pages and keep them open; the syntax for declaring an array, iterating with `array.length`, and opening a file with `Scanner` is all there and matches exactly what the assessments require.
+### Key
+
+**"Passing Information to a Method or a Constructor"** — Oracle Java Tutorials, 2023 | https://docs.oracle.com/javase/tutorial/java/javaOO/arguments.html
+
+I included this because the chapter builds the stack-and-heap model in detail but never applies it to method calls — the exact scenario where students first encounter unexpected mutations in their own code. This Oracle tutorial is the authoritative, version-consistent source for Java SE 21 that fills that gap directly. It explains Java's pass-by-value convention and shows explicitly that when you pass an object reference to a method, the method receives a copy of the reference, not a copy of the object — which means it can mutate the object through the reference but cannot redirect the caller's original variable. That distinction is invisible until you trace it, and the tutorial uses the same stack-and-heap framing the chapter establishes. Read the section titled "Passing Primitive Data Type Arguments" first to understand the baseline, then read "Passing Reference Data Type Arguments" and trace the examples against Exercise 5 from the chapter. Skim rather than memorize — the goal is to extend your trace practice to method boundaries before the next module introduces collections.
+
+> Supports: Chapter Exercise 5 (shared-reference annotation exercise) and any lab that passes domain objects to helper methods
+
+---
+
+### Recommended
+
+**"Overriding and Hiding Methods"** — Oracle Java Tutorials, 2023 | https://docs.oracle.com/javase/tutorial/java/IandI/override.html
+
+I included this because the chapter introduces `toString()` as a method override without explaining what overriding means or what the `Object` contract requires. This tutorial explains the `@Override` annotation, the rules Java enforces when you override, and why `toString()` in `Object` is designed to be replaced rather than used as-is. That context makes `toString()` feel like a deliberate design decision rather than a magic incantation. The chapter's comparison of `display()` versus `toString()` — which ends with "toString() is the wider-reaching choice" — becomes fully interpretable once you understand the inheritance contract behind it. Read the section on instance method overriding and the subsection on `@Override`. Then return to your domain class from Exercise 3 and confirm your `toString()` override satisfies the contract. Treat this as a companion to Exercise 4; five to ten minutes of focused reading is sufficient.
+
+**"Effective Java, Third Edition," Item 10: Obey the general contract when overriding equals** — Joshua Bloch, 2018 | ISBN 978-0-13-468599-1 (available via institutional library)
+
+I included this because Exercise 7 asks students to implement `equals()` correctly and explain why Java does not make `==` do content equality — but the chapter provides no guidance on what "correct" actually requires. Bloch's Item 10 is the canonical treatment of the `equals()` contract in Java professional literature: it enumerates the five required properties (reflexive, symmetric, transitive, consistent, non-null) and shows precisely how each can be violated by code that looks plausible. The chapter's mental model of heap blocks and references is exactly the vocabulary Bloch assumes; you will find his framing reinforces rather than repeats what you have read. Read Item 10 only — the book is not meant to be read linearly, and the item is self-contained at roughly twelve pages. Use it as a checklist when implementing `equals()` for Exercise 7, verifying each of the five properties against your implementation before submission.
+
+---
+
+### Further
+
+**"The Java Virtual Machine Specification, Java SE 21 Edition," Chapter 2: The Structure of the Java Virtual Machine** — Tim Lindholm, Frank Yellin, Gilad Bracha, Alex Buckley, and Daniel Smith, 2023 | https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-2.html
+
+This is the specification document that the chapter's informal stack-and-heap description approximates — it is written for JVM implementors and language engineers, not students, and reading it without preparation will feel like reading a legal contract in a second language. To get anything from it you need to be fully comfortable with the reference-versus-object model at the level of Exercise 5 and have at least a passing familiarity with what bytecode is; without that grounding, the precision becomes noise rather than clarity. If you have that preparation, Chapter 2 rewards close reading in two specific places: Section 2.5 ("Run-Time Data Areas") shows the formal partition of memory that the chapter's "stack" and "heap" are approximating, and Section 2.6 ("Frames") explains what is actually allocated when a method is called — which gives Exercise 6's open question ("what happens when no reference points to an object anymore?") a technically precise answer. What this gives that the Recommended tier does not is exactness: you will be able to say not just that references hold addresses but what the JVM guarantees about those addresses and what it deliberately leaves unspecified. Read Sections 2.5.1, 2.5.3, and 2.6 — roughly eight pages total — and nothing else from this document on a first pass.
